@@ -1,10 +1,13 @@
 package ModuloDeClases;
 
+import java.util.List;
+
 public class Usuario {
     private String ci;
     private String nombreUsuario;
     private String email;
     private ClienteTelepeaje clienteTelepeaje;
+    private List<Vinculo> vinculos;
     
     public Usuario() {
     	
@@ -47,4 +50,14 @@ public class Usuario {
     public void setClienteTelepeaje(ClienteTelepeaje clienteTelepeaje) {
         this.clienteTelepeaje = clienteTelepeaje;
     }
+
+	public List<Vinculo> getVinculos() {
+		return vinculos;
+	}
+
+	public void setVinculos(List<Vinculo> vinculos) {
+		this.vinculos = vinculos;
+	}
+    
+    
 }

@@ -12,4 +12,6 @@ public class UsrNacional extends Usuario {
         super(ci, nombreUsuario, email); 
     }
     
+    
+    
 }
