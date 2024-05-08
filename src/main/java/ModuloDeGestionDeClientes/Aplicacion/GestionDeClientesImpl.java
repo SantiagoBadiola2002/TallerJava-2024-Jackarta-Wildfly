@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import ModuloDeClases.ClienteSucive;
 import ModuloDeClases.ClienteTelepeaje;
 import ModuloDeClases.Extranjero;
 import ModuloDeClases.Matricula;
@@ -24,7 +23,6 @@ public class GestionDeClientesImpl implements GestionDeClientesAplicacion {
 
 	List<UsrNacional> usrNacionales;
 	List<UsrExtranjero> usrExtranjeros;
-	List<ClienteSucive> clientesSucive;
 	List<ClienteTelepeaje> clientesTelepeaje;
 	List<Vinculo> vinculos;
 

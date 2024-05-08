@@ -1,10 +1,18 @@
 package ModuloDeClases;
 
 public class UsrNacional extends Usuario {
+	
+	private ClienteSucive clienteSucive;
     
-    // Constructor vacío
+	
     public UsrNacional() {
+		super();
+	}
+
+	// Constructor vacío
+    public UsrNacional(ClienteSucive clienteSucive) {
         super(); 
+        this.clienteSucive = clienteSucive;
     }
     
     // Constructor con parámetros
