@@ -2,35 +2,18 @@ package ModuloDeClases;
 
 public class Nacional extends Vehiculo {
 	
-	private Matricula matricula;
-	
-	private Tag tag;
-	
-	public Nacional() {
-		
-	}
+    private Matricula matricula; 
 
-	public Nacional(Matricula matricula, Tag tag) {
-		super();
-		this.matricula = matricula;
-		this.tag = tag;
-	}
+    public Nacional(Tag tag, Matricula matricula) {
+        super(); 
+        this.matricula = matricula;
+    }
 
-	public Matricula getMatricula() {
-		return matricula;
-	}
+    public Matricula getMatricula() {
+        return matricula;
+    }
 
-	public void setMatricula(Matricula matricula) {
-		this.matricula = matricula;
-	}
-
-	public Tag getTag() {
-		return tag;
-	}
-
-	public void setTag(Tag tag) {
-		this.tag = tag;
-	}
-	
-    
+    public void setMatricula(Matricula matricula) {
+        this.matricula = matricula;
+    }
 }
