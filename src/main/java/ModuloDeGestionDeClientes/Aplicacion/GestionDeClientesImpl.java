@@ -9,6 +9,7 @@ import ModuloDeClases.ClienteTelepeaje;
 import ModuloDeClases.Extranjero;
 import ModuloDeClases.Matricula;
 import ModuloDeClases.Nacional;
+import ModuloDeClases.POSTPaga;
 import ModuloDeClases.PREPaga;
 import ModuloDeClases.PasadaPorPeaje;
 import ModuloDeClases.Tag;
@@ -152,36 +153,79 @@ public class GestionDeClientesImpl implements GestionDeClientesAplicacion {
 
 
 	@Override
-	public double asociarTarjeta(Usuario usuario, Tarjeta tarjeta) {
-		// TODO Auto-generated method stub
-		return 0;
+	public void asociarTarjeta(ClienteTelepeaje clienteTelepeaje, Tarjeta tarjeta) { //asocia tarjeta de crédito a la cuenta POST paga del cliente
+		POSTPaga postPaga = clienteTelepeaje.getTarjetaPostPaga();
+		postPaga.setTarjeta(tarjeta);
+		System.out.println("La tarjeta " + tarjeta.getNroTarjeta() + " ha sido asociada a la cuenta POSTPaga del usuario "
+				+ clienteTelepeaje.getUsuario().getCi());
 	}
 
 	@Override
-	public List<PasadaPorPeaje> consultarPasadas(ClienteTelepeaje usuario, Date fechaInicio, Date fechaFin) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<PasadaPorPeaje> consultarPasadas(ClienteTelepeaje clienteTelepeaje, Date fechaInicio, Date fechaFin) {
+	    
+		List<PasadaPorPeaje> pasadas = new ArrayList<>(); 
+	    List<Vinculo> vinculos = clienteTelepeaje.getUsuario().getVinculos();
+	    
+	    for (Vinculo vinculo : vinculos) {
+	        Vehiculo vehiculo = vinculo.getVehiculo();
+	        List<PasadaPorPeaje> pasadasVehiculo = vehiculo.getPasadasPeaje();
+	        for (PasadaPorPeaje pasada : pasadasVehiculo) {
+	            Date fechaPasada = pasada.getFecha();  
+	            if (fechaPasada.after(fechaInicio) && fechaPasada.before(fechaFin)) {
+	                pasadas.add(pasada); 
+	            }
+	        }
+	    }
+	    
+	    return pasadas;
+	}
+
+
+	@Override
+	public List<PasadaPorPeaje> consultarPasadas(ClienteTelepeaje usuario, Vehiculo vehiculo, Date fechaInicio, Date fechaFin) {
+	    List<PasadaPorPeaje> pasadas = new ArrayList<>();
+	    
+	    List<Vinculo> vinculos = usuario.getUsuario().getVinculos();
+	    
+	    for (Vinculo vinculo : vinculos) {
+	        Vehiculo vehiculoVinculado = vinculo.getVehiculo();
+	        
+	        if (vehiculoVinculado.equals(vehiculo)) {
+	            List<PasadaPorPeaje> pasadasVehiculo = vehiculoVinculado.getPasadasPeaje();
+	            
+	            for (PasadaPorPeaje pasada : pasadasVehiculo) {
+	                Date fechaPasada = pasada.getFecha();
+	                
+	                if (fechaPasada.after(fechaInicio) && fechaPasada.before(fechaFin)) {
+	                    pasadas.add(pasada); 
+	                }
+	            }
+	            
+	            break;
+	        }
+	    }
+	    
+	    return pasadas;
+	}
+
+
+	@Override
+	public void realizarPrePago(double importe) { // descuenta el importe del pago al saldo del cliente. **Utilizado por el módulo de Peaje.**
+      
+
+		
+
 	}
 
 	@Override
-	public List<PasadaPorPeaje> consultarPasadas(ClienteTelepeaje usuario, Vehiculo vehiculo, Date fechaInicio,
-			Date fechaFin) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void realizarPrePago(double importe) {
-		// TODO Auto-generated method stub
+	public void realizarPostPago(double importe) { //realiza el pago utilizando tarjeta de crédito
+		
 
 	}
 
-	@Override
-	public void realizarPostPago(double importe) {
-		// TODO Auto-generated method stub
+	// public Cuenta obtenerCuentasPorTag(Tag tag);//devuelve los tipos de cuentas asociadas al cliente TelepeajeSi la cuenta es de PrePago, devuelve el saldo actual
+	//**Utilizado por el módulo de Peaje.**
 
-	}
 
-	// public Cuenta obtenerCuentasPorTag(Tag tag);
 
 }

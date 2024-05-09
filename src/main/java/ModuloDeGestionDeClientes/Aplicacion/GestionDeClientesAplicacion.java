@@ -18,7 +18,7 @@ public interface GestionDeClientesAplicacion {
 	public void vincularVehiculo(Vehiculo vehiculo, Usuario usuario); // CLiente Sucive, Telepeaje o Usuario?
 	public void desvincularVehiculo(Vehiculo vehiculo, Usuario usuario);
 	public List <Vehiculo> mostrarVehiculosVinculados(Usuario usuario);
-	public double asociarTarjeta(Usuario usuario, Tarjeta tarjeta); //asocia tarjeta de crédito a la cuenta POST paga del cliente
+	public void asociarTarjeta(ClienteTelepeaje clienteTelepeaje, Tarjeta tarjeta); //asocia tarjeta de crédito a la cuenta POST paga del cliente
 	public List<PasadaPorPeaje> consultarPasadas(ClienteTelepeaje usuario, Date fechaInicio, Date fechaFin); //devuelve las pasadas realizadas por todos los vehículos registrados en un rango de fechas.
 	public List<PasadaPorPeaje> consultarPasadas(ClienteTelepeaje usuario, Vehiculo vehiculo, Date fechaInicio, Date fechaFin); //idem anterior, pero solo para un vehículo
 	public void realizarPrePago(double importe); //descuenta el importe del pago al saldo del cliente. *Utilizado por el módulo de Peaje*.
