@@ -2,6 +2,9 @@ package ModuloDeClases;
 
 import java.util.Date;
 
+import jakarta.inject.Named;
+
+@Named
 public class PREPaga extends Cuenta {
 	
 	private double saldo;

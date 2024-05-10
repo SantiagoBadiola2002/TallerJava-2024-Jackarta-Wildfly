@@ -1,7 +1,10 @@
 package ModuloDeClases;
 
+import jakarta.inject.Inject;
+
 public class UsrNacional extends Usuario {
 	
+	@Inject
 	private ClienteSucive clienteSucive;
     
 	

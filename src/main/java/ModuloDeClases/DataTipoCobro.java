@@ -1,9 +1,18 @@
 package ModuloDeClases;
 
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+
+@Named
 public class DataTipoCobro {
 
+	@Inject
 	private PREPaga prePaga;
+	
+	@Inject
 	private POSTPaga postPago;
+	
+	@Inject
 	private ClienteSucive clienteSucive;
 	
 

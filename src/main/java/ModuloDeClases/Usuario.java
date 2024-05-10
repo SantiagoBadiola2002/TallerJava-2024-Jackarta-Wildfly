@@ -2,11 +2,19 @@ package ModuloDeClases;
 
 import java.util.List;
 
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+
+@Named
 public class Usuario {
     private String ci;
     private String nombreUsuario;
     private String email;
+    
+    @Inject
     private ClienteTelepeaje clienteTelepeaje;
+    
+    @Inject
     private List<Vinculo> vinculos;
     
     public Usuario() {

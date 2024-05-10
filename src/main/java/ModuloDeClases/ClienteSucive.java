@@ -1,5 +1,8 @@
 package ModuloDeClases;
 
+import jakarta.inject.Named;
+
+@Named // Si deseas que esta clase sea reconocida por CDI y se pueda inyectar
 class ClienteSucive {
 	
     private UsrNacional usuario;

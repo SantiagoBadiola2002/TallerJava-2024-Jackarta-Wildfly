@@ -2,11 +2,17 @@ package ModuloDeClases;
 
 import java.util.Date;
 
+import jakarta.inject.Inject;
+
 public class Vinculo {
 	
 	private Date fechaIni;
 	private boolean activo;
+	
+	@Inject
 	private Vehiculo vehiculo;
+	
+	@Inject
 	private Usuario usuario;
 	
 	public Vinculo() {

@@ -1,5 +1,8 @@
 package ModuloDeClases;
 
+import jakarta.inject.Named;
+
+@Named
 public class Tag {
 	
 	String idUnico;

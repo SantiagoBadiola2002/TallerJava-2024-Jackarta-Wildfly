@@ -2,10 +2,14 @@ package ModuloDeClases;
 
 import java.util.Date;
 
+import jakarta.inject.Inject;
+
 public class PasadaPorPeaje {
 	
     private Date fecha;
     private double costo;
+    
+    @Inject
     private DataTipoCobro tipoCobro;
 
     public PasadaPorPeaje(Date fecha, double costo, DataTipoCobro tipoCobro) {

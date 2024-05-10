@@ -1,7 +1,10 @@
 package ModuloDeClases;
 
+import jakarta.inject.Inject;
+
 public class Nacional extends Vehiculo {
 	
+	@Inject
     private Matricula matricula; 
 
     public Nacional(Tag tag, Matricula matricula) {
