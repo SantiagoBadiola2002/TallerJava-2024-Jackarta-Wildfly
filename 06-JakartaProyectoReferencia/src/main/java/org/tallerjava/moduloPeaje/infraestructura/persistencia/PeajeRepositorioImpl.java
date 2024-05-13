@@ -34,4 +34,20 @@ public class PeajeRepositorioImpl implements PeajeRepositorio {
     public Comun obtenerTarifaComun() {
         return new Comun(150);
     }
+    
+    @Override
+    public void actualizarTarifaComun(double valor) {
+    	//traigo la Tarifa Comun
+    	Comun c = obtenerTarifaComun();
+    	//actualizo Tarifa Comun
+    	c.setValor(valor);
+    	// hay que ver como es el acceso a BD
+    }
+    @Override
+    public void actualizarTarifaPreferencial(double valor) {
+    	Preferencial p = obtenerTarifaPreferencial();
+    	p.setValor(valor);
+    	// hay que ver como es el acceso a BD
+    	
+    }
 }

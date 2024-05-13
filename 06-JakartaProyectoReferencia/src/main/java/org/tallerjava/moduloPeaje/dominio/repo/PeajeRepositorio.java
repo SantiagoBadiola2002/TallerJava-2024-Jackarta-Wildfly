@@ -12,5 +12,7 @@ public interface PeajeRepositorio {
     public Vehiculo findByMatricula(String matricula);
 
     public Preferencial obtenerTarifaPreferencial();
-    public Comun obtenerTarifaComun();
+    public Comun obtenerTarifaComun(); 
+    public void actualizarTarifaComun(double valor);
+    public void actualizarTarifaPreferencial(double valor);
 }
