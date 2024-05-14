@@ -9,16 +9,22 @@ import java.util.List;
 @AllArgsConstructor
 public class ClienteTelepeaje{
 	
+	private Usuario usuario;
 	private PrePaga ctaPrepaga;
     private PostPaga ctaPostPaga;
 	
-    public ClienteTelepeaje(PrePaga prePaga, PostPaga postPaga) {
-    	
+    public ClienteTelepeaje(Usuario usr, PrePaga prePaga, PostPaga postPaga) {
+    	this.usuario = usr; 
 		this.ctaPrepaga = prePaga;
 		this.ctaPostPaga = postPaga;
 	}
     
 	public PrePaga getCtaPrepaga() {
 		return this.ctaPrepaga;
+	}
+	
+	public Usuario getUsuario() {
+		return this.usuario;
+		
 	}
 }

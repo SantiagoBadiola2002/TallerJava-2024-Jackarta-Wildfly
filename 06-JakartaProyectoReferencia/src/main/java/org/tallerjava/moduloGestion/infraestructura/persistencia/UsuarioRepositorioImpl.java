@@ -14,14 +14,13 @@ public class UsuarioRepositorioImpl implements UsuarioRepositorio {
     @Override
     public Usuario findByTag(int tag) {
         PrePaga prePaga = new PrePaga(1000);
-        ClienteTelepeaje cliTelepeaje = new ClienteTelepeaje(prePaga, null);
+        ClienteTelepeaje cliTelepeaje = new ClienteTelepeaje(null, prePaga, null);
         List<Vinculo> listVinculos= new ArrayList<>();
         Identificador identificador = new Identificador(1, "BAA 2222", 2001);
         
-        @SuppressWarnings("deprecation")
-		Date fechaManual = new Date(124, 4, 7);
+        LocalDateTime ahora = LocalDateTime.now();
         
-        listVinculos.add(new Vinculo(fechaManual, true, new Vehiculo(1, identificador, cliTelepeaje)));
+        listVinculos.add(new Vinculo(ahora, true, new Vehiculo(1, identificador, cliTelepeaje)));
         
         Usuario usuario = new
                 Nacional(1, "pepe","pepe@gmail.com",listVinculos, cliTelepeaje);
@@ -44,14 +43,14 @@ public class UsuarioRepositorioImpl implements UsuarioRepositorio {
 
     	if (usr.soyNacional()) {
     		PrePaga prePaga = new PrePaga(1, 1234, ahora, 0);
-    		ClienteTelepeaje cliTelepeaje = new ClienteTelepeaje(prePaga, null);
+    		ClienteTelepeaje cliTelepeaje = new ClienteTelepeaje(null, prePaga, null);
     		//ACTUALIZAE USR EN BD
     		usr.setClienteTelepeaje(cliTelepeaje);
     		return cliTelepeaje; 
         
     	}else {
     		//se actualiza al asosiar(cli, tarjeta)
-    		ClienteTelepeaje cliTelepeaje = new ClienteTelepeaje(null, null);
+    		ClienteTelepeaje cliTelepeaje = new ClienteTelepeaje(usr, null, null);
     		//ACTUALIZAE USR EN BD
     		usr.setClienteTelepeaje(cliTelepeaje);
     		return cliTelepeaje; 
@@ -59,10 +58,23 @@ public class UsuarioRepositorioImpl implements UsuarioRepositorio {
     	
 
     }
-    
+    @Override
     public void crearClienteSucive(Nacional usr) {
     	ClienteSucive cliSucive = new ClienteSucive(usr);
     	//ACTUALIZAE USR EN BD
     	usr.setClienteSucive(cliSucive);
+    }
+    
+    public void vicularUsuarioVehiculo(Usuario usr, Vehiculo vehiculo) {
+    	LocalDateTime ahora = LocalDateTime.now();
+    	Vinculo v = new Vinculo(ahora, true, vehiculo);
+    	
+    	List<Vinculo> listaVinculos = usr.getVehiculosVinculados();
+    	if ( listaVinculos == null) {
+    		listaVinculos = new ArrayList<>();	
+    	}
+    	
+    	listaVinculos.add(v);
+    	
     }
 }

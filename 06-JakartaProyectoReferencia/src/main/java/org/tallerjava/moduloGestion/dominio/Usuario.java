@@ -23,5 +23,11 @@ public abstract class Usuario {
 		this.clienteTelepeaje = cliTelepeaje;
 		
 	}
+	public List<Vinculo> getVehiculosVinculados() {
+		return this.vehiculosVinculados;
+	}
 
+	public void setVehiculosVinculados(List<Vinculo> vehiculosVinculados) {
+		this.vehiculosVinculados = vehiculosVinculados;
+	}
 }

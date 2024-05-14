@@ -3,10 +3,12 @@ package org.tallerjava.moduloGestion.aplicacion.impl;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.tallerjava.moduloGestion.aplicacion.ServicioPago;
+import org.tallerjava.moduloGestion.dominio.ClienteTelepeaje;
 import org.tallerjava.moduloGestion.dominio.Cuenta;
 import org.tallerjava.moduloGestion.dominio.Nacional;
 import org.tallerjava.moduloGestion.dominio.PrePaga;
 import org.tallerjava.moduloGestion.dominio.Usuario;
+import org.tallerjava.moduloGestion.dominio.Vehiculo;
 import org.tallerjava.moduloGestion.dominio.repo.UsuarioRepositorio;
 
 import java.util.List;
@@ -71,8 +73,30 @@ public class ServicioPagoImpl implements ServicioPago {
     		if (usr.soyNacional()) {
     			repoUsuario.crearClienteSucive((Nacional) usr);
     		}
+    	}	
+    }
+    
+    public boolean vincularVehiculo(ClienteTelepeaje cliTelepeaje, Vehiculo vehiculo) {
+    	boolean vinculado = false;
+    	
+    	Usuario usr = findUserByCliente(cliTelepeaje);
+    	
+    	if (usr == null) {//no encontro usuario
+    		System.out.println("No se encontró usuario");
+
+    	}else {
+    			repoUsuario.vicularUsuarioVehiculo(usr,  vehiculo);
+    			System.out.println("Usuario y Vehiculo vinculado");
+    			vinculado = true; 
     	}
     	
+    	return vinculado;
+    	
     }
+
+	private Usuario findUserByCliente(ClienteTelepeaje cliTelepeaje) {
+		
+		return cliTelepeaje.getUsuario();
+	}
     
 }

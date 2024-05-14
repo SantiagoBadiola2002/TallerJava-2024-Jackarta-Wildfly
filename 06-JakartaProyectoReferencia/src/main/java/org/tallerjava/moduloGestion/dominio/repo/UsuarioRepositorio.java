@@ -4,6 +4,7 @@ import org.tallerjava.moduloGestion.dominio.ClienteTelepeaje;
 import org.tallerjava.moduloGestion.dominio.Cuenta;
 import org.tallerjava.moduloGestion.dominio.Nacional;
 import org.tallerjava.moduloGestion.dominio.Usuario;
+import org.tallerjava.moduloGestion.dominio.Vehiculo;
 
 import java.util.List;
 
@@ -21,4 +22,5 @@ public interface UsuarioRepositorio {
 
 	public void crearClienteSucive(Nacional usr);
 
+	public void vicularUsuarioVehiculo(Usuario usr, Vehiculo vehiculo);
 }

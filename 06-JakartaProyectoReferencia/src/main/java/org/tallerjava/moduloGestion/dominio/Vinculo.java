@@ -1,20 +1,21 @@
 package org.tallerjava.moduloGestion.dominio;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+
 
 public class Vinculo {
 	
-	private Date fechaini;
+	private LocalDateTime fechaini;
 	private boolean activo;
 	private Vehiculo vehiculo;
 	
-	public Vinculo(Date fechaini, boolean activo, Vehiculo vehiculo) {
+	public Vinculo(LocalDateTime fechaini, boolean activo, Vehiculo vehiculo) {
 		this.fechaini = fechaini;
 		this.activo = activo;
 		this.vehiculo = vehiculo;
 	}
 
-	public Date getFechaini() {
+	public LocalDateTime getFechaini() {
 		return fechaini;
 	}
 
@@ -26,7 +27,7 @@ public class Vinculo {
 		return vehiculo;
 	}
 
-	public void setFechaini(Date fechaini) {
+	public void setFechaini(LocalDateTime fechaini) {
 		this.fechaini = fechaini;
 	}
 
