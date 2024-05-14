@@ -25,4 +25,9 @@ public class Nacional extends Usuario{
     public boolean soyNacional() {
         return true;
     }
+    
+    public void setClienteSucive(ClienteSucive cliSucive) {
+    	this.clienteSucive = cliSucive;
+    	
+    }
 }

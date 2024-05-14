@@ -7,4 +7,12 @@ import lombok.Data;
 @AllArgsConstructor
 public class ClienteSucive {
     private Nacional usuarioNacional;
+
+    public ClienteSucive(Nacional usrNacional) {
+    	this.usuarioNacional = usrNacional;
+    	
+    }
+
 }
+
+

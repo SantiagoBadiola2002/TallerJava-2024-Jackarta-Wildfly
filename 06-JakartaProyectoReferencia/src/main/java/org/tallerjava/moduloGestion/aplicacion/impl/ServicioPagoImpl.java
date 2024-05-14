@@ -4,6 +4,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.tallerjava.moduloGestion.aplicacion.ServicioPago;
 import org.tallerjava.moduloGestion.dominio.Cuenta;
+import org.tallerjava.moduloGestion.dominio.Nacional;
 import org.tallerjava.moduloGestion.dominio.PrePaga;
 import org.tallerjava.moduloGestion.dominio.Usuario;
 import org.tallerjava.moduloGestion.dominio.repo.UsuarioRepositorio;
@@ -59,5 +60,19 @@ public class ServicioPagoImpl implements ServicioPago {
             return true;
         } else return false;
     }
-
+    
+    @Override
+    public void altaClienteTelepeaje(Usuario usr) {
+    	
+    	//me fijo si es ya cliente telepeaje
+    	if (usr.getClienteTelepeaje() == null) {
+    		//diferencio Nacional o Extranjero
+    		repoUsuario.crearClienteTelepeaje(usr);
+    		if (usr.soyNacional()) {
+    			repoUsuario.crearClienteSucive((Nacional) usr);
+    		}
+    	}
+    	
+    }
+    
 }

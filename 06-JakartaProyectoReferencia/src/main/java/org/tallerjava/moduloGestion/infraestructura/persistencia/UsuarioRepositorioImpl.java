@@ -3,10 +3,12 @@ package org.tallerjava.moduloGestion.infraestructura.persistencia;
 import org.tallerjava.moduloGestion.dominio.*;
 import org.tallerjava.moduloGestion.dominio.repo.UsuarioRepositorio;
 
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class UsuarioRepositorioImpl implements UsuarioRepositorio {
     @Override
@@ -34,5 +36,33 @@ public class UsuarioRepositorioImpl implements UsuarioRepositorio {
         listCuentas.add(new PostPaga(
                 new Tarjeta(1,2222,null, "usuario tarjeta")));
         return listCuentas;
+    }
+    @Override
+    public ClienteTelepeaje crearClienteTelepeaje(Usuario usr) {
+    	//incio saldo prePaga en 0 sin tarjeta
+    	LocalDateTime ahora = LocalDateTime.now();
+
+    	if (usr.soyNacional()) {
+    		PrePaga prePaga = new PrePaga(1, 1234, ahora, 0);
+    		ClienteTelepeaje cliTelepeaje = new ClienteTelepeaje(prePaga, null);
+    		//ACTUALIZAE USR EN BD
+    		usr.setClienteTelepeaje(cliTelepeaje);
+    		return cliTelepeaje; 
+        
+    	}else {
+    		//se actualiza al asosiar(cli, tarjeta)
+    		ClienteTelepeaje cliTelepeaje = new ClienteTelepeaje(null, null);
+    		//ACTUALIZAE USR EN BD
+    		usr.setClienteTelepeaje(cliTelepeaje);
+    		return cliTelepeaje; 
+    	}
+    	
+
+    }
+    
+    public void crearClienteSucive(Nacional usr) {
+    	ClienteSucive cliSucive = new ClienteSucive(usr);
+    	//ACTUALIZAE USR EN BD
+    	usr.setClienteSucive(cliSucive);
     }
 }

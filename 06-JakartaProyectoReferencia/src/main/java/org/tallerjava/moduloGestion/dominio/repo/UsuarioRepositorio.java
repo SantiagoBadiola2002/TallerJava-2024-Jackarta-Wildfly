@@ -1,6 +1,8 @@
 package org.tallerjava.moduloGestion.dominio.repo;
 
+import org.tallerjava.moduloGestion.dominio.ClienteTelepeaje;
 import org.tallerjava.moduloGestion.dominio.Cuenta;
+import org.tallerjava.moduloGestion.dominio.Nacional;
 import org.tallerjava.moduloGestion.dominio.Usuario;
 
 import java.util.List;
@@ -14,5 +16,9 @@ public interface UsuarioRepositorio {
     public Usuario findByTag(int tag);
 
 	List<Cuenta> findCuentasByTag(int tag);
+	
+	public ClienteTelepeaje crearClienteTelepeaje(Usuario usr);
+
+	public void crearClienteSucive(Nacional usr);
 
 }
