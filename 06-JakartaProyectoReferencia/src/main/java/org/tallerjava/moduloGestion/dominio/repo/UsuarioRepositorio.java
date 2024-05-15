@@ -24,5 +24,5 @@ public interface UsuarioRepositorio {
 
 	public void vicularUsuarioVehiculo(Usuario usr, Vehiculo vehiculo);
 
-	public Vehiculo findVehiculoByUser(Usuario usr);
+	public List<Vehiculo> findVehiculoByUser(Usuario usr);
 }
