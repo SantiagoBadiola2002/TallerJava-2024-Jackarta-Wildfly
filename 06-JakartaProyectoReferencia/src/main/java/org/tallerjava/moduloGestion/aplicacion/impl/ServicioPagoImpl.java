@@ -2,6 +2,8 @@ package org.tallerjava.moduloGestion.aplicacion.impl;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+
+import org.jboss.logging.Logger;
 import org.tallerjava.moduloGestion.aplicacion.ServicioPago;
 import org.tallerjava.moduloGestion.dominio.ClienteTelepeaje;
 import org.tallerjava.moduloGestion.dominio.Cuenta;
@@ -10,11 +12,17 @@ import org.tallerjava.moduloGestion.dominio.PrePaga;
 import org.tallerjava.moduloGestion.dominio.Usuario;
 import org.tallerjava.moduloGestion.dominio.Vehiculo;
 import org.tallerjava.moduloGestion.dominio.repo.UsuarioRepositorio;
+import org.tallerjava.moduloGestion.interfase.evento.out.PublicadorEvento;
 
 import java.util.List;
 
 @ApplicationScoped
 public class ServicioPagoImpl implements ServicioPago {
+	private static final Logger log = Logger.getLogger(ServicioPagoImpl.class);
+	
+    @Inject
+    private PublicadorEvento evento;
+    
     @Inject
     private UsuarioRepositorio repoUsuario;
 
@@ -28,11 +36,15 @@ public class ServicioPagoImpl implements ServicioPago {
                 ctaPrepaga.descontarSaldo(importe);
 
                 notificarPrePago(usr);
+                log.infof("*** Respuesta Pre Pago: tag %s, importe %s, estado Pago %s", tag, importe, realizado);
                 realizado = true;
             } else {
                 //estoy frente a otro problema de inconsistencia ya que para tener un tag
                 //tengo que ser cliente del telepeaje
                 //TODO logear y mandar evento al modulo de monitoreo
+                evento.publicarClienteTelepeajeNoEncontradoPorTag(
+                        "Cliente Telepeaje no encontrado por el tag %s: " + tag + " ");
+            	
             }
             realizado = true;
         } else {
@@ -40,6 +52,9 @@ public class ServicioPagoImpl implements ServicioPago {
             // no podemos saber a que Cliente pertenece, recordar que los tags se
             //entregan cuando el Cliente se registra en el sistema
             //TODO logear y mandar evento al modulo de monitorio
+            evento.publicarUsuarioNoEncontradoPorTag(
+                    "Usuario no encontrado por el tag %s: " + tag + " ");
+        	
         }
         return realizado;
     }

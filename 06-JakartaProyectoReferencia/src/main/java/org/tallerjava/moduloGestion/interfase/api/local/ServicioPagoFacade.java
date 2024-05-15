@@ -3,8 +3,10 @@ package org.tallerjava.moduloGestion.interfase.api.local;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.tallerjava.moduloGestion.aplicacion.ServicioPago;
+import org.tallerjava.moduloGestion.dominio.ClienteTelepeaje;
 import org.tallerjava.moduloGestion.dominio.Cuenta;
 import org.tallerjava.moduloGestion.dominio.Usuario;
+import org.tallerjava.moduloGestion.dominio.Vehiculo;
 
 import java.util.List;
 
@@ -41,6 +43,11 @@ public class ServicioPagoFacade implements ServicioPago {
     @Override
     public void altaClienteTelepeaje(Usuario usr) {
     	servicioPago.altaClienteTelepeaje(usr);
+    };
+    
+    @Override
+    public boolean vincularVehiculo(ClienteTelepeaje cliTelepeaje, Vehiculo vehiculo) {
+    	return servicioPago.vincularVehiculo(cliTelepeaje, vehiculo);
     };
     
 }

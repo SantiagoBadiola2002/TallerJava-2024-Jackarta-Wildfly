@@ -16,4 +16,6 @@ public interface ServicioPago {
     public void altaClienteTelepeaje(Usuario usr);
     
     public boolean vincularVehiculo(ClienteTelepeaje cliTelepeaje, Vehiculo vehiculo);
+    
+    
 }
