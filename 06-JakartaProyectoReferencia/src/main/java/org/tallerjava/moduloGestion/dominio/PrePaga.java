@@ -11,15 +11,9 @@ public class PrePaga extends Cuenta {
 
 	private int saldo;
 
-	public PrePaga(int i) {
-		
-		this.saldo = i;
-	}
-	
+
 	public PrePaga(long id, long nroCuenta, LocalDateTime fecha, int i) {
-		this.id = id;
-		this.nroCuenta = nroCuenta;
-		this.fechaApertura = fecha;
+		 super(id, nroCuenta, fecha);
 		this.saldo = i;
 	}
 

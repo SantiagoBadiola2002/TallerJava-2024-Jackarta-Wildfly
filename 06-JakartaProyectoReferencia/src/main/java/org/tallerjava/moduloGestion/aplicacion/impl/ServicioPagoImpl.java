@@ -8,12 +8,16 @@ import org.tallerjava.moduloGestion.aplicacion.ServicioPago;
 import org.tallerjava.moduloGestion.dominio.ClienteTelepeaje;
 import org.tallerjava.moduloGestion.dominio.Cuenta;
 import org.tallerjava.moduloGestion.dominio.Nacional;
+import org.tallerjava.moduloGestion.dominio.PostPaga;
 import org.tallerjava.moduloGestion.dominio.PrePaga;
+import org.tallerjava.moduloGestion.dominio.Tarjeta;
 import org.tallerjava.moduloGestion.dominio.Usuario;
 import org.tallerjava.moduloGestion.dominio.Vehiculo;
+import org.tallerjava.moduloGestion.dominio.Vinculo;
 import org.tallerjava.moduloGestion.dominio.repo.UsuarioRepositorio;
 import org.tallerjava.moduloGestion.interfase.evento.out.PublicadorEvento;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @ApplicationScoped
@@ -35,7 +39,8 @@ public class ServicioPagoImpl implements ServicioPago {
                 PrePaga ctaPrepaga = usr.getClienteTelepeaje().getCtaPrepaga();
                 ctaPrepaga.descontarSaldo(importe);
 
-                notificarPrePago(usr);
+                
+                notificarPrePago(usr, tag, importe);
                 log.infof("*** Respuesta Pre Pago: tag %s, importe %s, estado Pago %s", tag, importe, realizado);
                 realizado = true;
             } else {
@@ -58,17 +63,53 @@ public class ServicioPagoImpl implements ServicioPago {
         }
         return realizado;
     }
-
-    private void notificarPrePago(Usuario usr) {
-        //TODO lanzar evento al modulo de monitoreo indicando prePago ok
-    }
-
+    
+    
     @Override
     public boolean realizarPostPago(int tag, double importe) {
         //TODO muy parecido al anterior con la diferencia de que voy a tener que
         //interactuar con el modulo de Medios de pagos para cobrar con tarjeta
-        return false;
+    	
+    	 boolean realizado = false;
+         Usuario usr = repoUsuario.findByTag(tag);
+         if (usr != null) {
+             if (usr.getClienteTelepeaje() != null) {
+            	 
+            	 PostPaga ctaPostpaga = usr.getClienteTelepeaje().getCtaPostpaga();
+            	 //notificarPago(Cliente, Vehículo, importe, Tarjeta)
+            	 Vehiculo vehiculo = repoUsuario.findVehiculoByUser(usr);
+            	 notificarPostPago(usr, tag, 100, ctaPostpaga.getTarjeta());
+                 log.infof("*** Respuesta Post Pago: tag %s, importe %s, estado Pago %s", tag, importe, realizado);
+                 realizado = true;
+             } else {
+                 evento.publicarClienteTelepeajeNoEncontradoPorTag(
+                         "Cliente Telepeaje no encontrado por el tag %s: " + tag + " ");
+             	
+             }
+             realizado = true;
+         } else {
+             evento.publicarUsuarioNoEncontradoPorTag(
+                     "Usuario no encontrado por el tag %s: " + tag + " ");
+         	
+         }
+         return realizado;
     }
+    
+    
+
+    private void notificarPrePago(Usuario usr, int tag, double importe) {
+//        List<Vinculo> vinculos = new ArrayList<>();
+//        Vehiculo vehiculo = repoUsuario.findVehiculoByTag(tag);
+//        ClienteTelepeaje cliTelepeaje = usr.getClienteTelepeaje();
+        evento.publicarNotificarPrePago("Se ha realizado el PrePago, Usuario: ");
+        
+    }
+    
+    private void notificarPostPago(Usuario usr, int tag, double importe, Tarjeta tarjeta) {
+       
+    }
+
+    
 
     @Override
     public boolean esClienteTelepeaje(int tag) {

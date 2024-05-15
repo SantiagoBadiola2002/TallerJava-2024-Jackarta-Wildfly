@@ -23,6 +23,10 @@ public class ClienteTelepeaje{
 		return this.ctaPrepaga;
 	}
 	
+	public PostPaga getCtaPostpaga() {
+		return this.ctaPostPaga;
+	}
+	
 	public Usuario getUsuario() {
 		return this.usuario;
 		

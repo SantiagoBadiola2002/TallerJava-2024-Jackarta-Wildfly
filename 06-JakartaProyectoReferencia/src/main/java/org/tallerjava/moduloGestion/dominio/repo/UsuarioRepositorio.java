@@ -23,4 +23,6 @@ public interface UsuarioRepositorio {
 	public void crearClienteSucive(Nacional usr);
 
 	public void vicularUsuarioVehiculo(Usuario usr, Vehiculo vehiculo);
+
+	public Vehiculo findVehiculoByUser(Usuario usr);
 }
