@@ -62,7 +62,7 @@ public class ServicioPeajeImpl implements ServicioPeaje {
     	//según las reglas del negocio, lo primero es cobrar con PrePago
     	if (cuentasExtranjero.get(0)>= tarifa.getValor()) {
             habilitado = servicioPagoFacade.realizarPrePago(tag, tarifa.getValor());
-            log.infof("Respuesta prePago realizado: %b ",habilitado);
+            log.infof("Respuesta prePago habilitado?: %b ",habilitado);
     	}else {
     		log.infof("Respuesta prePago no realizado por sin saldo o sin cuenta prepaga asociada. ");
     	}
@@ -70,7 +70,7 @@ public class ServicioPeajeImpl implements ServicioPeaje {
         if (!habilitado && cuentasExtranjero.get(1)>=0 ) {
             //fallo el cobro prepago, intento con la tarjeta (postPago)
             habilitado = servicioPagoFacade.realizarPostPago(tag, tarifa.getValor());
-            log.infof("Respuesta postPago realizado: %b ",habilitado);
+            log.infof("Respuesta postPago habilitado?: %b ",habilitado);
             
         }else {
         	log.infof("Respuesta postPago no realizado por postPaga asociada. ");
