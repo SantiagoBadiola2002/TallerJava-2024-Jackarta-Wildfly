@@ -1,12 +1,11 @@
-package org.tallerjava.moduloGestion.dominio;
+package org.tallerjava.moduloPeaje.dominio;
 
 import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-@Data
-@AllArgsConstructor
+
 public class PrePaga extends Cuenta {
 
 	private int saldo;
@@ -19,12 +18,21 @@ public class PrePaga extends Cuenta {
 
 
 
+	public int getSaldo() {
+		return saldo;
+	}
+
+
+
+	public void setSaldo(int saldo) {
+		this.saldo = saldo;
+	}
+
+
+
 	public void descontarSaldo(double importe) {
 		this.saldo -= importe;
 	}
 	
-
-	public int getSaldo() {
-		return this.saldo;
-	}
+	
 }

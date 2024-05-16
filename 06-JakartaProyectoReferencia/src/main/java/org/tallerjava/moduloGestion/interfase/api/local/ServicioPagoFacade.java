@@ -49,5 +49,9 @@ public class ServicioPagoFacade implements ServicioPago {
     public boolean vincularVehiculo(ClienteTelepeaje cliTelepeaje, Vehiculo vehiculo) {
     	return servicioPago.vincularVehiculo(cliTelepeaje, vehiculo);
     };
+    @Override
+    public List<Integer> obtenerCuentasPorTag(int tag){
+    	return servicioPago.obtenerCuentasPorTag(tag);
+    };
     
 }

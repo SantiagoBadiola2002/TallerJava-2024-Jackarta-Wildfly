@@ -1,12 +1,11 @@
-package org.tallerjava.moduloGestion.dominio;
+package org.tallerjava.moduloPeaje.dominio;
 
 import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-@Data
-@AllArgsConstructor
+
 public class PostPaga extends Cuenta{
 
 
@@ -22,19 +21,5 @@ public class PostPaga extends Cuenta{
 	public Tarjeta getTarjeta() {
 		return tarjeta;
 	}
-	
-	public int getIdTarjeta() {
-		return this.tarjeta.getIdTarjeta();
-		
-	}
-
-	 
-	
-	 
-	
-	
-	
-	
-	
-
 }
+	 

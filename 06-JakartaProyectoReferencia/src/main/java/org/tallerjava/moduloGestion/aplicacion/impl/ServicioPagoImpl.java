@@ -155,4 +155,31 @@ public class ServicioPagoImpl implements ServicioPago {
 		return cliTelepeaje.getUsuario();
 	}
     
+	
+	public List<Integer> obtenerCuentasPorTag(int tag){
+		Usuario usr = repoUsuario.findByTag(tag);
+		
+		List<Integer> cuentas = new ArrayList<>();
+		
+				
+		if (usr.getClienteTelepeaje() != null) {
+			if (usr.getClienteTelepeaje().getCtaPrepaga() != null) {
+					cuentas.add(usr.getClienteTelepeaje().getCtaPrepaga().getSaldo());
+			}else {
+				cuentas.add(-1);
+			};
+			
+			if (usr.getClienteTelepeaje().getCtaPostpaga() != null) {
+				
+				cuentas.add(usr.getClienteTelepeaje().getCtaPostpaga().getIdTarjeta());
+			}else {
+				cuentas.add(-1);
+			}
+			
+		}else {
+			cuentas.add(-1);
+			cuentas.add(-1);
+		}
+		return cuentas;
+	}
 }

@@ -52,20 +52,36 @@ public class ServicioPeajeImpl implements ServicioPeaje {
     	boolean habilitado = false;
         //todos los vehiculos extranjeros son preferenciales
         Preferencial tarifa = repo.obtenerTarifaPreferencial();
-        
         log.infof("Tarifa obtenida %f ",tarifa.getValor());
-        //según las reglas del negocio, lo primero es cobrar con PrePago
-        habilitado = servicioPagoFacade.realizarPrePago(tag, tarifa.getValor());
-        
-        log.infof("Respuesta prePago: %b ",habilitado);
-        if (!habilitado) {
-            //fallo el cobro prepago, intento con la tarjeta (postPago)
+    	
+    	//Obtengo cuentas por tag del MGestion (primera pre, segunda post)
+    	List<Integer> cuentasExtranjero = servicioPagoFacade.obtenerCuentasPorTag(tag);
+
+    	System.out.println("que tiene cuentas en 0" +cuentasExtranjero.get(0));
+    	
+    	//según las reglas del negocio, lo primero es cobrar con PrePago
+    	if (cuentasExtranjero.get(0)>= tarifa.getValor()) {
             habilitado = servicioPagoFacade.realizarPrePago(tag, tarifa.getValor());
-            log.infof("Respuesta postPago: %b ",habilitado);
-            if (!habilitado) {
-                //TODO mando evento al modulo de monitoreo
-                //el auto no pasa
-            }
+            log.infof("Respuesta prePago realizado: %b ",habilitado);
+    	}else {
+    		log.infof("Respuesta prePago no realizado por sin saldo o sin cuenta prepaga asociada. ");
+    	}
+
+        if (!habilitado && cuentasExtranjero.get(1)>=0 ) {
+            //fallo el cobro prepago, intento con la tarjeta (postPago)
+            habilitado = servicioPagoFacade.realizarPostPago(tag, tarifa.getValor());
+            log.infof("Respuesta postPago realizado: %b ",habilitado);
+            
+        }else {
+        	log.infof("Respuesta postPago no realizado por postPaga asociada. ");
+        	
+        }
+        
+        if (!habilitado) {
+            //TODO mando evento al modulo de monitoreo
+            //el auto no pasa
+        	evento.publicarPagoNoRealizado(
+        			"Pago no realizado a extranjero: " + tag + " ");
         }
         return habilitado;
     }

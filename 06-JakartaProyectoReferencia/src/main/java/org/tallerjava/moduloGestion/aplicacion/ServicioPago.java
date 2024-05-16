@@ -17,5 +17,5 @@ public interface ServicioPago {
     
     public boolean vincularVehiculo(ClienteTelepeaje cliTelepeaje, Vehiculo vehiculo);
     
-    
+    public List<Integer> obtenerCuentasPorTag(int tag);
 }
