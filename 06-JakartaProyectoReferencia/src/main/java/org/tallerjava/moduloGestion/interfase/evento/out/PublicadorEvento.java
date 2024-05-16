@@ -16,6 +16,9 @@ public class PublicadorEvento {
 	@Inject
 	private Event<NotificarPostPago> notificarPostPago;
 	
+	@Inject
+	private Event<NotificarSaldoInsuficiente> notificarSaldoInsuficiente;
+	
 	
 
     public void publicarClienteTelepeajeNoEncontradoPorTag(String mensaje){
@@ -33,6 +36,10 @@ public class PublicadorEvento {
 	
 	public void publicarNotificarPostPago(String mensaje) {
 		notificarPostPago.fire(new NotificarPostPago(mensaje));
+	}
+	
+	public void publicarNotificarSaldoInsuficiente(String mensaje) {
+		notificarSaldoInsuficiente.fire(new NotificarSaldoInsuficiente(mensaje));
 	}
 }
 

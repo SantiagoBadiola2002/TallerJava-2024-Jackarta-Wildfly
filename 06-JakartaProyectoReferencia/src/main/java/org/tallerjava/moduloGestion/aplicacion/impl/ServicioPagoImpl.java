@@ -37,12 +37,19 @@ public class ServicioPagoImpl implements ServicioPago {
         if (usr != null) {
             if (usr.getClienteTelepeaje() != null) {
                 PrePaga ctaPrepaga = usr.getClienteTelepeaje().getCtaPrepaga();
-                ctaPrepaga.descontarSaldo(importe);
-
                 
-                notificarPrePago(usr, tag, importe);
-                log.infof("*** Respuesta Pre Pago: tag %s, importe %s, estado Pago %s", tag, importe, realizado);
-                realizado = true;
+                if(ctaPrepaga.getSaldo() >= importe) {
+                	ctaPrepaga.descontarSaldo(importe);
+                    notificarPrePago(usr, tag, importe);  
+                    log.infof("*** Respuesta Pre Pago realizado: tag %s, importe %s, estado Pago %s", tag, importe, realizado);
+                    realizado = true;
+                } else {
+                	log.infof("*** Respuesta Pre Pago NO realizado: tag %s, importe %s, saldo %s", tag, importe, ctaPrepaga.getSaldo());
+                	notificarSaldoInsuficiente(usr, tag, importe, ctaPrepaga.getSaldo());
+                }
+                
+                
+                
             } else {
                 //estoy frente a otro problema de inconsistencia ya que para tener un tag
                 //tengo que ser cliente del telepeaje
@@ -76,11 +83,16 @@ public class ServicioPagoImpl implements ServicioPago {
              if (usr.getClienteTelepeaje() != null) {
             	 
             	 PostPaga ctaPostpaga = usr.getClienteTelepeaje().getCtaPostpaga();
-            	 List<Vehiculo> vehiculos = repoUsuario.findVehiculoByUser(usr);
-            	 notificarPostPago(usr, tag, 100, ctaPostpaga.getTarjeta());
-                 log.infof("*** Respuesta Post Pago: tag %s, importe %s, estado Pago %s", tag, importe, realizado);
-                 //notificarPago(Cliente, Vehículo, importe, Tarjeta) ¡¡¡ FALTA !!!
-                 realizado = true;
+            	 
+            	 if(ctaPostpaga != null) {
+            		 List<Vehiculo> vehiculos = repoUsuario.findVehiculoByUser(usr);
+                     log.infof("*** Respuesta Post Pago: tag %s, importe %s, estado Pago %s", tag, importe, realizado);
+                     notificarPostPago(usr, tag, importe, ctaPostpaga.getTarjeta().getIdTarjeta()); 
+                     realizado = true;
+            	 } else {
+            		 log.infof("*** Respuesta Post Pago sin cuenta PostPaga asociada: tag %s, importe %s, estado Pago %s", tag, importe, realizado);
+            	 }
+            	 
              } else {
                  evento.publicarClienteTelepeajeNoEncontradoPorTag(
                          "Cliente Telepeaje no encontrado por el tag %s: " + tag + " ");
@@ -98,15 +110,16 @@ public class ServicioPagoImpl implements ServicioPago {
     
 
     private void notificarPrePago(Usuario usr, int tag, double importe) {
-//        List<Vinculo> vinculos = new ArrayList<>();
-//        Vehiculo vehiculo = repoUsuario.findVehiculoByTag(tag);
-//        ClienteTelepeaje cliTelepeaje = usr.getClienteTelepeaje();
         evento.publicarNotificarPrePago("Se ha realizado el PrePago");
         
     }
     
-    private void notificarPostPago(Usuario usr, int tag, double importe, Tarjeta tarjeta) {
+    private void notificarPostPago(Usuario usr, int tag, double importe, int idTarjeta) {
        evento.publicarNotificarPostPago("Se ha realizado el PostPago");
+    }
+    
+    private void notificarSaldoInsuficiente(Usuario usr, int tag, double importe, double saldo) {
+    	evento.publicarNotificarSaldoInsuficiente("Saldo insuficiente en PrePago");
     }
 
     

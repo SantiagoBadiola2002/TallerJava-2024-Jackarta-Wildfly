@@ -1,4 +1,5 @@
-package org.tallerjava.moduloPeaje.dominio;
+package org.tallerjava.moduloMediosDePago.dominio;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -19,5 +20,7 @@ public class Tarjeta {
 		this.nombreCompletoUsuario = nombreCompletoUsuario;
 	}
     
-    
+    public int getIdTarjeta() {
+    	return (int) this.id;
+    }
 }

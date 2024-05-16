@@ -1,4 +1,7 @@
-package org.tallerjava.moduloPeaje.dominio;
+package org.tallerjava.moduloMediosDePago.dominio;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
