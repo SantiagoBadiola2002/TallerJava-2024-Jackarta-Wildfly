@@ -15,6 +15,12 @@ public abstract class Cuenta {
         this.nroCuenta = nroCuenta;
         this.fechaApertura = fechaApertura;
     }
+
+	public Cuenta(LocalDateTime fechaApertura) {
+		this.fechaApertura = fechaApertura;
+	}
+    
+    
     
 
 }

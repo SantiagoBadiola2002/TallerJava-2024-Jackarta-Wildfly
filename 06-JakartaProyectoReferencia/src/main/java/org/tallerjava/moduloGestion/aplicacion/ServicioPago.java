@@ -1,10 +1,9 @@
 package org.tallerjava.moduloGestion.aplicacion;
 
-import org.tallerjava.moduloGestion.dominio.ClienteTelepeaje;
-import org.tallerjava.moduloGestion.dominio.Cuenta;
-import org.tallerjava.moduloGestion.dominio.Usuario;
-import org.tallerjava.moduloGestion.dominio.Vehiculo;
+import org.tallerjava.moduloGestion.dominio.*;
 
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ServicioPago {
@@ -18,4 +17,12 @@ public interface ServicioPago {
     public boolean vincularVehiculo(ClienteTelepeaje cliTelepeaje, Vehiculo vehiculo);
     
     public List<Integer> obtenerCuentasPorTag(int tag);
+    
+	public void agregarTarjeta(long ci, int nroTarjeta, LocalDateTime fechaVtoTarjeta, String nombreCompletoUsuario);
+
+    public List<PasadasPorPeaje> consultarPasadas(long ci, LocalDateTime fechaInicial, LocalDateTime fechaFinal);
+    
+    public List<PasadasPorPeaje> consultarPasadas(long ci, int tag, String matricula, LocalDateTime fechaInicial, LocalDateTime fechaFinal);
+
+
 }

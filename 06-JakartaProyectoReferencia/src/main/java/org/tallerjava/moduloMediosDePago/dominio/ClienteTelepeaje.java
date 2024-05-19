@@ -11,10 +11,12 @@ public class ClienteTelepeaje{
 	
     private long idTelepeaje; 
     private PostPaga ctaPostPaga;
+    private PrePaga ctaPrePaga;
     
-	public ClienteTelepeaje(long idTelepeaje, PostPaga ctaPostPaga) {
+	public ClienteTelepeaje(long idTelepeaje, PostPaga ctaPostPaga, PrePaga ctaPrePaga) {
 		this.idTelepeaje = idTelepeaje;
 		this.ctaPostPaga = ctaPostPaga;
+		this.ctaPrePaga = ctaPrePaga;
 	}
 	
 	public long getIdTelepeaje() {
@@ -32,6 +34,13 @@ public class ClienteTelepeaje{
 	public void setCtaPostPaga(PostPaga ctaPostPaga) {
 		this.ctaPostPaga = ctaPostPaga;
 	}
+
+	public PrePaga getCtaPrePaga() {
+		return ctaPrePaga;
+	}
+
+	public void setCtaPrePaga(PrePaga ctaPrePaga) {
+		this.ctaPrePaga = ctaPrePaga;
+	}
 	
-    
 }

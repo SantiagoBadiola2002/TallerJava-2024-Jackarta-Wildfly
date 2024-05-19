@@ -3,6 +3,7 @@ package org.tallerjava.moduloGestion.dominio.repo;
 import org.tallerjava.moduloGestion.dominio.ClienteTelepeaje;
 import org.tallerjava.moduloGestion.dominio.Cuenta;
 import org.tallerjava.moduloGestion.dominio.Nacional;
+import org.tallerjava.moduloGestion.dominio.PostPaga;
 import org.tallerjava.moduloGestion.dominio.Usuario;
 import org.tallerjava.moduloGestion.dominio.Vehiculo;
 
@@ -25,4 +26,10 @@ public interface UsuarioRepositorio {
 	public void vicularUsuarioVehiculo(Usuario usr, Vehiculo vehiculo);
 
 	public List<Vehiculo> findVehiculoByUser(Usuario usr);
+	
+	public void agregarTarjetaPostPaga(ClienteTelepeaje clienteTelepeaje, PostPaga postPaga);
+
+	public ClienteTelepeaje findClienteTelepeajeByCi(long ci);
+	
+	public Usuario findUsuarioByCi(long ci);
 }

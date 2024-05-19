@@ -1,4 +1,4 @@
-package org.tallerjava.moduloGestion.dominio;
+package org.tallerjava.moduloMediosDePago.dominio;
 
 import java.time.LocalDateTime;
 
@@ -12,8 +12,8 @@ public class PrePaga extends Cuenta {
 	private int saldo;
 
 
-	public PrePaga(LocalDateTime fecha, int i) {
-		 super(fecha);
+	public PrePaga(long id, long nroCuenta, LocalDateTime fecha, int i) {
+		 super(id, nroCuenta, fecha);
 		this.saldo = i;
 	}
 

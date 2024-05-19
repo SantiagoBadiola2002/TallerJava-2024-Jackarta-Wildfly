@@ -14,6 +14,10 @@ public abstract class Usuario {
     protected ClienteTelepeaje clienteTelepeaje;
 
     public abstract boolean soyNacional();
+    
+    public long getId() {
+    	return this.id;
+    }
 
 	public ClienteTelepeaje getClienteTelepeaje() {
 		return this.clienteTelepeaje;

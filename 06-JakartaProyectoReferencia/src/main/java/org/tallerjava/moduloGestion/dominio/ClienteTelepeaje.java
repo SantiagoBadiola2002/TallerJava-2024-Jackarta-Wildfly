@@ -31,4 +31,22 @@ public class ClienteTelepeaje{
 		return this.usuario;
 		
 	}
+
+	public PostPaga getCtaPostPaga() {
+		return ctaPostPaga;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+
+	public void setCtaPrepaga(PrePaga ctaPrepaga) {
+		this.ctaPrepaga = ctaPrepaga;
+	}
+
+	public void setCtaPostPaga(PostPaga ctaPostPaga) {
+		this.ctaPostPaga = ctaPostPaga;
+	}
+	
+	
 }

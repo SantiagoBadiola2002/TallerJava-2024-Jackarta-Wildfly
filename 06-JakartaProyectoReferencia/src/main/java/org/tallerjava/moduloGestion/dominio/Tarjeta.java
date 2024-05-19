@@ -19,6 +19,12 @@ public class Tarjeta {
 		this.fechaVto = fechaVto;
 		this.nombreCompletoUsuario = nombreCompletoUsuario;
 	}
+	
+	public Tarjeta(int nro, LocalDateTime fechaVto, String nombreCompletoUsuario) {
+		this.nro = nro;
+		this.fechaVto = fechaVto;
+		this.nombreCompletoUsuario = nombreCompletoUsuario;
+	}
     
     public int getIdTarjeta() {
     	return (int) this.id;

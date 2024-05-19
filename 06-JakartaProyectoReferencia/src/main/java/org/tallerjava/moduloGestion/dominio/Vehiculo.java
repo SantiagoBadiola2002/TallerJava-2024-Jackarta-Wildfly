@@ -1,5 +1,7 @@
 package org.tallerjava.moduloGestion.dominio;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -18,12 +20,14 @@ public class Vehiculo {
 	private long id;
     private Identificador identificador;
     private ClienteTelepeaje cliente;
+    private List<PasadasPorPeaje> pasadas;
     
-	public Vehiculo(long id, Identificador identificador, ClienteTelepeaje cliente) {
-		super();
-		this.id = id;
+   
+
+	public Vehiculo(Identificador identificador, ClienteTelepeaje cliente, List<PasadasPorPeaje> pasadas) {
 		this.identificador = identificador;
 		this.cliente = cliente;
+		this.pasadas = pasadas;
 	}
 
 	public long getId() {
@@ -48,6 +52,14 @@ public class Vehiculo {
 
 	public void setCliente(ClienteTelepeaje cliente) {
 		this.cliente = cliente;
+	}
+
+	public List<PasadasPorPeaje> getPasadas() {
+		return pasadas;
+	}
+
+	public void setPasadas(List<PasadasPorPeaje> pasadas) {
+		this.pasadas = pasadas;
 	}
 	
 	

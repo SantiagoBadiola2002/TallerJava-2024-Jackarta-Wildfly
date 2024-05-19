@@ -5,9 +5,12 @@ import jakarta.inject.Inject;
 import org.tallerjava.moduloGestion.aplicacion.ServicioPago;
 import org.tallerjava.moduloGestion.dominio.ClienteTelepeaje;
 import org.tallerjava.moduloGestion.dominio.Cuenta;
+import org.tallerjava.moduloGestion.dominio.PasadasPorPeaje;
+import org.tallerjava.moduloGestion.dominio.Tarjeta;
 import org.tallerjava.moduloGestion.dominio.Usuario;
 import org.tallerjava.moduloGestion.dominio.Vehiculo;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -20,6 +23,7 @@ import java.util.List;
  */
 @ApplicationScoped
 public class ServicioPagoFacade implements ServicioPago {
+	
     @Inject
     private ServicioPago servicioPago;
 
@@ -52,6 +56,23 @@ public class ServicioPagoFacade implements ServicioPago {
     @Override
     public List<Integer> obtenerCuentasPorTag(int tag){
     	return servicioPago.obtenerCuentasPorTag(tag);
-    };
+    }
+
+	@Override
+	public void agregarTarjeta(long ci, int nroTarjeta, LocalDateTime fechaVtoTarjeta, String nombreCompletoUsuario) {
+		servicioPago.agregarTarjeta(ci, nroTarjeta, fechaVtoTarjeta, nombreCompletoUsuario);
+	}
+
+	@Override
+	public List<PasadasPorPeaje> consultarPasadas(long ci, LocalDateTime fechaInicial, LocalDateTime fechaFinal) {
+		return servicioPago.consultarPasadas(ci, fechaInicial, fechaFinal);
+	}
+
+	@Override
+	public List<PasadasPorPeaje> consultarPasadas(long ci, int tag, String matricula, LocalDateTime fechaInicial,
+			LocalDateTime fechaFinal) {
+		return servicioPago.consultarPasadas(ci, tag, matricula, fechaInicial, fechaFinal);
+	}
+
     
 }
