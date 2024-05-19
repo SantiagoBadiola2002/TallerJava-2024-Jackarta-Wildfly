@@ -98,20 +98,7 @@ public class UsuarioRepositorioImpl implements UsuarioRepositorio {
     	//ACTUALIZAE USR EN BD
     	usr.setClienteSucive(cliSucive);
     }
-    
-    public void vicularUsuarioVehiculo(Usuario usr, Vehiculo vehiculo) {
-    	LocalDateTime ahora = LocalDateTime.now();
-    	Vinculo v = new Vinculo(ahora, true, vehiculo);
-    	
-    	List<Vinculo> listaVinculos = usr.getVehiculosVinculados();
-    	if ( listaVinculos == null) {
-    		listaVinculos = new ArrayList<>();	
-    	}
-    	
-    	listaVinculos.add(v);
-    	
-    }
-    
+
     public List<Vehiculo> findVehiculoByUser(Usuario usr) {
     	List<Vehiculo> vehiculos = new ArrayList<>();
     	for(Vinculo vinculos: usr.getVehiculosVinculados()) {
@@ -136,6 +123,12 @@ public class UsuarioRepositorioImpl implements UsuarioRepositorio {
 
 	@Override
 	public Usuario findUsuarioByCi(long ci) {
+		return null;
+	}
+
+	@Override
+	public List<Vinculo> findVinculosByUser(Usuario usr) {
+		
 		return null;
 	}
 }

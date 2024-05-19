@@ -35,8 +35,8 @@ public class servicioMediosDePagoImpl implements servicioMediosDePago {
 	}
 
 	@Override
-	public void notificarPago(Cliente cliente, Vehiculo vehiculo, double importe, Tarjeta tarjeta) {
-		System.out.println("Espero que te haya quedado saldo");
+	public int notificarPago(Cliente cliente, Vehiculo vehiculo, double importe, Tarjeta tarjeta) {
+		return 0;
 
 	}
 

@@ -50,9 +50,15 @@ public class ServicioPagoFacade implements ServicioPago {
     };
     
     @Override
-    public boolean vincularVehiculo(ClienteTelepeaje cliTelepeaje, Vehiculo vehiculo) {
-    	return servicioPago.vincularVehiculo(cliTelepeaje, vehiculo);
+    public boolean vincularVehiculo(long ci, int tag, String matricula) {
+    	return servicioPago.vincularVehiculo(ci,tag,matricula);
     };
+    
+	@Override
+	public boolean desvincularVehiculo(long ci, int tag, String matricula) {
+		return servicioPago.desvincularVehiculo(ci, tag, matricula);
+	}
+	
     @Override
     public List<Integer> obtenerCuentasPorTag(int tag){
     	return servicioPago.obtenerCuentasPorTag(tag);
@@ -74,5 +80,14 @@ public class ServicioPagoFacade implements ServicioPago {
 		return servicioPago.consultarPasadas(ci, tag, matricula, fechaInicial, fechaFinal);
 	}
 
-    
+	@Override
+	public void cargarSaldo(long ci, double importe) {
+		servicioPago.cargarSaldo(ci, importe);	
+	}
+
+	@Override
+	public double consultarSaldo(long ci) {
+		return servicioPago.consultarSaldo(ci);
+	}
+  
 }

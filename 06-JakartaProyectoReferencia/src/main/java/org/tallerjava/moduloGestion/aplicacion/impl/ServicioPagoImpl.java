@@ -6,6 +6,7 @@ import jakarta.inject.Inject;
 import org.jboss.logging.Logger;
 import org.tallerjava.moduloGestion.aplicacion.ServicioPago;
 import org.tallerjava.moduloGestion.dominio.ClienteTelepeaje;
+import org.tallerjava.moduloGestion.dominio.Identificador;
 import org.tallerjava.moduloGestion.dominio.Nacional;
 import org.tallerjava.moduloGestion.dominio.PasadasPorPeaje;
 import org.tallerjava.moduloGestion.dominio.PostPaga;
@@ -13,6 +14,7 @@ import org.tallerjava.moduloGestion.dominio.PrePaga;
 import org.tallerjava.moduloGestion.dominio.Tarjeta;
 import org.tallerjava.moduloGestion.dominio.Usuario;
 import org.tallerjava.moduloGestion.dominio.Vehiculo;
+import org.tallerjava.moduloGestion.dominio.Vinculo;
 import org.tallerjava.moduloGestion.dominio.repo.UsuarioRepositorio;
 import org.tallerjava.moduloGestion.interfase.evento.out.PublicadorEvento;
 
@@ -141,23 +143,46 @@ public class ServicioPagoImpl implements ServicioPago {
 		}
 	}
 
-	public boolean vincularVehiculo(ClienteTelepeaje cliTelepeaje, Vehiculo vehiculo) {
+	
+	public boolean vincularVehiculo(long ci, int tag, String matricula) {
 		boolean vinculado = false;
 
-		Usuario usr = findUserByCliente(cliTelepeaje);
-
-		if (usr == null) {// no encontro usuario
-			System.out.println("No se encontró usuario");
-
+		Usuario usr = repoUsuario.findUsuarioByCi(ci);
+		Identificador i = new Identificador(matricula, tag);
+		Vehiculo v = new Vehiculo(i,usr.getClienteTelepeaje(), null);
+		Vinculo vinculo = new Vinculo(LocalDateTime.now(), true, v);
+		
+		if((usr.getVehiculosVinculados()) == null) {
+			List<Vinculo> vinculos = new ArrayList<>();	
+			vinculos.add(vinculo);
+			vinculado = true;
 		} else {
-			repoUsuario.vicularUsuarioVehiculo(usr, vehiculo);
-			System.out.println("Usuario y Vehiculo vinculado");
+			usr.getVehiculosVinculados().add(vinculo);
 			vinculado = true;
 		}
+
+		//ACTUALIZAR BD
+
 
 		return vinculado;
 
 	}
+	
+	 public boolean desvincularVehiculo(long ci, int tag, String matricula) {
+		 boolean desvincular = false;
+		 Usuario usr = repoUsuario.findUsuarioByCi(ci);
+		List<Vinculo> vinculos = repoUsuario.findVinculosByUser(usr);
+		 for(Vinculo v : vinculos) {
+			 if(((tag != 0) && (v.getVehiculo().getIdentificador().getTag() == tag)) || (
+			 (matricula != null) && (v.getVehiculo().getIdentificador().getMatricula().equals(matricula)))) {
+				 v.setActivo(false);
+				 v.getVehiculo().setCliente(null);
+				 return desvincular = true;
+			 }
+		 }
+		 
+		 return desvincular;
+	 }
 
 	private Usuario findUserByCliente(ClienteTelepeaje cliTelepeaje) {
 
@@ -239,6 +264,18 @@ public class ServicioPagoImpl implements ServicioPago {
 		}
 
 		return pasadas;
+	}
+
+	@Override
+	public void cargarSaldo(long ci, double importe) {
+		ClienteTelepeaje clienteTelepeaje = obtenerClienteTelepeajeByCi(ci);
+		clienteTelepeaje.getCtaPrepaga().incrementarSaldo(importe);
+	}
+
+	@Override
+	public double consultarSaldo(long ci) {
+		ClienteTelepeaje clienteTelepeaje = obtenerClienteTelepeajeByCi(ci);
+		return clienteTelepeaje.getCtaPrepaga().getSaldo();
 	}
 
 }

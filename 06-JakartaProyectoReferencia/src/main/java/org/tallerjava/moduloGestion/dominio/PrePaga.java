@@ -23,8 +23,14 @@ public class PrePaga extends Cuenta {
 		this.saldo -= importe;
 	}
 	
+	public void incrementarSaldo(double importe) {
+		this.saldo += importe;
+	}
+	
 
 	public int getSaldo() {
 		return this.saldo;
 	}
+	
+	
 }

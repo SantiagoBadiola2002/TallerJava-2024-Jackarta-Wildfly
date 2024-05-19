@@ -12,11 +12,17 @@ public class Identificador {
     private int tag;
     
 	public Identificador(long id, String matricula, int tag) {
-		super();
 		this.id = id;
 		this.matricula = matricula;
 		this.tag = tag;
 	}
+	
+	public Identificador(String matricula, int tag) {
+		this.matricula = matricula;
+		this.tag = tag;
+	}
+
+
 
 	public long getId() {
 		return id;

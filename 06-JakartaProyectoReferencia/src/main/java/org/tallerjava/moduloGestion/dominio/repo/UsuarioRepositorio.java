@@ -6,6 +6,7 @@ import org.tallerjava.moduloGestion.dominio.Nacional;
 import org.tallerjava.moduloGestion.dominio.PostPaga;
 import org.tallerjava.moduloGestion.dominio.Usuario;
 import org.tallerjava.moduloGestion.dominio.Vehiculo;
+import org.tallerjava.moduloGestion.dominio.Vinculo;
 
 import java.util.List;
 
@@ -23,8 +24,6 @@ public interface UsuarioRepositorio {
 
 	public void crearClienteSucive(Nacional usr);
 
-	public void vicularUsuarioVehiculo(Usuario usr, Vehiculo vehiculo);
-
 	public List<Vehiculo> findVehiculoByUser(Usuario usr);
 	
 	public void agregarTarjetaPostPaga(ClienteTelepeaje clienteTelepeaje, PostPaga postPaga);
@@ -32,4 +31,6 @@ public interface UsuarioRepositorio {
 	public ClienteTelepeaje findClienteTelepeajeByCi(long ci);
 	
 	public Usuario findUsuarioByCi(long ci);
+
+	public List<Vinculo> findVinculosByUser(Usuario usr);
 }
