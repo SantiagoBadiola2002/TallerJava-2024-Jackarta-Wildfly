@@ -27,42 +27,44 @@ public class ServicioPagoImpl implements ServicioPago {
 
 	@Override
 	public boolean realizarPrePago(int tag, double importe) {
-		boolean realizado = false;
-		Usuario usr = repoUsuario.findByTag(tag);
-		if (usr != null) {
-			if (usr.getClienteTelepeaje() != null) {
-				PrePaga ctaPrepaga = usr.getClienteTelepeaje().getCtaPrepaga();
-
-				if (ctaPrepaga.getSaldo() >= importe) {
-					ctaPrepaga.descontarSaldo(importe);
-					notificarPrePago(usr, tag, importe);
-					log.infof("*** Respuesta Pre Pago realizado: tag %s, importe %s, estado Pago %s", tag, importe,
-							realizado);
-					realizado = true;
-				} else {
-					log.infof("*** Respuesta Pre Pago NO realizado: tag %s, importe %s, saldo %s", tag, importe,
-							ctaPrepaga.getSaldo());
-					notificarSaldoInsuficiente(usr, tag, importe, ctaPrepaga.getSaldo());
-				}
-
-			} else {
-				// estoy frente a otro problema de inconsistencia ya que para tener un tag
-				// tengo que ser cliente del telepeaje
-				// TODO logear y mandar evento al modulo de monitoreo
-				evento.publicarClienteTelepeajeNoEncontradoPorTag(
-						"Cliente Telepeaje no encontrado por el tag %s: " + tag + " ");
-
-			}
-			realizado = true;
-		} else {
-			// estamos frente a un problema grave ya que dado un tag (vehiculo),
-			// no podemos saber a que Cliente pertenece, recordar que los tags se
-			// entregan cuando el Cliente se registra en el sistema
-			// TODO logear y mandar evento al modulo de monitorio
-			evento.publicarUsuarioNoEncontradoPorTag("Usuario no encontrado por el tag %s: " + tag + " ");
-
-		}
-		return realizado;
+		log.infof("*** Respuesta Pre Pago realizado: tag %s, importe %s, estado Pago %s", tag, importe);
+		return true;
+//		boolean realizado = false;
+//		Usuario usr = repoUsuario.findByTag(tag);
+//		if (usr != null) {
+//			if (usr.getClienteTelepeaje() != null) {
+//				PrePaga ctaPrepaga = usr.getClienteTelepeaje().getCtaPrepaga();
+//
+//				if (ctaPrepaga.getSaldo() >= importe) {
+//					ctaPrepaga.descontarSaldo(importe);
+//					notificarPrePago(usr, tag, importe);
+//					log.infof("*** Respuesta Pre Pago realizado: tag %s, importe %s, estado Pago %s", tag, importe,
+//							realizado);
+//					realizado = true;
+//				} else {
+//					log.infof("*** Respuesta Pre Pago NO realizado: tag %s, importe %s, saldo %s", tag, importe,
+//							ctaPrepaga.getSaldo());
+//					notificarSaldoInsuficiente(usr, tag, importe, ctaPrepaga.getSaldo());
+//				}
+//
+//			} else {
+//				// estoy frente a otro problema de inconsistencia ya que para tener un tag
+//				// tengo que ser cliente del telepeaje
+//				// TODO logear y mandar evento al modulo de monitoreo
+//				evento.publicarClienteTelepeajeNoEncontradoPorTag(
+//						"Cliente Telepeaje no encontrado por el tag %s: " + tag + " ");
+//
+//			}
+//			realizado = true;
+//		} else {
+//			// estamos frente a un problema grave ya que dado un tag (vehiculo),
+//			// no podemos saber a que Cliente pertenece, recordar que los tags se
+//			// entregan cuando el Cliente se registra en el sistema
+//			// TODO logear y mandar evento al modulo de monitorio
+//			evento.publicarUsuarioNoEncontradoPorTag("Usuario no encontrado por el tag %s: " + tag + " ");
+//
+//		}
+//		return realizado;
 	}
 
 	@Override

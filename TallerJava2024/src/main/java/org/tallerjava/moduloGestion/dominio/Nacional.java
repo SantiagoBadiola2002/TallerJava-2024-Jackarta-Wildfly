@@ -6,27 +6,31 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class Nacional extends Usuario{
-	
-    private ClienteSucive clienteSucive;
+public class Nacional extends Usuario {
 
-    public Nacional (long id, String nombre, String email,
-                     List<Vinculo> vehiculosVinculados,
-                     ClienteTelepeaje cliTelepeaje) {
-        this.id = id;
-        this.nombre = nombre;
-        this.email = email;
-        this.vehiculosVinculados = vehiculosVinculados;
-        this.clienteTelepeaje = cliTelepeaje;
-    }
+	private ClienteSucive clienteSucive;
 
-    @Override
-    public boolean soyNacional() {
-        return true;
-    }
-    
-    public void setClienteSucive(ClienteSucive cliSucive) {
-    	this.clienteSucive = cliSucive;
-    	
-    }
+	public Nacional(long id, String nombre, String email, List<Vinculo> vehiculosVinculados,
+			ClienteTelepeaje cliTelepeaje) {
+		this.id = id;
+		this.nombre = nombre;
+		this.email = email;
+		this.vehiculosVinculados = vehiculosVinculados;
+		this.clienteTelepeaje = cliTelepeaje;
+	}
+
+	public Nacional(String nombre, String email) {
+		this.nombre = nombre;
+		this.email = email;
+	}
+
+	@Override
+	public boolean soyNacional() {
+		return true;
+	}
+
+	public void setClienteSucive(ClienteSucive cliSucive) {
+		this.clienteSucive = cliSucive;
+
+	}
 }

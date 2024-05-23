@@ -113,7 +113,7 @@
 						<users>
 							<user>
 								<username>root</username>
-								<password>rootpass1234</password>
+								<password>123</password>
 								<application-user>false</application-user>
 							</user>
 						</users>
