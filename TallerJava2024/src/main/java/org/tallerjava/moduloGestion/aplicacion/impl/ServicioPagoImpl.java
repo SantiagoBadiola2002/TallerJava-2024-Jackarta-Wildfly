@@ -262,9 +262,10 @@ public class ServicioPagoImpl implements ServicioPago {
 	}
 
 	@Override
-	public void cargarSaldo(long ci, double importe) {
+	public double cargarSaldo(long ci, double importe) {
 		ClienteTelepeaje clienteTelepeaje = obtenerClienteTelepeajeByCi(ci);
 		clienteTelepeaje.getCtaPrepaga().incrementarSaldo(importe);
+		return clienteTelepeaje.getCtaPrepaga().getSaldo();
 	}
 
 	@Override

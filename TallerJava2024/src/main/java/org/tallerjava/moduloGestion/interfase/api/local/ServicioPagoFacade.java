@@ -78,8 +78,8 @@ public class ServicioPagoFacade implements ServicioPago {
 	}
 
 	@Override
-	public void cargarSaldo(long ci, double importe) {
-		servicioPago.cargarSaldo(ci, importe);	
+	public double cargarSaldo(long ci, double importe) {
+		return servicioPago.cargarSaldo(ci, importe);	
 	}
 
 	@Override

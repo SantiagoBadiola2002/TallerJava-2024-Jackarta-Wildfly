@@ -28,7 +28,7 @@ public interface ServicioPago {
     
     public List<PasadasPorPeaje> consultarPasadas(long ci, int tag, String matricula, LocalDateTime fechaInicial, LocalDateTime fechaFinal);
 
-    public void cargarSaldo(long ci, double importe);
+    public double cargarSaldo(long ci, double importe);
     
     public double consultarSaldo(long ci);
 }
