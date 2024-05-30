@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @ApplicationScoped
-@Alternative
 public class ServicioPagoImpl implements ServicioPago {
 	private static final Logger log = Logger.getLogger(ServicioPagoImpl.class);
 
@@ -27,7 +26,7 @@ public class ServicioPagoImpl implements ServicioPago {
 
 	@Override
 	public boolean realizarPrePago(int tag, double importe) {
-		log.infof("*** Respuesta Pre Pago realizado: tag %s, importe %s, estado Pago %s", tag, importe);
+		log.infof("*** Respuesta Pre Pago realizado: tag , importe , estado Pago ", tag, importe);
 		return true;
 //		boolean realizado = false;
 //		Usuario usr = repoUsuario.findByTag(tag);

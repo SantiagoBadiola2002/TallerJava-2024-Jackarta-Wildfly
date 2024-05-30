@@ -34,9 +34,7 @@ public class ClienteAPI {
 	@Inject
 	private ServicioPago servicioPago;
 
-	// curl -X POST -v
-	// http://localhost:8080/TallerJava2024/api/moduloGestion/realizarPrePago -H
-	// "Content-Type: application/json" -d '{"tag":123, "importe": 456.78}'
+	// curl -X POST -v  http://localhost:8080/TallerJava2024/api/moduloGestion/realizarPrePago -H "Content-Type: application/json" -d '{"tag":123, "importe": 456.78}'
 	@POST
 	@Path("/realizarPrePago")
 	@Consumes(MediaType.APPLICATION_JSON)

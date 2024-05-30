@@ -18,71 +18,58 @@ import java.util.List;
  * desde el modulo cliente directamente a la capa de aplicación.
  */
 @ApplicationScoped
-@Default
-public class ServicioPagoFacade implements ServicioPago {
+public class ServicioPagoFacade {
 	
     @Inject
     private ServicioPago servicioPago;
 
-    @Override
     public boolean realizarPrePago(int tag, double importe) {
 
         return servicioPago.realizarPrePago(tag, importe);
     }
 
-    @Override
     public boolean realizarPostPago(int tag, double importe) {
 
         return servicioPago.realizarPostPago(tag, importe);
     }
 
-    @Override
     public boolean esClienteTelepeaje(int tag) {
         return servicioPago.esClienteTelepeaje(tag);
     }
     
-    @Override
     public void altaClienteTelepeaje(Usuario usr) {
     	servicioPago.altaClienteTelepeaje(usr);
     };
     
-    @Override
     public boolean vincularVehiculo(long ci, int tag, String matricula) {
     	return servicioPago.vincularVehiculo(ci,tag,matricula);
     };
     
-	@Override
 	public boolean desvincularVehiculo(long ci, int tag, String matricula) {
 		return servicioPago.desvincularVehiculo(ci, tag, matricula);
 	}
 	
-    @Override
     public List<Integer> obtenerCuentasPorTag(int tag){
     	return servicioPago.obtenerCuentasPorTag(tag);
     }
 
-	@Override
 	public void agregarTarjeta(long ci, int nroTarjeta, LocalDateTime fechaVtoTarjeta, String nombreCompletoUsuario) {
 		servicioPago.agregarTarjeta(ci, nroTarjeta, fechaVtoTarjeta, nombreCompletoUsuario);
 	}
 
-	@Override
 	public List<PasadasPorPeaje> consultarPasadas(long ci, LocalDateTime fechaInicial, LocalDateTime fechaFinal) {
 		return servicioPago.consultarPasadas(ci, fechaInicial, fechaFinal);
 	}
 
-	@Override
 	public List<PasadasPorPeaje> consultarPasadas(long ci, int tag, String matricula, LocalDateTime fechaInicial,
 			LocalDateTime fechaFinal) {
 		return servicioPago.consultarPasadas(ci, tag, matricula, fechaInicial, fechaFinal);
 	}
 
-	@Override
 	public double cargarSaldo(long ci, double importe) {
 		return servicioPago.cargarSaldo(ci, importe);	
 	}
 
-	@Override
 	public double consultarSaldo(long ci) {
 		return servicioPago.consultarSaldo(ci);
 	}
