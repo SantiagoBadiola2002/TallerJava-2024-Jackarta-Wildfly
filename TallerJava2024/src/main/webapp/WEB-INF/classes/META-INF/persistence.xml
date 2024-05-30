@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <persistence>
 	<persistence-unit name="tallerjava">
-		 <jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source>
+		 <jta-data-source>java:jboss/MariaDB</jta-data-source>
 		<!--  Eventualmente puedo utilizar cualquier otra base de datos que no sea la por defecto
 		que viene instalada en WildFly (https://www.h2database.com/html/main.html)
 		Los pasos para utilizar una base de datos son:
@@ -19,7 +19,6 @@
                 <property name="eclipselink.logging.level.sql" value="FINE" />
                 <property name="eclipselink.logging.parameters" value="true" />
                 <property name="hibernate.show_sql" value="true" />
-                <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
             </properties>
         </persistence-unit>
     </persistence>

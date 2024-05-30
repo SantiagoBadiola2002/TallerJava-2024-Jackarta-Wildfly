@@ -20,8 +20,8 @@ public class PeajeRepositorioImpl implements PeajeRepositorio {
 	    @PostConstruct
 	    public void init() {
 	        
-	        vehiculos.add(new Vehiculo(1, new Identificador(1, "baa 4444", 10001), "Ford", "Fiesta", Nacionalidad.NACIONAL));
-	        vehiculos.add(new Vehiculo(2, new Identificador(2, "caa 555", 10000), "Ford", "Fiesta2", Nacionalidad.NACIONAL));
+	        vehiculos.add(new Vehiculo(1, new Identificador("baa 4444", 10001), "Ford", "Fiesta", Nacionalidad.NACIONAL));
+	        vehiculos.add(new Vehiculo(2, new Identificador("caa 555", 10000), "Ford", "Fiesta2", Nacionalidad.NACIONAL));
 	        
 	        
 	        tarifaComun = new Comun(150);

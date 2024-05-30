@@ -12,8 +12,6 @@ import lombok.Data;
 @Data
 public class Identificador {
 	
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
 	
 	@Column(nullable = false)
     private String matricula;
@@ -21,26 +19,11 @@ public class Identificador {
 	@Column(nullable = false)
     private int tag;
     
-	public Identificador(long id, String matricula, int tag) {
-		this.id = id;
-		this.matricula = matricula;
-		this.tag = tag;
-	}
-	
 	public Identificador(String matricula, int tag) {
 		this.matricula = matricula;
 		this.tag = tag;
 	}
 
-
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
 
 	public String getMatricula() {
 		return matricula;
