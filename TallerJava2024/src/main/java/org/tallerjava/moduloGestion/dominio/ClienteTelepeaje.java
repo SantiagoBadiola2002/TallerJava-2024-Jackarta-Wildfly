@@ -5,30 +5,49 @@ import lombok.Data;
 
 import java.util.List;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+
 @Data
-public class ClienteTelepeaje{
+@Entity
+@Table(name = "gestion_clienteTelepeaje")
+public class ClienteTelepeaje {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int idClienteTelepeaje;
 	
+	@OneToOne
 	private Usuario usuario;
+
+	@OneToOne
 	private PrePaga ctaPrepaga;
-    private PostPaga ctaPostPaga;
-	
-    public ClienteTelepeaje(Usuario usr, PrePaga prePaga, PostPaga postPaga) {
-    	this.usuario = usr; 
+
+	@OneToOne
+	private PostPaga ctaPostPaga;
+
+	public ClienteTelepeaje(Usuario usr, PrePaga prePaga, PostPaga postPaga) {
+		this.usuario = usr;
 		this.ctaPrepaga = prePaga;
 		this.ctaPostPaga = postPaga;
 	}
-    
+
 	public PrePaga getCtaPrepaga() {
 		return this.ctaPrepaga;
 	}
-	
+
 	public PostPaga getCtaPostpaga() {
 		return this.ctaPostPaga;
 	}
-	
+
 	public Usuario getUsuario() {
 		return this.usuario;
-		
+
 	}
 
 	public PostPaga getCtaPostPaga() {
@@ -46,6 +65,5 @@ public class ClienteTelepeaje{
 	public void setCtaPostPaga(PostPaga ctaPostPaga) {
 		this.ctaPostPaga = ctaPostPaga;
 	}
-	
-	
+
 }

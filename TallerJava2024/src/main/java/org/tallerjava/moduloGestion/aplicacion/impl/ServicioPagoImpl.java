@@ -144,7 +144,7 @@ public class ServicioPagoImpl implements ServicioPago {
 		Usuario usr = repoUsuario.findUsuarioByCi(ci);
 		Identificador i = new Identificador(matricula, tag);
 		Vehiculo v = new Vehiculo(i,usr.getClienteTelepeaje(), null);
-		Vinculo vinculo = new Vinculo(LocalDateTime.now(), true, v);
+		Vinculo vinculo = new Vinculo(usr, LocalDateTime.now(), true, v);
 		
 		if((usr.getVehiculosVinculados()) == null) {
 			List<Vinculo> vinculos = new ArrayList<>();	

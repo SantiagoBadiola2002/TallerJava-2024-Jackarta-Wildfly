@@ -5,9 +5,19 @@ import lombok.Data;
 
 import java.util.List;
 
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+
 @Data
+@Entity
+@Table(name = "gestion_nacional")
+@DiscriminatorValue("Nacional")
 public class Nacional extends Usuario {
 
+	
+	@OneToOne
 	private ClienteSucive clienteSucive;
 
 	public Nacional(long id, String nombre, String email, List<Vinculo> vehiculosVinculados,
@@ -33,4 +43,10 @@ public class Nacional extends Usuario {
 		this.clienteSucive = cliSucive;
 
 	}
+
+	public ClienteSucive getClienteSucive() {
+		return clienteSucive;
+	}
+	
+	
 }

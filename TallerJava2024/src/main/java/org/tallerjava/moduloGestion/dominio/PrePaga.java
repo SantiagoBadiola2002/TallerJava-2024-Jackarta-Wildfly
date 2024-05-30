@@ -2,10 +2,14 @@ package org.tallerjava.moduloGestion.dominio;
 
 import java.time.LocalDateTime;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@Entity
+@Table(name = "gestion_cuentaPrePaga")
 public class PrePaga extends Cuenta {
 
 	private int saldo;

@@ -1,13 +1,24 @@
 package org.tallerjava.moduloGestion.dominio;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+@Embeddable
 @Data
 public class Identificador {
 	
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
+	
+	@Column(nullable = false)
     private String matricula;
+	
+	@Column(nullable = false)
     private int tag;
     
 	public Identificador(long id, String matricula, int tag) {

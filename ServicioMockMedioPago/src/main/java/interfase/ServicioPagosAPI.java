@@ -67,9 +67,7 @@ public class ServicioPagosAPI {
 		return RANDOM.nextInt(6) != 0;
 	}
 	
-	// curl -X POST -v
-		// http://localhost:8080/ServicioMockMedioPago/api/servicioPagosMock/autorizarPago -H
-		// "Content-Type: application/json" -d '{"nroTarjeta":111}'
+	// curl -X POST -v http://localhost:8080/ServicioMockMedioPago/api/servicioPagosMock/autorizarPago -H "Content-Type: application/json" -d '{"nroTarjeta":111}'
 	@POST
     @Path("/autorizarPago")
     @Consumes(MediaType.APPLICATION_JSON)

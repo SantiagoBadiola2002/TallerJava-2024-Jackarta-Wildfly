@@ -1,8 +1,11 @@
 package org.tallerjava.moduloPeaje.dominio;
 
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 import lombok.Getter;
 
-@Getter
+@Entity
+@DiscriminatorValue("preferencial") 
 public class Preferencial extends Tarifa{
 	
     public Preferencial(double valor) {
