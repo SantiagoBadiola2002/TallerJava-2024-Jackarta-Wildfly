@@ -1,7 +1,6 @@
 package org.tallerjava.moduloGestion.interfase.api.local;
 
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.inject.Default;
 import jakarta.inject.Inject;
 import org.tallerjava.moduloGestion.aplicacion.ServicioPago;
 import org.tallerjava.moduloGestion.dominio.*;

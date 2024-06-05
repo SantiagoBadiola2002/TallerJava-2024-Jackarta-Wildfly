@@ -31,14 +31,14 @@ public abstract class Usuario {
     protected String email;
     
     @OneToMany
-    protected List<Vinculo> vehiculosVinculados;
+    protected List<Vehiculo> vehiculos;
     
     @OneToOne
     protected ClienteTelepeaje clienteTelepeaje;
 
     public abstract boolean soyNacional();
     
-    public long getId() {
+	public long getId() {
     	return this.id;
     }
 
@@ -50,11 +50,14 @@ public abstract class Usuario {
 		this.clienteTelepeaje = cliTelepeaje;
 		
 	}
-	public List<Vinculo> getVehiculosVinculados() {
-		return this.vehiculosVinculados;
+
+	public List<Vehiculo> getVehiculos() {
+		return vehiculos;
 	}
 
-	public void setVehiculosVinculados(List<Vinculo> vehiculosVinculados) {
-		this.vehiculosVinculados = vehiculosVinculados;
+	public void setVehiculos(List<Vehiculo> vehiculos) {
+		this.vehiculos = vehiculos;
 	}
+	
+	
 }

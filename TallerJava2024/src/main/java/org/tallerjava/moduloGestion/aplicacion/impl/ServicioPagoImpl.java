@@ -140,20 +140,20 @@ public class ServicioPagoImpl implements ServicioPago {
 	
 	public boolean vincularVehiculo(long ci, int tag, String matricula) {
 		boolean vinculado = false;
-
-		Usuario usr = repoUsuario.findUsuarioByCi(ci);
-		Identificador i = new Identificador(matricula, tag);
-		Vehiculo v = new Vehiculo(i,usr.getClienteTelepeaje(), null);
-		Vinculo vinculo = new Vinculo(usr, LocalDateTime.now(), true, v);
-		
-		if((usr.getVehiculosVinculados()) == null) {
-			List<Vinculo> vinculos = new ArrayList<>();	
-			vinculos.add(vinculo);
-			vinculado = true;
-		} else {
-			usr.getVehiculosVinculados().add(vinculo);
-			vinculado = true;
-		}
+//
+//		Usuario usr = repoUsuario.findUsuarioByCi(ci);
+//		Identificador i = new Identificador(matricula, tag);
+//		Vehiculo v = new Vehiculo(i,usr.getClienteTelepeaje(), null);
+//		Vinculo vinculo = new Vinculo(usr, LocalDateTime.now(), true, v);
+//		
+//		if((usr.getVehiculosVinculados()) == null) {
+//			List<Vinculo> vinculos = new ArrayList<>();	
+//			vinculos.add(vinculo);
+//			vinculado = true;
+//		} else {
+//			usr.getVehiculosVinculados().add(vinculo);
+//			vinculado = true;
+//		}
 
 		//ACTUALIZAR BD
 
@@ -164,17 +164,17 @@ public class ServicioPagoImpl implements ServicioPago {
 	
 	 public boolean desvincularVehiculo(long ci, int tag, String matricula) {
 		 boolean desvincular = false;
-		 Usuario usr = repoUsuario.findUsuarioByCi(ci);
-		List<Vinculo> vinculos = repoUsuario.findVinculosByUser(usr);
-		 for(Vinculo v : vinculos) {
-			 if(((tag != 0) && (v.getVehiculo().getIdentificador().getTag() == tag)) || (
-			 (matricula != null) && (v.getVehiculo().getIdentificador().getMatricula().equals(matricula)))) {
-				 v.setActivo(false);
-				 v.getVehiculo().setCliente(null);
-				 return desvincular = true;
-			 }
-		 }
-		 
+//		 Usuario usr = repoUsuario.findUsuarioByCi(ci);
+//		List<Vinculo> vinculos = repoUsuario.findVinculosByUser(usr);
+//		 for(Vinculo v : vinculos) {
+//			 if(((tag != 0) && (v.getVehiculo().getIdentificador().getTag() == tag)) || (
+//			 (matricula != null) && (v.getVehiculo().getIdentificador().getMatricula().equals(matricula)))) {
+//				 v.setActivo(false);
+//				 v.getVehiculo().setCliente(null);
+//				 return desvincular = true;
+//			 }
+//		 }
+//		 
 		 return desvincular;
 	 }
 

@@ -1,10 +1,16 @@
 package org.tallerjava.moduloGestion.infraestructura.persistencia;
 
+import org.jboss.logging.Logger;
 import org.tallerjava.moduloGestion.dominio.*;
 import org.tallerjava.moduloGestion.dominio.repo.UsuarioRepositorio;
+import org.tallerjava.moduloGestion.interfase.remota.rest.ClienteAPI;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,45 +21,64 @@ import java.time.LocalDateTime;
 @ApplicationScoped
 public class UsuarioRepositorioImpl implements UsuarioRepositorio {
 	
-	private List<Usuario> usuarios;
-	//List<Vehiculo> vehiculos;
+	@PersistenceContext
+    private EntityManager em;
 	
+	private static final Logger log = Logger.getLogger(ClienteAPI.class);
 	
 	
 	public void inicializar() {
-//		System.out.println("Invocando PostConstruct");
-//		
-//		LocalDateTime date = LocalDateTime.parse("2024-05-14T10:30:00");
-//		Tarjeta tarjeta = new Tarjeta(2, 213, date, "JuanchoSuarez");
-//        PrePaga prePaga = new PrePaga(8676, 9678, date,1000);
-//        PostPaga postPago = new PostPaga(33, 3423, date, tarjeta);
-//        ClienteTelepeaje cliTelepeaje = new ClienteTelepeaje(null, prePaga, null);
-//        List<Vinculo> listVinculos= new ArrayList<>();
-//        Identificador identificador = new Identificador(1, "BAA 2222", 2001);
-//        
-//        LocalDateTime ahora = LocalDateTime.now();
-//        
-//        listVinculos.add(new Vinculo(ahora, true, new Vehiculo(1, identificador, cliTelepeaje)));
-//        
-//        Usuario usuario = new
-//                Nacional(1, "pepe","pepe@gmail.com",listVinculos, cliTelepeaje);
-//		
-//		usuarios.add(usuario);
 		
 	}
 	
-	@Override
-	public Usuario findByTag(int tag) {
-	    for (Usuario usu : usuarios) {
-	        for (Vinculo v : usu.getVehiculosVinculados()) {
-	            if (v.getVehiculo().getIdentificador().getTag() == tag) {
-	                return usu;
-	            }
-	        }
+	//ESTO NO FUNCA
+	public Vehiculo findVehiculoByTag(int tag) {
+        TypedQuery<Vehiculo> query = em.createQuery(
+                "SELECT v FROM Vehiculo_Gestion v WHERE v.identificador.tag = :tag", Vehiculo.class);
+        query.setParameter("tag", tag);
+        return query.getSingleResult();
+    }
+	
+	public int findIdClienteByTag(int tag) {
+		 try {	        
+		        int idCli = (int) em.createNativeQuery(
+		            "SELECT cliente_idClienteTelepeaje FROM gestion_vehiculo WHERE tag = :tag")
+		            .setParameter("tag", tag)
+		            .getSingleResult();
+		        return idCli;
+		 }  catch (NoResultException e) {
+		        return 0;
 	    }
-	    return null;
+	}
+	
+	
+	public Usuario findUsuarioByTag(int tag) {
+	    try {
+	        int idCli = findIdClienteByTag(tag);
+	        log.info("###repoImpl### idCli: " + idCli);
+	        
+	        Usuario usu = (Usuario) em.createNativeQuery(
+	                "SELECT id, nombre, email, clienteTelepeaje_idClienteTelepeaje FROM gestion_usuario WHERE id = :id")
+	                .setParameter("id", idCli)
+	                .getSingleResult();
+	        
+	        return usu;
+	    } catch (NoResultException e) {
+	        return null;
+	    }
 	}
 
+	@Override
+	public Usuario findByTag(int tag) {
+		log.info("### findByTag###");
+		//int CI = findIdClienteByTag(tag);
+		Usuario usu = findUsuarioByTag(tag);
+		//Vehiculo v = findVehiculoByTag(tag);
+		//log.info("### despues de findVeh###" + v.getId());
+		
+		
+	return null;
+}
 
     @Override
     public List<Cuenta> findCuentasByTag(int tag) {
@@ -102,14 +127,14 @@ public class UsuarioRepositorioImpl implements UsuarioRepositorio {
     }
 
     public List<Vehiculo> findVehiculoByUser(Usuario usr) {
-    	List<Vehiculo> vehiculos = new ArrayList<>();
-    	for(Vinculo vinculos: usr.getVehiculosVinculados()) {
-    		if(vinculos.isActivo() == true) {
-    			vehiculos.add(vinculos.getVehiculo());
-    		}
-    	}
+//    	List<Vehiculo> vehiculos = new ArrayList<>();
+//    	for(Vinculo vinculos: usr.getVehiculosVinculados()) {
+//    		if(vinculos.isActivo() == true) {
+//    			vehiculos.add(vinculos.getVehiculo());
+//    		}
+//    	}
     	
-    	return vehiculos;
+    	return null;
     }
 
 	@Override

@@ -8,13 +8,17 @@ import jakarta.persistence.Entity;
 @Entity
 @DiscriminatorValue("Extranjero")
 public class Extranjero extends Usuario {
+	
+	public Extranjero() {
+		
+	}
 
-	public Extranjero(long id, String nombre, String email, List<Vinculo> vehiculosVinculados,
+	public Extranjero(long id, String nombre, String email, List<Vehiculo> vehiculos,
 			ClienteTelepeaje cliTelepeaje) {
 		this.id = id;
 		this.nombre = nombre;
 		this.email = email;
-		this.vehiculosVinculados = vehiculosVinculados;
+		this.vehiculos = vehiculos;
 		this.clienteTelepeaje = cliTelepeaje;
 	}
 	

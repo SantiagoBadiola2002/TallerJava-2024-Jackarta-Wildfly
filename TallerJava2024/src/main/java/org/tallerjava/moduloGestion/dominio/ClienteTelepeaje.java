@@ -30,6 +30,10 @@ public class ClienteTelepeaje {
 
 	@OneToOne
 	private PostPaga ctaPostPaga;
+	
+	public ClienteTelepeaje() {
+		
+	}
 
 	public ClienteTelepeaje(Usuario usr, PrePaga prePaga, PostPaga postPaga) {
 		this.usuario = usr;

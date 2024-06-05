@@ -28,6 +28,10 @@ public abstract class Cuenta {
     protected long nroCuenta;
     protected LocalDateTime fechaApertura;
     
+    public Cuenta() {
+    	
+    }
+    
     public Cuenta(long id, long nroCuenta, LocalDateTime fechaApertura) {
         this.id = id;
         this.nroCuenta = nroCuenta;

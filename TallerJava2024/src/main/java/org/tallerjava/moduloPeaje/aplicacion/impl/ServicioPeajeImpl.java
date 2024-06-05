@@ -129,8 +129,9 @@ public class ServicioPeajeImpl implements ServicioPeaje {
 
     @Override
     public void actualizarTarifaComun(double importe) {
-    	//repo.actualizarTarifaComun(importe);
+    	
     	 log.infof("######### IMPORTE #########" + importe);
+    	 repo.actualizarTarifaComun(importe);
     }
 
     @Override

@@ -13,6 +13,10 @@ import lombok.Data;
 public class PrePaga extends Cuenta {
 
 	private int saldo;
+	
+	public PrePaga(){
+		
+	}
 
 
 	public PrePaga(LocalDateTime fecha, int i) {

@@ -16,15 +16,7 @@ import org.jboss.logging.Logger;
 import org.tallerjava.moduloGestion.aplicacion.ServicioPago;
 import org.tallerjava.moduloGestion.dominio.PasadasPorPeaje;
 import org.tallerjava.moduloGestion.dominio.Usuario;
-import org.tallerjava.moduloGestion.interfase.remota.rest.dto.DTCi;
-import org.tallerjava.moduloGestion.interfase.remota.rest.dto.DTPago;
-import org.tallerjava.moduloGestion.interfase.remota.rest.dto.DTPasadas;
-import org.tallerjava.moduloGestion.interfase.remota.rest.dto.DTSaldo;
-import org.tallerjava.moduloGestion.interfase.remota.rest.dto.DTTag;
-import org.tallerjava.moduloGestion.interfase.remota.rest.dto.DTTarjeta;
-import org.tallerjava.moduloGestion.interfase.remota.rest.dto.DTUsuario;
-import org.tallerjava.moduloGestion.interfase.remota.rest.dto.DTVehiculo;
-
+import org.tallerjava.moduloGestion.interfase.remota.rest.dto.*;
 @ApplicationScoped
 @Path("/moduloGestion")
 public class ClienteAPI {
@@ -57,9 +49,7 @@ public class ClienteAPI {
 		return servicioPago.realizarPostPago(dtPago.getTag(), dtPago.getImporte());
 	}
 
-	// curl -X POST -v
-	// http://localhost:8080/TallerJava2024/api/moduloGestion/esClienteTelepeaje -H
-	// "Content-Type: application/json" -d '{"tag":123}'
+	// curl -X POST -v http://localhost:8080/TallerJava2024/api/moduloGestion/esClienteTelepeaje -H "Content-Type: application/json" -d '{"tag":111}'
 	@POST
 	@Path("/esClienteTelepeaje")
 	@Consumes(MediaType.APPLICATION_JSON)

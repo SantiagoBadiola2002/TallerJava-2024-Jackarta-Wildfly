@@ -56,10 +56,7 @@ public class PeajeAPI {
 		servicioPeaje.actualizarTarifaComun(dtImporte.getImporte());
 	}
 
-	// curl -X POST -v
-	// http://localhost:8080/TallerJava2024/api/moduloPeaje/actualizarTarifaPreferencial
-	// -H
-	// "Content-Type: application/json" -d '{"importe":"456.78"}'
+	// curl -X POST -v http://localhost:8080/TallerJava2024/api/moduloPeaje/actualizarTarifaPreferencial -H "Content-Type: application/json" -d '{"importe":"456.78"}'
 	@POST
 	@Path("/actualizarTarifaPreferencial")
 	@Consumes(MediaType.APPLICATION_JSON)

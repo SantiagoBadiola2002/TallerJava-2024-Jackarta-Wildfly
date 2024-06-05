@@ -19,13 +19,17 @@ public class Nacional extends Usuario {
 	
 	@OneToOne
 	private ClienteSucive clienteSucive;
+	
+	public Nacional() {
+		
+	}
 
-	public Nacional(long id, String nombre, String email, List<Vinculo> vehiculosVinculados,
+	public Nacional(long id, String nombre, String email, List<Vehiculo> vehiculos,
 			ClienteTelepeaje cliTelepeaje) {
 		this.id = id;
 		this.nombre = nombre;
 		this.email = email;
-		this.vehiculosVinculados = vehiculosVinculados;
+		this.vehiculos = vehiculos;
 		this.clienteTelepeaje = cliTelepeaje;
 	}
 
