@@ -11,9 +11,8 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Data
-@Entity
+@Entity(name = "nacional")
 @Table(name = "gestion_nacional")
-@DiscriminatorValue("Nacional")
 public class Nacional extends Usuario {
 
 	
@@ -24,7 +23,7 @@ public class Nacional extends Usuario {
 		
 	}
 
-	public Nacional(long id, String nombre, String email, List<Vehiculo> vehiculos,
+	public Nacional(int id, String nombre, String email, List<Vehiculo> vehiculos,
 			ClienteTelepeaje cliTelepeaje) {
 		this.id = id;
 		this.nombre = nombre;

@@ -19,13 +19,14 @@ import jakarta.persistence.Transient;
 
 @Entity
 @Table (name = "gestion_usuario")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE) // Puede ser JOINED, SINGLE_TABLE, o TABLE_PER_CLASS
-@DiscriminatorColumn(name = "tipo_usuario", discriminatorType = DiscriminatorType.STRING)
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS) // Puede ser JOINED, SINGLE_TABLE, o 
+
 public abstract class Usuario {
 	
 	@Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
-    protected long id; //CI para nacional y Pasaporte para extranjero
+    @GeneratedValue (strategy = GenerationType.TABLE)
+
+    protected int id; 
 	
     protected String nombre;
     protected String email;
@@ -42,6 +43,12 @@ public abstract class Usuario {
     	return this.id;
     }
 
+	public String getNombre() {
+    	return this.nombre;
+    }
+	public String getEmail() {
+    	return this.email;
+    }
 	public ClienteTelepeaje getClienteTelepeaje() {
 		return this.clienteTelepeaje;
 	}

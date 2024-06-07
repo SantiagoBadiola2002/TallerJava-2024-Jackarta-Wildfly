@@ -31,18 +31,18 @@ public class UsuarioRepositorioImpl implements UsuarioRepositorio {
 		
 	}
 	
-	//ESTO NO FUNCA
-	public Vehiculo findVehiculoByTag(int tag) {
-        TypedQuery<Vehiculo> query = em.createQuery(
-                "SELECT v FROM Vehiculo_Gestion v WHERE v.identificador.tag = :tag", Vehiculo.class);
-        query.setParameter("tag", tag);
-        return query.getSingleResult();
-    }
+//	//ESTO NO FUNCA
+//	public Vehiculo findVehiculoByTag(int tag) {
+//        TypedQuery<Vehiculo> query = em.createQuery(
+//                "SELECT v FROM Vehiculo_Gestion v WHERE v.identificador.tag = :tag", Vehiculo.class);
+//        query.setParameter("tag", tag);
+//        return query.getSingleResult();
+//    }
 	
 	public int findIdClienteByTag(int tag) {
 		 try {	        
 		        int idCli = (int) em.createNativeQuery(
-		            "SELECT cliente_idClienteTelepeaje FROM gestion_vehiculo WHERE tag = :tag")
+		            "SELECT cliente_idClienteTelepeaje FROM gestion_vehiculo v WHERE v.tag =:tag")
 		            .setParameter("tag", tag)
 		            .getSingleResult();
 		        return idCli;
@@ -52,14 +52,12 @@ public class UsuarioRepositorioImpl implements UsuarioRepositorio {
 	}
 	
 	
-	public Usuario findUsuarioByTag(int tag) {
+	public Usuario findUsuarioByTag(int id) {
 	    try {
-	        int idCli = findIdClienteByTag(tag);
-	        log.info("###repoImpl### idCli: " + idCli);
-	        
-	        Usuario usu = (Usuario) em.createNativeQuery(
-	                "SELECT id, nombre, email, clienteTelepeaje_idClienteTelepeaje FROM gestion_usuario WHERE id = :id")
-	                .setParameter("id", idCli)
+	             
+	        Nacional usu = (Nacional) em.createQuery(
+	                "SELECT n FROM nacional n WHERE n.id = :id")
+	                .setParameter("id", id)
 	                .getSingleResult();
 	        
 	        return usu;
@@ -70,14 +68,15 @@ public class UsuarioRepositorioImpl implements UsuarioRepositorio {
 
 	@Override
 	public Usuario findByTag(int tag) {
-		log.info("### findByTag###");
-		//int CI = findIdClienteByTag(tag);
-		Usuario usu = findUsuarioByTag(tag);
-		//Vehiculo v = findVehiculoByTag(tag);
-		//log.info("### despues de findVeh###" + v.getId());
+		log.info("### findByTag 1 ###\n");
+		int id = findIdClienteByTag(tag);
+		log.info("### findByTag 2 ### " + id +"\n");
+		Usuario usu = findUsuarioByTag(id);
+		
+		log.info("$$$ usu nacional encontrado $$$\n" + usu.getNombre());
 		
 		
-	return null;
+	return usu;
 }
 
     @Override

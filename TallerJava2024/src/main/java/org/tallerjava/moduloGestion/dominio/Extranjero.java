@@ -4,16 +4,17 @@ import java.util.List;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 @Entity
-@DiscriminatorValue("Extranjero")
+@Table(name = "gestion_extranjero")
 public class Extranjero extends Usuario {
 	
 	public Extranjero() {
 		
 	}
 
-	public Extranjero(long id, String nombre, String email, List<Vehiculo> vehiculos,
+	public Extranjero(int id, String nombre, String email, List<Vehiculo> vehiculos,
 			ClienteTelepeaje cliTelepeaje) {
 		this.id = id;
 		this.nombre = nombre;
