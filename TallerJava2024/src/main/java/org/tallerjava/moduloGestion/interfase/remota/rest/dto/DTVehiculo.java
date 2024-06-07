@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class DTVehiculo {
-	private long ci; 
+	private int idCliente; 
 	int tag; 
 	String matricula;
 	
@@ -12,15 +12,15 @@ public class DTVehiculo {
 		
 	}
 	
-	public DTVehiculo(long ci, int tag, String matricula) {
+	public DTVehiculo(int idCliente, int tag, String matricula) {
 		super();
-		this.ci = ci;
+		this.idCliente = idCliente;
 		this.tag = tag;
 		this.matricula = matricula;
 	}
 
-	public long getCi() {
-		return ci;
+	public int getIdCliente() {
+		return idCliente;
 	}
 
 	public int getTag() {

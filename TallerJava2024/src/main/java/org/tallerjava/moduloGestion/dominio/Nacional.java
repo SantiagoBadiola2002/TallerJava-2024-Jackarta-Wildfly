@@ -23,24 +23,22 @@ public class Nacional extends Usuario {
 		
 	}
 
-	public Nacional(int id, String nombre, String email, List<Vehiculo> vehiculos,
+	public Nacional(int id, int nacionalidad, String nombre, String email, List<Vehiculo> vehiculos,
 			ClienteTelepeaje cliTelepeaje) {
 		this.id = id;
+		this.nacionalidad =0; //0 nacional 1 extranjero
 		this.nombre = nombre;
 		this.email = email;
 		this.vehiculos = vehiculos;
 		this.clienteTelepeaje = cliTelepeaje;
 	}
 
-	public Nacional(String nombre, String email) {
+	public Nacional(String nombre, String email, int nacionalidad) {
 		this.nombre = nombre;
 		this.email = email;
+		this.nacionalidad = nacionalidad;
 	}
 
-	@Override
-	public boolean soyNacional() {
-		return true;
-	}
 
 	public void setClienteSucive(ClienteSucive cliSucive) {
 		this.clienteSucive = cliSucive;

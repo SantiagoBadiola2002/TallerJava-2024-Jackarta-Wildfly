@@ -40,12 +40,12 @@ public class ServicioPagoFacade {
     	servicioPago.altaClienteTelepeaje(usr);
     };
     
-    public boolean vincularVehiculo(long ci, int tag, String matricula) {
-    	return servicioPago.vincularVehiculo(ci,tag,matricula);
+    public boolean vincularVehiculo(int idCliente, int tag, String matricula) {
+    	return servicioPago.vincularVehiculo(idCliente,tag,matricula);
     };
     
-	public boolean desvincularVehiculo(long ci, int tag, String matricula) {
-		return servicioPago.desvincularVehiculo(ci, tag, matricula);
+	public boolean desvincularVehiculo(int idCliente, int tag, String matricula) {
+		return servicioPago.desvincularVehiculo(idCliente, tag, matricula);
 	}
 	
     public List<Integer> obtenerCuentasPorTag(int tag){

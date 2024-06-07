@@ -58,41 +58,38 @@ public class ClienteAPI {
 		return servicioPago.esClienteTelepeaje(tag.getTag());
 	}
 
-	// curl -X POST -v
-	// http://localhost:8080/TallerJava2024/api/moduloGestion/altaClienteTelepeaje
-	// -H "Content-Type: application/json" -d
-	// '{"nombre":"nom1","email":"nom1@gmail.com", "nacionalidad":1}'
+	// curl -X POST -v http://localhost:8080/TallerJava2024/api/moduloGestion/altaClienteTelepeaje -H "Content-Type: application/json" -d '{"nombre":"nomNacional","email":"nom1Nacional@gmail.com", "nacionalidad":0}'
 	@POST
 	@Path("/altaClienteTelepeaje")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public void altaClienteTelepeaje(DTUsuario usr) {
+	public boolean altaClienteTelepeaje(DTUsuario usr) {
 		log.infof("######### altaClienteTelepeaje #########");
 		Usuario usu = usr.buildUsuario();
-		servicioPago.altaClienteTelepeaje(usu);
+		return servicioPago.altaClienteTelepeaje(usu);
 	}
 
 	// curl -X POST -v
 	// http://localhost:8080/TallerJava2024/api/moduloGestion/vincularVehiculo -H
-	// "Content-Type: application/json" -d '{"ci":123,"tag":1,"matricula":1}'
+	// "Content-Type: application/json" -d '{"idCliente":123,"tag":1,"matricula":1}'
 	@POST
 	@Path("/vincularVehiculo")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public boolean vincularVehiculo(DTVehiculo dtVehiculo) {
-		log.infof("######### vincularVehiculo: ci: " + dtVehiculo.getCi() + " tag: " + dtVehiculo.getTag()
+		log.infof("######### vincularVehiculo: idCliente: " + dtVehiculo.getIdCliente() + " tag: " + dtVehiculo.getTag()
 				+ "matricula: " + dtVehiculo.getMatricula() + "#########");
-		return servicioPago.vincularVehiculo(dtVehiculo.getCi(), dtVehiculo.getTag(), dtVehiculo.getMatricula());
+		return servicioPago.vincularVehiculo(dtVehiculo.getIdCliente(), dtVehiculo.getTag(), dtVehiculo.getMatricula());
 	}
 
 	// curl -X POST -v
 	// http://localhost:8080/TallerJava2024/api/moduloGestion/desvincularVehiculo -H
-	// "Content-Type: application/json" -d '{"ci":123,"tag":1,"matricula":1}'
+	// "Content-Type: application/json" -d '{"idCliente":123,"tag":1,"matricula":1}'
 	@POST
 	@Path("/desvincularVehiculo")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public boolean desvincularVehiculo(DTVehiculo dtVehiculo) {
-		log.infof("######### desvincularVehiculo: ci: " + dtVehiculo.getCi() + " tag: " + dtVehiculo.getTag()
+		log.infof("######### desvincularVehiculo: idCliente: " + dtVehiculo.getIdCliente() + " tag: " + dtVehiculo.getTag()
 				+ "matricula: " + dtVehiculo.getMatricula() + "#########");
-		return servicioPago.desvincularVehiculo(dtVehiculo.getCi(), dtVehiculo.getTag(), dtVehiculo.getMatricula());
+		return servicioPago.desvincularVehiculo(dtVehiculo.getIdCliente(), dtVehiculo.getTag(), dtVehiculo.getMatricula());
 	}
 
 	// curl -X GET -v

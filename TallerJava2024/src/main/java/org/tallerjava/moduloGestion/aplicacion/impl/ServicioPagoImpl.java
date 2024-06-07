@@ -118,27 +118,33 @@ public class ServicioPagoImpl implements ServicioPago {
 	@Override
 	public boolean esClienteTelepeaje(int tag) {
 		Usuario usuario = repoUsuario.findByTag(tag);
-		if (usuario.getClienteTelepeaje() != null) {
+		if ((usuario != null) && (usuario.getClienteTelepeaje() != null)) {
 			return true;
 		} else
 			return false;
 	}
 
 	@Override
-	public void altaClienteTelepeaje(Usuario usr) {
-
+	public boolean altaClienteTelepeaje(Usuario usr) {
+		log.infof("\n######### altaClienteTelepeaje 1 #########\n");
 		// me fijo si es ya cliente telepeaje
 		if (usr.getClienteTelepeaje() == null) {
 			// diferencio Nacional o Extranjero
-			repoUsuario.crearClienteTelepeaje(usr);
-			if (usr.soyNacional()) {
-				repoUsuario.crearClienteSucive((Nacional) usr);
+			ClienteTelepeaje cliTelepeaje = repoUsuario.crearClienteTelepeaje(usr);
+			//esto seria alguna excepcion de la BD verrr
+			if (cliTelepeaje !=null) {
+				log.infof("\n######### altaClienteTelepeaje OK. IdCliente: #########\n" + cliTelepeaje.getIdCliente());
+				return true;
 			}
+//			if (usr.getNacionalidad()==0) {
+//				repoUsuario.crearClienteSucive((Nacional) usr);
+//			}
 		}
+		return false;
 	}
 
 	
-	public boolean vincularVehiculo(long ci, int tag, String matricula) {
+	public boolean vincularVehiculo(int idCliente, int tag, String matricula) {
 		boolean vinculado = false;
 //
 //		Usuario usr = repoUsuario.findUsuarioByCi(ci);
@@ -162,7 +168,7 @@ public class ServicioPagoImpl implements ServicioPago {
 
 	}
 	
-	 public boolean desvincularVehiculo(long ci, int tag, String matricula) {
+	 public boolean desvincularVehiculo(int idCliente, int tag, String matricula) {
 		 boolean desvincular = false;
 //		 Usuario usr = repoUsuario.findUsuarioByCi(ci);
 //		List<Vinculo> vinculos = repoUsuario.findVinculosByUser(usr);

@@ -37,11 +37,19 @@ public abstract class Usuario {
     @OneToOne
     protected ClienteTelepeaje clienteTelepeaje;
 
-    public abstract boolean soyNacional();
+    protected int nacionalidad;//0 nacional 1 extranjero
     
 	public long getId() {
     	return this.id;
     }
+
+	public int getNacionalidad() {
+		return nacionalidad;
+	}
+
+	public void setNacionalidad(int nacionalidad) {
+		this.nacionalidad = nacionalidad;
+	}
 
 	public String getNombre() {
     	return this.nombre;

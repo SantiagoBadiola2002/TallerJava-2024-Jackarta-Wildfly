@@ -14,11 +14,11 @@ public interface ServicioPago {
 
     public boolean esClienteTelepeaje(int tag);
     
-    public void altaClienteTelepeaje(Usuario usr);
+    public boolean altaClienteTelepeaje(Usuario usr);
     
-    public boolean vincularVehiculo(long ci, int tag, String matricula);
+    public boolean vincularVehiculo(int idCliente, int tag, String matricula);
     
-    public boolean desvincularVehiculo(long ci, int tag, String matricula);
+    public boolean desvincularVehiculo(int idCliente, int tag, String matricula);
     
     public List<Integer> obtenerCuentasPorTag(int tag);
     

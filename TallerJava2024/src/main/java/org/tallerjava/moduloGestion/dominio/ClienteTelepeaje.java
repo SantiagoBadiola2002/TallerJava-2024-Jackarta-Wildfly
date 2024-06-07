@@ -58,6 +58,9 @@ public class ClienteTelepeaje {
 		return ctaPostPaga;
 	}
 
+	public int getIdCliente() {
+		return idClienteTelepeaje;
+	}
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}

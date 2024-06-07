@@ -3,7 +3,7 @@ package org.tallerjava.moduloGestion.interfase.remota.rest.dto;
 import org.tallerjava.moduloGestion.dominio.Extranjero;
 import org.tallerjava.moduloGestion.dominio.Nacional;
 import org.tallerjava.moduloGestion.dominio.Usuario;
-import org.tallerjava.moduloPeaje.dominio.Nacionalidad;
+
 
 import lombok.Data;
 
@@ -17,10 +17,10 @@ public class DTUsuario {
     // su correspondiente objeto de negocio, principalmente porque la función del DTO es la de parsear un json
     public Usuario buildUsuario() {
   
-        if(nacionalidad == 1) {
-        	return new Nacional(nombre, email);
+        if(nacionalidad == 0) {
+        	return new Nacional(nombre, email, 0);
         } else {
-        	return new Extranjero(nombre, email);
+        	return new Extranjero(nombre, email, 1);
         }
     	 
     }
