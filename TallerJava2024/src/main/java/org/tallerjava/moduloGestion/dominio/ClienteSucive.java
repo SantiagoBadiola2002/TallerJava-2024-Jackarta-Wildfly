@@ -21,6 +21,8 @@ public class ClienteSucive {
 	@OneToOne
     private Nacional usuarioNacional;
 
+	public ClienteSucive() {}
+	
     public ClienteSucive(Nacional usrNacional) {
     	this.usuarioNacional = usrNacional;
     	

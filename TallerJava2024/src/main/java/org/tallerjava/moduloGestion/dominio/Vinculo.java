@@ -18,6 +18,7 @@ public class Vinculo {
 	private LocalDateTime fechaini;
 	private boolean activo;
 	
+	public Vinculo() {}
 	
 	public Vinculo(LocalDateTime fechaini, boolean activo) {
 		this.fechaini = fechaini;

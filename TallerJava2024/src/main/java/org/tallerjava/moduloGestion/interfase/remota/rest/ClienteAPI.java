@@ -68,9 +68,7 @@ public class ClienteAPI {
 		return servicioPago.altaClienteTelepeaje(usu);
 	}
 
-	// curl -X POST -v
-	// http://localhost:8080/TallerJava2024/api/moduloGestion/vincularVehiculo -H
-	// "Content-Type: application/json" -d '{"idCliente":123,"tag":1,"matricula":1}'
+	// curl -X POST -v http://localhost:8080/TallerJava2024/api/moduloGestion/vincularVehiculo -H "Content-Type: application/json" -d '{"idCliente":1,"tag":555,"matricula":"BEC1234"}'
 	@POST
 	@Path("/vincularVehiculo")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -124,7 +122,7 @@ public class ClienteAPI {
 	// http://localhost:8080/TallerJava2024/api/moduloGestion/consultarPasadas
 	// -H
 	// "Content-Type: application/json" -d
-	// '{"ci":123,"tag":1,"matricula":"abc","fechaInicial":"23/05/2024","fechaFinal":"23/06/2024"}'
+	// '{"idCliente":123,"tag":1,"matricula":"abc","fechaInicial":"23/05/2024","fechaFinal":"23/06/2024"}'
 	@GET
 	@Path("/consultarPasadas")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -133,13 +131,14 @@ public class ClienteAPI {
 		LocalDateTime dateFin = LocalDateTime.parse(dtPasadas.getFechaFinal());
 
 		if ((dtPasadas.getTag() == 0) && (dtPasadas.getMatricula() == null)) {
-			log.infof("######### consultarPasadas: ci: " + dtPasadas.getCi() + "desde: " + dtPasadas.getFechaInicial()
+			log.infof("######### consultarPasadas: idCliente: " + dtPasadas.getIdCliente() + "desde: " + dtPasadas.getFechaInicial()
 					+ " hasta: " + dtPasadas.getFechaFinal() + " #########");
-			return servicioPago.consultarPasadas(dtPasadas.getCi(), dateIni, dateFin);
+			
+			return servicioPago.consultarPasadas(dtPasadas.getIdCliente(), dateIni, dateFin);
 		} else {
-			log.infof("######### consultarPasadas con tag o matricula: ci: " + dtPasadas.getCi() + "desde: "
+			log.infof("######### consultarPasadas con tag o matricula: ci: " + dtPasadas.getIdCliente() + "desde: "
 					+ dtPasadas.getFechaInicial() + " hasta: " + dtPasadas.getFechaFinal() + " #########");
-			return servicioPago.consultarPasadas(dtPasadas.getCi(), dtPasadas.getTag(), dtPasadas.getMatricula(),
+			return servicioPago.consultarPasadas(dtPasadas.getIdCliente(), dtPasadas.getTag(), dtPasadas.getMatricula(),
 					dateIni, dateFin);
 		}
 

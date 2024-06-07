@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class DTPasadas {
 	
-	long ci; 
+	int idCliente; 
 	int tag; 
 	String matricula;
 	String fechaInicial;
@@ -16,22 +16,22 @@ public class DTPasadas {
 		
 	}
 	
-	public DTPasadas(long ci, int tag, String matricula, String fechaInicial, String fechaFinal) {
-		this.ci = ci;
+	public DTPasadas(int idCliente, int tag, String matricula, String fechaInicial, String fechaFinal) {
+		this.idCliente = idCliente;
 		this.tag = tag;
 		this.matricula = matricula;
 		this.fechaInicial = fechaInicial;
 		this.fechaFinal = fechaFinal;
 	}
 
-	public DTPasadas(long ci, String fechaInicial, String fechaFinal) {
-		this.ci = ci;
+	public DTPasadas(int idCliente, String fechaInicial, String fechaFinal) {
+		this.idCliente = idCliente;
 		this.fechaInicial = fechaInicial;
 		this.fechaFinal = fechaFinal;
 	}
 
-	public long getCi() {
-		return ci;
+	public int getIdCliente() {
+		return idCliente;
 	}
 
 	public int getTag() {

@@ -56,13 +56,13 @@ public class ServicioPagoFacade {
 		servicioPago.agregarTarjeta(ci, nroTarjeta, fechaVtoTarjeta, nombreCompletoUsuario);
 	}
 
-	public List<PasadasPorPeaje> consultarPasadas(long ci, LocalDateTime fechaInicial, LocalDateTime fechaFinal) {
-		return servicioPago.consultarPasadas(ci, fechaInicial, fechaFinal);
+	public List<PasadasPorPeaje> consultarPasadas(int idCliente, LocalDateTime fechaInicial, LocalDateTime fechaFinal) {
+		return servicioPago.consultarPasadas(idCliente, fechaInicial, fechaFinal);
 	}
 
-	public List<PasadasPorPeaje> consultarPasadas(long ci, int tag, String matricula, LocalDateTime fechaInicial,
+	public List<PasadasPorPeaje> consultarPasadas(int idCliente, int tag, String matricula, LocalDateTime fechaInicial,
 			LocalDateTime fechaFinal) {
-		return servicioPago.consultarPasadas(ci, tag, matricula, fechaInicial, fechaFinal);
+		return servicioPago.consultarPasadas(idCliente, tag, matricula, fechaInicial, fechaFinal);
 	}
 
 	public double cargarSaldo(long ci, double importe) {

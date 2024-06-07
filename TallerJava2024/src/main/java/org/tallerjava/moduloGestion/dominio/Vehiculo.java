@@ -5,6 +5,8 @@ import java.util.List;
 
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.ManyToOne;
@@ -29,6 +31,7 @@ import lombok.Data;
 public class Vehiculo {
 
 	@Id
+	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	private long id;
 
 	@Embedded
@@ -61,23 +64,14 @@ public class Vehiculo {
 		this.vinculo = vinculo;
 	}
 
-	public Vehiculo(long id, Identificador identificador, ClienteTelepeaje cliente, List<PasadasPorPeaje> pasadas,
-			Vinculo vinculo) {
-		this.id = id;
+	public Vehiculo( Identificador identificador, ClienteTelepeaje cliente, 
+			Vinculo vinculo, List<PasadasPorPeaje> pasadas) {
 		this.identificador = identificador;
 		this.cliente = cliente;
 		this.pasadas = pasadas;
 		this.vinculo = vinculo;
 	}
 
-//	public Vehiculo(int id, String matricula, int tag, boolean activo, LocalDateTime fechaIni, int idClienteTelepeaje) {
-//		this.id = id;
-//		Identificador ident = new Identificador(matricula, tag);
-//		this.identificador = ident;
-//		Vinculo vinc = new Vinculo(fechaIni, activo);
-//		this.vinculo = vinc;
-//		this.cliente = idClienteTelepeaje;
-//	}
 
 	public long getId() {
 		return id;

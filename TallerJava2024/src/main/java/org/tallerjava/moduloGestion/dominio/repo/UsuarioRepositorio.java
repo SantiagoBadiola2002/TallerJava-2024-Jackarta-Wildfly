@@ -11,20 +11,23 @@ public interface UsuarioRepositorio {
      * @return
      */
     public Usuario findByTag(int tag);
+    
+    public Usuario findUsuario(int idCliente);
 
 	List<Cuenta> findCuentasByTag(int tag);
 	
 	public ClienteTelepeaje crearClienteTelepeaje(Usuario usr);
-
-	public void crearClienteSucive(Nacional usr);
 
 	public List<Vehiculo> findVehiculoByUser(Usuario usr);
 	
 	public void agregarTarjetaPostPaga(ClienteTelepeaje clienteTelepeaje, PostPaga postPaga);
 
 	public ClienteTelepeaje findClienteTelepeajeByCi(long ci);
-	
-	public Usuario findUsuarioByCi(long ci);
 
 	public List<Vinculo> findVinculosByUser(Usuario usr);
+	
+	public long salvarVehiculo(Vehiculo vehiculo);
+	
+	public void actualizarUsuario(Usuario usr);
+	
 }

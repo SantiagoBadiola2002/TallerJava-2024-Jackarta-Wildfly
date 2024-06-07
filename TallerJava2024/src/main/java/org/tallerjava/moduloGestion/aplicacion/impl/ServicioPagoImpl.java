@@ -3,6 +3,7 @@ package org.tallerjava.moduloGestion.aplicacion.impl;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Alternative;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 
 import org.jboss.logging.Logger;
 import org.tallerjava.moduloGestion.aplicacion.ServicioPago;
@@ -143,23 +144,29 @@ public class ServicioPagoImpl implements ServicioPago {
 		return false;
 	}
 
-	
+	@Transactional
 	public boolean vincularVehiculo(int idCliente, int tag, String matricula) {
 		boolean vinculado = false;
-//
-//		Usuario usr = repoUsuario.findUsuarioByCi(ci);
-//		Identificador i = new Identificador(matricula, tag);
-//		Vehiculo v = new Vehiculo(i,usr.getClienteTelepeaje(), null);
-//		Vinculo vinculo = new Vinculo(usr, LocalDateTime.now(), true, v);
-//		
-//		if((usr.getVehiculosVinculados()) == null) {
-//			List<Vinculo> vinculos = new ArrayList<>();	
-//			vinculos.add(vinculo);
-//			vinculado = true;
-//		} else {
-//			usr.getVehiculosVinculados().add(vinculo);
-//			vinculado = true;
-//		}
+
+		Usuario usr = repoUsuario.findUsuario(idCliente);
+		Identificador i = new Identificador(matricula, tag);
+		Vinculo vinculo = new Vinculo(LocalDateTime.now(), true);
+		List<PasadasPorPeaje> pasadas = new ArrayList<>();
+		Vehiculo v = new Vehiculo(i,usr.getClienteTelepeaje(), vinculo, pasadas);
+		long idVehiculo = repoUsuario.salvarVehiculo(v);
+		log.infof("\n######### Salvar Vehiculo OK. IdVehiculo: #########\n" + idVehiculo);
+		
+		
+		if((usr.getVehiculos()) == null) {
+			List<Vehiculo> vehiculos = new ArrayList<>();	
+			vehiculos.add(v);
+			repoUsuario.actualizarUsuario(usr);
+			vinculado = true;
+		} else {
+			usr.getVehiculos().add(v);
+			repoUsuario.actualizarUsuario(usr);
+			vinculado = true;
+		}
 
 		//ACTUALIZAR BD
 
@@ -229,8 +236,8 @@ public class ServicioPagoImpl implements ServicioPago {
 	}
 
 	@Override
-	public List<PasadasPorPeaje> consultarPasadas(long ci, LocalDateTime fechaInicial, LocalDateTime fechaFinal) {
-		Usuario usu = repoUsuario.findUsuarioByCi(ci);
+	public List<PasadasPorPeaje> consultarPasadas(int idCliente, LocalDateTime fechaInicial, LocalDateTime fechaFinal) {
+		Usuario usu = repoUsuario.findUsuario(idCliente);
 		List<Vehiculo> vehiculos = repoUsuario.findVehiculoByUser(usu);
 		List<PasadasPorPeaje> pasadas = new ArrayList<>();
 
@@ -246,9 +253,9 @@ public class ServicioPagoImpl implements ServicioPago {
 	}
 
 	@Override
-	public List<PasadasPorPeaje> consultarPasadas(long ci, int tag, String matricula, LocalDateTime fechaInicial,
+	public List<PasadasPorPeaje> consultarPasadas(int idCliente, int tag, String matricula, LocalDateTime fechaInicial,
 			LocalDateTime fechaFinal) {
-		Usuario usu = repoUsuario.findUsuarioByCi(ci);
+		Usuario usu = repoUsuario.findUsuario(idCliente);
 		List<Vehiculo> vehiculos = repoUsuario.findVehiculoByUser(usu);
 		List<PasadasPorPeaje> pasadas = new ArrayList<>();
 

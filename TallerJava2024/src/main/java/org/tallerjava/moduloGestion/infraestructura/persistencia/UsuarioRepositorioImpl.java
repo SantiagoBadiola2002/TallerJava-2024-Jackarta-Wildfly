@@ -49,12 +49,12 @@ public class UsuarioRepositorioImpl implements UsuarioRepositorio {
 			return 0;
 		}
 	}
-
-	public Usuario findUsuario(int id) {
+	@Override
+	public Usuario findUsuario(int idCliente) {
 		try {
 
 			Nacional nacional = (Nacional) em.createQuery("SELECT n FROM nacional n WHERE n.id = :id")
-					.setParameter("id", id).getSingleResult();
+					.setParameter("id", idCliente).getSingleResult();
 
 			if (nacional != null) {
 				return nacional;
@@ -64,7 +64,7 @@ public class UsuarioRepositorioImpl implements UsuarioRepositorio {
 		} catch (NoResultException e) {
 			try {
 			Extranjero extranjero = (Extranjero) em.createQuery("SELECT n FROM extranjero n WHERE n.id = :id")
-					.setParameter("id", id).getSingleResult();
+					.setParameter("id", idCliente).getSingleResult();
 
 				return extranjero;
 
@@ -78,9 +78,9 @@ public class UsuarioRepositorioImpl implements UsuarioRepositorio {
 	@Override
 	public Usuario findByTag(int tag) {
 		log.info("### findByTag 1 ###\n");
-		int id = findIdClienteByTag(tag);
-		log.info("### findByTag 2 ### " + id + "\n");
-		Usuario usu = findUsuario(id);
+		int idCliente = findIdClienteByTag(tag);
+		log.info("### findByTag 2 ### " + idCliente + "\n");
+		Usuario usu = findUsuario(idCliente);
 
 		//log.info("$$$ usu nacional encontrado $$$\n" + usu.getNombre() + "$$$$" + usu.getNacionalidad());
 
@@ -145,13 +145,8 @@ public class UsuarioRepositorioImpl implements UsuarioRepositorio {
 		
 	}
 
-	@Override
-	public void crearClienteSucive(Nacional usr) {
-		ClienteSucive cliSucive = new ClienteSucive(usr);
-		// ACTUALIZAE USR EN BD
-		usr.setClienteSucive(cliSucive);
-	}
 
+	@Override
 	public List<Vehiculo> findVehiculoByUser(Usuario usr) {
 //    	List<Vehiculo> vehiculos = new ArrayList<>();
 //    	for(Vinculo vinculos: usr.getVehiculosVinculados()) {
@@ -175,13 +170,23 @@ public class UsuarioRepositorioImpl implements UsuarioRepositorio {
 	}
 
 	@Override
-	public Usuario findUsuarioByCi(long ci) {
-		return null;
-	}
-
-	@Override
 	public List<Vinculo> findVinculosByUser(Usuario usr) {
 
 		return null;
 	}
+	
+	@Override
+	
+	public long salvarVehiculo(Vehiculo vehiculo) {
+		em.persist(vehiculo);
+		return vehiculo.getId();
+		
+	};
+	
+    @Override
+    @Transactional
+    public void actualizarUsuario(Usuario usr) {
+        em.merge(usr);
+    }
+
 }
