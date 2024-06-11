@@ -7,6 +7,7 @@ import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.core.MediaType;
 
 import java.time.LocalDateTime;
@@ -89,6 +90,15 @@ public class ClienteAPI {
 				+ "matricula: " + dtVehiculo.getMatricula() + "#########");
 		return servicioPago.desvincularVehiculo(dtVehiculo.getIdCliente(), dtVehiculo.getTag(), dtVehiculo.getMatricula());
 	}
+	
+	// curl -X GET -v http://localhost:8080/TallerJava2024/api/moduloGestion/mostrarVehiculoVinculados/10000
+	@GET
+	@Path("/mostrarVehiculoVinculados/{id}")
+	@Produces({MediaType.APPLICATION_JSON})
+	public List<DTVehiculo> mostrarVehiculoVinculados(@PathParam("id") int id) {
+		log.infof("######### mostrarVehiculoVinculados: idCliente: " + id+ "#########");
+		return servicioPago.mostrarVehiculoVinculados(id);
+	}
 
 	// curl -X GET -v
 	// http://localhost:8080/TallerJava2024/api/moduloGestion/obtenerCuentasPorTag
@@ -144,15 +154,13 @@ public class ClienteAPI {
 
 	}
 
-	// curl -X POST -v
-	// http://localhost:8080/TallerJava2024/api/moduloGestion/cargarSaldo -H
-	// "Content-Type: application/json" -d '{"ci":1,"importe":1000}'
+	// curl -X POST -v http://localhost:8080/TallerJava2024/api/moduloGestion/cargarSaldo -H "Content-Type: application/json" -d '{"idCliente":10000,"importe":1000}'
 	@POST
 	@Path("/cargarSaldo")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public double cargarSaldo(DTSaldo saldoDTO) {
-		log.infof("Carga saldo cliente %s : ", saldoDTO.getCi() + " $" + saldoDTO.getImporte());
-		double nuevoSaldo = servicioPago.cargarSaldo(saldoDTO.getCi(), saldoDTO.getImporte());
+		log.infof("Carga saldo cliente %s : ", saldoDTO.getIdCliente() + " $" + saldoDTO.getImporte());
+		double nuevoSaldo = servicioPago.cargarSaldo(saldoDTO.getIdCliente(), saldoDTO.getImporte());
 		return nuevoSaldo;
 	}
 
@@ -163,9 +171,9 @@ public class ClienteAPI {
 	@GET
 	@Path("/consultarSaldo")
 	@Produces(MediaType.APPLICATION_JSON)
-	public double consultarSaldo(DTCi dtCi) {
-		log.infof("Consulta saldo: " + dtCi.getCi());
-		return servicioPago.consultarSaldo(dtCi.getCi());
+	public double consultarSaldo(DTIdCliente dtIdCliente) {
+		log.infof("Consulta saldo: " + dtIdCliente.getIdCliente());
+		return servicioPago.consultarSaldo(dtIdCliente.getIdCliente());
 	}
 
 }

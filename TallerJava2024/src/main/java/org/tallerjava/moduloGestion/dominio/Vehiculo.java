@@ -9,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -36,18 +37,29 @@ public class Vehiculo {
 
 	@Embedded
 	private Identificador identificador;
+	
+    private int idUsuario;
 
 	@ManyToOne
 	private ClienteTelepeaje cliente;
+	
+	@ManyToOne
+	private Usuario usuario;
 
 	@OneToMany
 	private List<PasadasPorPeaje> pasadas;
 
 	@Embedded
 	private Vinculo vinculo;
+	
+	public Vehiculo() {}
 
-	public Vehiculo() {
-
+	public Vehiculo(Identificador identificador, ClienteTelepeaje cliente, Usuario usuario, Vinculo vinculo, List<PasadasPorPeaje> pasadas) {
+		this.identificador = identificador;
+		this.cliente = cliente;
+		this.pasadas = pasadas;
+		this.vinculo = vinculo;
+		this.usuario = usuario;
 	}
 
 	public Vehiculo(Identificador identificador, ClienteTelepeaje cliente, List<PasadasPorPeaje> pasadas) {

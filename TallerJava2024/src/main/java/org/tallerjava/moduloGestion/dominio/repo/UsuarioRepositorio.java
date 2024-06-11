@@ -12,22 +12,26 @@ public interface UsuarioRepositorio {
      */
     public Usuario findByTag(int tag);
     
-    public Usuario findUsuario(int idCliente);
+    public Usuario findUsuarioCliTelepeaje(int idCliente);
 
 	List<Cuenta> findCuentasByTag(int tag);
 	
+	public ClienteTelepeaje findCliTelepeaje(int idCliente);
+	
 	public ClienteTelepeaje crearClienteTelepeaje(Usuario usr);
-
-	public List<Vehiculo> findVehiculoByUser(Usuario usr);
 	
 	public void agregarTarjetaPostPaga(ClienteTelepeaje clienteTelepeaje, PostPaga postPaga);
-
-	public ClienteTelepeaje findClienteTelepeajeByCi(long ci);
 
 	public List<Vinculo> findVinculosByUser(Usuario usr);
 	
 	public long salvarVehiculo(Vehiculo vehiculo);
 	
 	public void actualizarUsuario(Usuario usr);
+	public void actualizarCliTelepeaje(ClienteTelepeaje clienteTelepeaje);
+	public void actualizarCuentaPrepaga(PrePaga ctaPrepaga);
+
+	public List<Vehiculo> traerVehiculosUsr(Usuario id);
+	
+	public Usuario findUsuario(int id);
 	
 }

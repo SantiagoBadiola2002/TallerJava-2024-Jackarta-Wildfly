@@ -5,20 +5,20 @@ import lombok.Data;
 @Data
 public class DTSaldo {
 	
-	long ci; 
+	int idCliente; 
 	double importe;
 	
 	public DTSaldo() {
 		
 	}
 
-	public DTSaldo(long ci, double importe) {
-		this.ci = ci;
+	public DTSaldo(int idCliente, double importe) {
+		this.idCliente = idCliente;
 		this.importe = importe;
 	}
 
-	public long getCi() {
-		return ci;
+	public int getIdCliente() {
+		return idCliente;
 	}
 
 	public double getImporte() {

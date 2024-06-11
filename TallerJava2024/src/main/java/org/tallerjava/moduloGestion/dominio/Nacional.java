@@ -23,13 +23,12 @@ public class Nacional extends Usuario {
 		
 	}
 
-	public Nacional(int id, int nacionalidad, String nombre, String email, List<Vehiculo> vehiculos,
-			ClienteTelepeaje cliTelepeaje) {
+	public Nacional(int id, int nacionalidad, String nombre, String email, ClienteTelepeaje cliTelepeaje) {
 		this.id = id;
 		this.nacionalidad =0; //0 nacional 1 extranjero
 		this.nombre = nombre;
 		this.email = email;
-		this.vehiculos = vehiculos;
+
 		this.clienteTelepeaje = cliTelepeaje;
 	}
 

@@ -1,7 +1,7 @@
 package org.tallerjava.moduloGestion.aplicacion;
 
 import org.tallerjava.moduloGestion.dominio.*;
-
+import org.tallerjava.moduloGestion.interfase.remota.rest.dto.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -28,7 +28,9 @@ public interface ServicioPago {
     
     public List<PasadasPorPeaje> consultarPasadas(int idCliente, int tag, String matricula, LocalDateTime fechaInicial, LocalDateTime fechaFinal);
 
-    public double cargarSaldo(long ci, double importe);
+    public double cargarSaldo(int idCliente, double importe);
     
     public double consultarSaldo(long ci);
+
+	public List<DTVehiculo>  mostrarVehiculoVinculados(int id);
 }

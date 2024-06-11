@@ -27,17 +27,6 @@ public class UsuarioRepositorioImpl implements UsuarioRepositorio {
 
 	private static final Logger log = Logger.getLogger(ClienteAPI.class);
 
-	public void inicializar() {
-
-	}
-
-//	//ESTO NO FUNCA
-//	public Vehiculo findVehiculoByTag(int tag) {
-//        TypedQuery<Vehiculo> query = em.createQuery(
-//                "SELECT v FROM Vehiculo_Gestion v WHERE v.identificador.tag = :tag", Vehiculo.class);
-//        query.setParameter("tag", tag);
-//        return query.getSingleResult();
-//    }
 
 	public int findIdClienteByTag(int tag) {
 		try {
@@ -49,11 +38,14 @@ public class UsuarioRepositorioImpl implements UsuarioRepositorio {
 			return 0;
 		}
 	}
+	
+	
+	
 	@Override
-	public Usuario findUsuario(int idCliente) {
+	public Usuario findUsuarioCliTelepeaje(int idCliente) {
 		try {
 
-			Nacional nacional = (Nacional) em.createQuery("SELECT n FROM nacional n WHERE n.id = :id")
+			Nacional nacional = (Nacional) em.createQuery("SELECT n FROM nacional n WHERE n.clienteTelepeaje.idClienteTelepeaje = :id")
 					.setParameter("id", idCliente).getSingleResult();
 
 			if (nacional != null) {
@@ -63,7 +55,7 @@ public class UsuarioRepositorioImpl implements UsuarioRepositorio {
 				
 		} catch (NoResultException e) {
 			try {
-			Extranjero extranjero = (Extranjero) em.createQuery("SELECT n FROM extranjero n WHERE n.id = :id")
+			Extranjero extranjero = (Extranjero) em.createQuery("SELECT n FROM extranjero n WHERE n.clienteTelepeaje.idClienteTelepeaje = :id")
 					.setParameter("id", idCliente).getSingleResult();
 
 				return extranjero;
@@ -76,17 +68,46 @@ public class UsuarioRepositorioImpl implements UsuarioRepositorio {
 	}
 
 	@Override
+	public Usuario findUsuario(int id) {
+		
+		return em.find(Usuario.class, id);
+	}
+	
+	@Override
+	public ClienteTelepeaje findCliTelepeaje(int idCliente) {
+		return em.find(ClienteTelepeaje.class, idCliente);
+		
+	}
+	
+	@Override
 	public Usuario findByTag(int tag) {
-		log.info("### findByTag 1 ###\n");
 		int idCliente = findIdClienteByTag(tag);
-		log.info("### findByTag 2 ### " + idCliente + "\n");
-		Usuario usu = findUsuario(idCliente);
-
-		//log.info("$$$ usu nacional encontrado $$$\n" + usu.getNombre() + "$$$$" + usu.getNacionalidad());
+		Usuario usu = findUsuarioCliTelepeaje(idCliente);
 
 		return usu;
 	}
 
+    @Override
+    @Transactional
+    public void actualizarUsuario(Usuario usr) {
+        em.merge(usr);
+    };
+    
+    @Override
+    @Transactional
+    public void actualizarCliTelepeaje (ClienteTelepeaje cliTelepeaje) {
+    	//em.merge(cliTelepeaje.getCtaPrepaga());
+    	//em.merge(cliTelepeaje.getCtaPostpaga());
+        em.merge(cliTelepeaje);
+    };
+    
+    @Override
+    @Transactional
+    public void actualizarCuentaPrepaga(PrePaga ctaPrepaga) {
+    	em.merge(ctaPrepaga);
+    	
+    };
+	
 	@Override
 	public List<Cuenta> findCuentasByTag(int tag) {
 		Usuario usu = findByTag(tag);
@@ -146,28 +167,13 @@ public class UsuarioRepositorioImpl implements UsuarioRepositorio {
 	}
 
 
-	@Override
-	public List<Vehiculo> findVehiculoByUser(Usuario usr) {
-//    	List<Vehiculo> vehiculos = new ArrayList<>();
-//    	for(Vinculo vinculos: usr.getVehiculosVinculados()) {
-//    		if(vinculos.isActivo() == true) {
-//    			vehiculos.add(vinculos.getVehiculo());
-//    		}
-//    	}
-
-		return null;
-	}
 
 	@Override
 	public void agregarTarjetaPostPaga(ClienteTelepeaje clienteTelepeaje, PostPaga postPaga) {
 		clienteTelepeaje.setCtaPostPaga(postPaga);
 	}
 
-	@Override
-	public ClienteTelepeaje findClienteTelepeajeByCi(long ci) {
 
-		return null;
-	}
 
 	@Override
 	public List<Vinculo> findVinculosByUser(Usuario usr) {
@@ -182,11 +188,18 @@ public class UsuarioRepositorioImpl implements UsuarioRepositorio {
 		return vehiculo.getId();
 		
 	};
-	
-    @Override
-    @Transactional
-    public void actualizarUsuario(Usuario usr) {
-        em.merge(usr);
-    }
 
-}
+
+	@Override
+	public List<Vehiculo> traerVehiculosUsr(Usuario usr){
+	
+	    String jpql = "SELECT v FROM Vehiculo_Gestion v WHERE v.usuario = :Usuario";
+	    TypedQuery<Vehiculo> query = em.createQuery(jpql, Vehiculo.class);
+	    query.setParameter("Usuario", usr);
+	    return query.getResultList();
+	
+	}
+	
+
+
+}//fin

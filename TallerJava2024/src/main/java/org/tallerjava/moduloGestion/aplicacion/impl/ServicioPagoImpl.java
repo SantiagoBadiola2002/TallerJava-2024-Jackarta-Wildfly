@@ -10,6 +10,8 @@ import org.tallerjava.moduloGestion.aplicacion.ServicioPago;
 import org.tallerjava.moduloGestion.dominio.*;
 import org.tallerjava.moduloGestion.dominio.repo.UsuarioRepositorio;
 import org.tallerjava.moduloGestion.interfase.evento.out.PublicadorEvento;
+import org.tallerjava.moduloGestion.interfase.remota.rest.dto.DTIdCliente;
+import org.tallerjava.moduloGestion.interfase.remota.rest.dto.DTVehiculo;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -80,7 +82,7 @@ public class ServicioPagoImpl implements ServicioPago {
 				PostPaga ctaPostpaga = usr.getClienteTelepeaje().getCtaPostpaga();
 
 				if (ctaPostpaga != null) {
-					List<Vehiculo> vehiculos = repoUsuario.findVehiculoByUser(usr);
+					List<Vehiculo> vehiculos = repoUsuario.traerVehiculosUsr(usr);
 					log.infof("*** Respuesta Post Pago: tag %s, importe %s, estado Pago %s", tag, importe, realizado);
 					notificarPostPago(usr, tag, importe, ctaPostpaga.getTarjeta().getIdTarjeta());
 					realizado = true;
@@ -148,25 +150,27 @@ public class ServicioPagoImpl implements ServicioPago {
 	public boolean vincularVehiculo(int idCliente, int tag, String matricula) {
 		boolean vinculado = false;
 
-		Usuario usr = repoUsuario.findUsuario(idCliente);
+		Usuario usr = repoUsuario.findUsuarioCliTelepeaje(idCliente);
 		Identificador i = new Identificador(matricula, tag);
 		Vinculo vinculo = new Vinculo(LocalDateTime.now(), true);
 		List<PasadasPorPeaje> pasadas = new ArrayList<>();
-		Vehiculo v = new Vehiculo(i,usr.getClienteTelepeaje(), vinculo, pasadas);
+		Vehiculo v = new Vehiculo(i,usr.getClienteTelepeaje(), usr ,vinculo, pasadas);
 		long idVehiculo = repoUsuario.salvarVehiculo(v);
 		log.infof("\n######### Salvar Vehiculo OK. IdVehiculo: #########\n" + idVehiculo);
 		
+		repoUsuario.actualizarUsuario(usr);
 		
-		if((usr.getVehiculos()) == null) {
-			List<Vehiculo> vehiculos = new ArrayList<>();	
-			vehiculos.add(v);
-			repoUsuario.actualizarUsuario(usr);
-			vinculado = true;
-		} else {
-			usr.getVehiculos().add(v);
-			repoUsuario.actualizarUsuario(usr);
-			vinculado = true;
-		}
+//		
+//		if((usr.getVehiculos()) == null) {
+//			List<Vehiculo> vehiculos = new ArrayList<>();	
+//			vehiculos.add(v);
+//			repoUsuario.actualizarUsuario(usr);
+//			vinculado = true;
+//		} else {
+//			usr.getVehiculos().add(v);
+//			repoUsuario.actualizarUsuario(usr);
+//			vinculado = true;
+//		}
 
 		//ACTUALIZAR BD
 
@@ -190,11 +194,29 @@ public class ServicioPagoImpl implements ServicioPago {
 //		 
 		 return desvincular;
 	 }
+	 @Override
+	 public List<DTVehiculo> mostrarVehiculoVinculados(int id){
+		 List<DTVehiculo> dtVehiculos = new ArrayList<>();
+		 ///cambiar por find de usuario comun
+		 
+		 Usuario usr = repoUsuario.findUsuarioCliTelepeaje(id);
+		 
+		 //traigo los vehiculos
+		 List<Vehiculo> vehiculos = repoUsuario.traerVehiculosUsr(usr);
+		 
+		 for (Vehiculo v : vehiculos) {
+			 
+			 log.infof("\n######### SERVICIO PAGO TAG #########\n" + v.getIdentificador().getTag() + "#############");
+			 
+			 DTVehiculo dtV = new DTVehiculo(v.getCliente().getIdCliente(), 
+					 							v.getIdentificador().getTag(), 
+					 							v.getIdentificador().getMatricula());
+			 dtVehiculos.add(dtV);
+		 }
+		 
+		 return dtVehiculos;
+	 }; 
 
-	private Usuario findUserByCliente(ClienteTelepeaje cliTelepeaje) {
-
-		return cliTelepeaje.getUsuario();
-	}
 
 	public List<Integer> obtenerCuentasPorTag(int tag) {
 		Usuario usr = repoUsuario.findByTag(tag);
@@ -224,7 +246,7 @@ public class ServicioPagoImpl implements ServicioPago {
 	}
 
 	public ClienteTelepeaje obtenerClienteTelepeajeByCi(long ci) {
-		return repoUsuario.findClienteTelepeajeByCi(ci);
+		return null;
 	}
 
 	@Override
@@ -238,7 +260,7 @@ public class ServicioPagoImpl implements ServicioPago {
 	@Override
 	public List<PasadasPorPeaje> consultarPasadas(int idCliente, LocalDateTime fechaInicial, LocalDateTime fechaFinal) {
 		Usuario usu = repoUsuario.findUsuario(idCliente);
-		List<Vehiculo> vehiculos = repoUsuario.findVehiculoByUser(usu);
+		List<Vehiculo> vehiculos = repoUsuario.traerVehiculosUsr(usu);
 		List<PasadasPorPeaje> pasadas = new ArrayList<>();
 
 		for (Vehiculo v : vehiculos) {
@@ -256,7 +278,7 @@ public class ServicioPagoImpl implements ServicioPago {
 	public List<PasadasPorPeaje> consultarPasadas(int idCliente, int tag, String matricula, LocalDateTime fechaInicial,
 			LocalDateTime fechaFinal) {
 		Usuario usu = repoUsuario.findUsuario(idCliente);
-		List<Vehiculo> vehiculos = repoUsuario.findVehiculoByUser(usu);
+		List<Vehiculo> vehiculos = repoUsuario.traerVehiculosUsr(usu);
 		List<PasadasPorPeaje> pasadas = new ArrayList<>();
 
 		for (Vehiculo v : vehiculos) {
@@ -274,11 +296,19 @@ public class ServicioPagoImpl implements ServicioPago {
 	}
 
 	@Override
-	public double cargarSaldo(long ci, double importe) {
-		ClienteTelepeaje clienteTelepeaje = obtenerClienteTelepeajeByCi(ci);
-		clienteTelepeaje.getCtaPrepaga().incrementarSaldo(importe);
-		return clienteTelepeaje.getCtaPrepaga().getSaldo();
+	public double cargarSaldo(int idCliente, double importe) {
+		ClienteTelepeaje cliTelepeaje = repoUsuario.findCliTelepeaje(idCliente);
+		
+		log.infof("\n######### CARGAR SALDO aqui #########\n" + cliTelepeaje.getCtaPrepaga().getSaldo() + "#############");
+		cliTelepeaje.getCtaPrepaga().incrementarSaldo(importe);
+		log.infof("\n######### CARGAR SALDO despues #########\n" + cliTelepeaje.getCtaPrepaga().getSaldo() + "#############");
+		
+		repoUsuario.actualizarCuentaPrepaga(cliTelepeaje.getCtaPrepaga());
+		repoUsuario.actualizarCliTelepeaje(cliTelepeaje);
+		return cliTelepeaje.getCtaPrepaga().getSaldo();
 	}
+
+
 
 	@Override
 	public double consultarSaldo(long ci) {

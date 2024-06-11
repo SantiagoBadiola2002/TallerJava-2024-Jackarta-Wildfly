@@ -54,10 +54,6 @@ public class ClienteTelepeaje {
 
 	}
 
-	public PostPaga getCtaPostPaga() {
-		return ctaPostPaga;
-	}
-
 	public int getIdCliente() {
 		return idClienteTelepeaje;
 	}

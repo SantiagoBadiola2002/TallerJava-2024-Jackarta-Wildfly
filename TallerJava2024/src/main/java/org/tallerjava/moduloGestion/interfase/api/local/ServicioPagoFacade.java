@@ -65,8 +65,8 @@ public class ServicioPagoFacade {
 		return servicioPago.consultarPasadas(idCliente, tag, matricula, fechaInicial, fechaFinal);
 	}
 
-	public double cargarSaldo(long ci, double importe) {
-		return servicioPago.cargarSaldo(ci, importe);	
+	public double cargarSaldo(int idCliente, double importe) {
+		return servicioPago.cargarSaldo(idCliente, importe);	
 	}
 
 	public double consultarSaldo(long ci) {

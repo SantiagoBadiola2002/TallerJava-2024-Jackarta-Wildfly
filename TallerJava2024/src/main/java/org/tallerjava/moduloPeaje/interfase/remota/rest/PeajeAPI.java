@@ -13,17 +13,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.jboss.logging.Logger;
-import org.tallerjava.moduloGestion.aplicacion.ServicioPago;
-import org.tallerjava.moduloGestion.dominio.PasadasPorPeaje;
-import org.tallerjava.moduloGestion.dominio.Usuario;
-import org.tallerjava.moduloGestion.interfase.remota.rest.dto.DTCi;
-import org.tallerjava.moduloGestion.interfase.remota.rest.dto.DTPago;
-import org.tallerjava.moduloGestion.interfase.remota.rest.dto.DTPasadas;
-import org.tallerjava.moduloGestion.interfase.remota.rest.dto.DTSaldo;
-import org.tallerjava.moduloGestion.interfase.remota.rest.dto.DTTag;
-import org.tallerjava.moduloGestion.interfase.remota.rest.dto.DTTarjeta;
-import org.tallerjava.moduloGestion.interfase.remota.rest.dto.DTUsuario;
-import org.tallerjava.moduloGestion.interfase.remota.rest.dto.DTVehiculo;
 import org.tallerjava.moduloPeaje.aplicacion.ServicioPeaje;
 import org.tallerjava.moduloPeaje.interfase.remota.rest.dto.DTIdentificador;
 import org.tallerjava.moduloPeaje.interfase.remota.rest.dto.DTImporte;

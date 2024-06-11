@@ -7,6 +7,7 @@ import java.util.List;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -25,21 +26,18 @@ public abstract class Usuario {
 	
 	@Id
     @GeneratedValue (strategy = GenerationType.TABLE)
-
     protected int id; 
 	
     protected String nombre;
     protected String email;
     
-    @OneToMany
-    protected List<Vehiculo> vehiculos;
     
     @OneToOne
     protected ClienteTelepeaje clienteTelepeaje;
 
     protected int nacionalidad;//0 nacional 1 extranjero
     
-	public long getId() {
+	public int getId() {
     	return this.id;
     }
 
@@ -66,13 +64,7 @@ public abstract class Usuario {
 		
 	}
 
-	public List<Vehiculo> getVehiculos() {
-		return vehiculos;
-	}
 
-	public void setVehiculos(List<Vehiculo> vehiculos) {
-		this.vehiculos = vehiculos;
-	}
 	
 	
 }

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.Random;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -32,17 +33,16 @@ public abstract class Cuenta {
     	
     }
     
-    public Cuenta(long id, long nroCuenta, LocalDateTime fechaApertura) {
+    public Cuenta(LocalDateTime fechaApertura) {
         this.id = id;
-        this.nroCuenta = nroCuenta;
+        //numero aleatorio para asignar a cuenta
+        LocalDateTime now = LocalDateTime.now();
+        long semilla = now.getYear() + now.getMonthValue() + now.getDayOfMonth() + now.getHour() + now.getMinute() + now.getSecond();
+        Random random = new Random(semilla);
+        this.nroCuenta = Math.abs(random.nextLong());
+        
         this.fechaApertura = fechaApertura;
     }
-
-	public Cuenta(LocalDateTime fechaApertura) {
-		this.fechaApertura = fechaApertura;
-	}
-    
-    
     
 
 }
