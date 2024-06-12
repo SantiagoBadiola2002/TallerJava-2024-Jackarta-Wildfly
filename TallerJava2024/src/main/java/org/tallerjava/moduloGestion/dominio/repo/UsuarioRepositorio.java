@@ -12,6 +12,8 @@ public interface UsuarioRepositorio {
      */
     public Usuario findByTag(int tag);
     
+    public Vehiculo findByTagVehiculo(int tag);
+    
     public Usuario findUsuarioCliTelepeaje(int idCliente);
 
 	List<Cuenta> findCuentasByTag(int tag);
@@ -24,6 +26,7 @@ public interface UsuarioRepositorio {
 	
 	public long salvarVehiculo(Vehiculo vehiculo);
 	public long salvarTarjetaPostPaga(PostPaga postPaga, Tarjeta tarjeta);
+	public int salvarPasadaPeaje(PasadaPeaje pasada);
 	
 	public void actualizarUsuario(Usuario usr);
 	public void actualizarCliTelepeaje(ClienteTelepeaje clienteTelepeaje);
@@ -32,5 +35,7 @@ public interface UsuarioRepositorio {
 	public List<Vehiculo> traerVehiculosUsr(Usuario id);
 	
 	public Usuario findUsuario(int id);
+
+	
 	
 }

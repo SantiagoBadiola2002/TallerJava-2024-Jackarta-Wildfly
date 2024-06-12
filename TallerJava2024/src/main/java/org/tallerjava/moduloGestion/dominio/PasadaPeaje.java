@@ -6,24 +6,45 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import lombok.Data;
 
 @Data
-@Entity (name = "gestion_PasadasPorPeaje")
-public class PasadasPorPeaje {
+@Entity (name = "gestion_pasadaPeaje")
+public class PasadaPeaje {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	int idPasadas;
+	int idPasada;
 	
 	LocalDateTime fecha;
 	double costo;
 	DTTipoCobro tipoCobro;
+	@ManyToOne
+	Vehiculo vehiculo;
 	
-	public PasadasPorPeaje(LocalDateTime fecha, double costo, DTTipoCobro tipoCobro) {
+	
+	public PasadaPeaje(LocalDateTime fecha, double costo, DTTipoCobro tipoCobro, Vehiculo vehiculo) {
 		this.fecha = fecha;
 		this.costo = costo;
 		this.tipoCobro = tipoCobro;
+		this.vehiculo = vehiculo;
+	}
+
+	public int getIdPasada() {
+		return idPasada;
+	}
+
+	public void setIdPasada(int idPasada) {
+		this.idPasada = idPasada;
+	}
+
+	public Vehiculo getVehiculo() {
+		return vehiculo;
+	}
+
+	public void setVehiculo(Vehiculo vehiculo) {
+		this.vehiculo = vehiculo;
 	}
 
 	public LocalDateTime getFecha() {

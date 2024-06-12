@@ -27,46 +27,50 @@ public class ServicioPagoImpl implements ServicioPago {
 	@Inject
 	private UsuarioRepositorio repoUsuario;
 
+	
 	@Override
+	@Transactional
 	public boolean realizarPrePago(int tag, double importe) {
 		log.infof("*** Respuesta Pre Pago realizado: tag , importe , estado Pago ", tag, importe);
-		return true;
-//		boolean realizado = false;
-//		Usuario usr = repoUsuario.findByTag(tag);
-//		if (usr != null) {
-//			if (usr.getClienteTelepeaje() != null) {
-//				PrePaga ctaPrepaga = usr.getClienteTelepeaje().getCtaPrepaga();
-//
-//				if (ctaPrepaga.getSaldo() >= importe) {
-//					ctaPrepaga.descontarSaldo(importe);
-//					notificarPrePago(usr, tag, importe);
-//					log.infof("*** Respuesta Pre Pago realizado: tag %s, importe %s, estado Pago %s", tag, importe,
-//							realizado);
-//					realizado = true;
-//				} else {
-//					log.infof("*** Respuesta Pre Pago NO realizado: tag %s, importe %s, saldo %s", tag, importe,
-//							ctaPrepaga.getSaldo());
-//					notificarSaldoInsuficiente(usr, tag, importe, ctaPrepaga.getSaldo());
-//				}
-//
-//			} else {
-//				// estoy frente a otro problema de inconsistencia ya que para tener un tag
-//				// tengo que ser cliente del telepeaje
-//				// TODO logear y mandar evento al modulo de monitoreo
-//				evento.publicarClienteTelepeajeNoEncontradoPorTag(
-//						"Cliente Telepeaje no encontrado por el tag %s: " + tag + " ");
-//
-//			}
-//			realizado = true;
-//		} else {
-//			// estamos frente a un problema grave ya que dado un tag (vehiculo),
-//			// no podemos saber a que Cliente pertenece, recordar que los tags se
-//			// entregan cuando el Cliente se registra en el sistema
-//			// TODO logear y mandar evento al modulo de monitorio
-//			evento.publicarUsuarioNoEncontradoPorTag("Usuario no encontrado por el tag %s: " + tag + " ");
-//
-//		}
-//		return realizado;
+		boolean realizado = false;
+        Vehiculo vehiculo = repoUsuario.findByTagVehiculo(tag);
+        if (vehiculo != null) {
+
+            if ( vehiculo.getCliente() != null) {
+                ClienteTelepeaje cli = vehiculo.getCliente();
+                PrePaga ctaPrepaga = cli.getCtaPrepaga();
+
+                if (ctaPrepaga.getSaldo() >= importe) {
+                    //TODO controllar que el salo sea suficente
+                    ctaPrepaga.descontarSaldo(importe);
+
+                    //Cargar pasada por peaje
+                    PasadaPeaje pasada = new PasadaPeaje(LocalDateTime.now(), importe, DTTipoCobro.PREPAGO, vehiculo);
+                    //Guardo pasada
+                    repoUsuario.salvarPasadaPeaje(pasada);
+                    
+                    notificarPrePago(cli.getUsuario(), tag, importe);
+                    realizado = true;
+
+                } else {
+                    log.infof("Saldo insuficiente %s", tag);
+                    realizado = false;
+                }
+
+            } else {
+                //estoy frente a otro problema de inconsistencia ya que para tener un tag
+                //tengo que ser cliente del telepeaje
+                //TODO logear y mandar evento al modulo de monitoreo
+            }
+
+        } else {
+            //estamos frente a un problema grave ya que dado un tag (vehiculo),
+            // no podemos saber a que Cliente pertenece, recordar que los tags se
+            //entregan cuando el Cliente se registra en el sistema
+            //TODO logear y mandar evento al modulo de monitorio
+            log.infof("Error grave: No existe el usuario con el tag %d", tag);
+        }
+        return realizado;
 	}
 
 	@Override
@@ -107,8 +111,9 @@ public class ServicioPagoImpl implements ServicioPago {
 
 	private void notificarPrePago(Usuario usr, int tag, double importe) {
 		evento.publicarNotificarPrePago("Se ha realizado el PrePago");
-
 	}
+	
+	
 
 	private void notificarPostPago(Usuario usr, int tag, double importe, int idTarjeta) {
 		evento.publicarNotificarPostPago("Se ha realizado el PostPago");
@@ -148,31 +153,17 @@ public class ServicioPagoImpl implements ServicioPago {
 
 	@Transactional
 	public boolean vincularVehiculo(int idCliente, int tag, String matricula) {
-		boolean vinculado = false;
+		boolean vinculado = true;
 
 		Usuario usr = repoUsuario.findUsuarioCliTelepeaje(idCliente);
 		Identificador i = new Identificador(matricula, tag);
 		Vinculo vinculo = new Vinculo(LocalDateTime.now(), true);
-		List<PasadasPorPeaje> pasadas = new ArrayList<>();
-		Vehiculo v = new Vehiculo(i,usr.getClienteTelepeaje(), usr ,vinculo, pasadas);
+		Vehiculo v = new Vehiculo(i,usr.getClienteTelepeaje(), usr ,vinculo);
 		long idVehiculo = repoUsuario.salvarVehiculo(v);
 		log.infof("\n######### Salvar Vehiculo OK. IdVehiculo: #########\n" + idVehiculo);
 		
 		repoUsuario.actualizarUsuario(usr);
 		
-//		
-//		if((usr.getVehiculos()) == null) {
-//			List<Vehiculo> vehiculos = new ArrayList<>();	
-//			vehiculos.add(v);
-//			repoUsuario.actualizarUsuario(usr);
-//			vinculado = true;
-//		} else {
-//			usr.getVehiculos().add(v);
-//			repoUsuario.actualizarUsuario(usr);
-//			vinculado = true;
-//		}
-
-		//ACTUALIZAR BD
 
 
 		return vinculado;
@@ -265,39 +256,39 @@ public class ServicioPagoImpl implements ServicioPago {
 	}
 
 	@Override
-	public List<PasadasPorPeaje> consultarPasadas(int idCliente, LocalDateTime fechaInicial, LocalDateTime fechaFinal) {
+	public List<PasadaPeaje> consultarPasadas(int idCliente, LocalDateTime fechaInicial, LocalDateTime fechaFinal) {
 		Usuario usu = repoUsuario.findUsuario(idCliente);
 		List<Vehiculo> vehiculos = repoUsuario.traerVehiculosUsr(usu);
-		List<PasadasPorPeaje> pasadas = new ArrayList<>();
+		List<PasadaPeaje> pasadas = new ArrayList<>();
 
-		for (Vehiculo v : vehiculos) {
-			for (PasadasPorPeaje p : v.getPasadas()) {
-				if (p.getFecha().isAfter(fechaInicial) && p.getFecha().isBefore(fechaFinal)) {
-					pasadas.add(p);
-				}
-			}
-		}
+//		for (Vehiculo v : vehiculos) {
+//			for (PasadaPeaje p : v.getPasadaPeaje()) {
+//				if (p.getFecha().isAfter(fechaInicial) && p.getFecha().isBefore(fechaFinal)) {
+//					pasadas.add(p);
+//				}
+//			}
+//		}
 
 		return pasadas;
 	}
 
 	@Override
-	public List<PasadasPorPeaje> consultarPasadas(int idCliente, int tag, String matricula, LocalDateTime fechaInicial,
+	public List<PasadaPeaje> consultarPasadas(int idCliente, int tag, String matricula, LocalDateTime fechaInicial,
 			LocalDateTime fechaFinal) {
 		Usuario usu = repoUsuario.findUsuario(idCliente);
 		List<Vehiculo> vehiculos = repoUsuario.traerVehiculosUsr(usu);
-		List<PasadasPorPeaje> pasadas = new ArrayList<>();
+		List<PasadaPeaje> pasadas = new ArrayList<>();
 
-		for (Vehiculo v : vehiculos) {
-			if ((matricula != null && v.getIdentificador().getMatricula().equals(matricula))
-					|| (tag != 0 && (v.getIdentificador().getTag() == tag))) {
-				for (PasadasPorPeaje p : v.getPasadas()) {
-					if (p.getFecha().isAfter(fechaInicial) && p.getFecha().isBefore(fechaFinal)) {
-						pasadas.add(p);
-					}
-				}
-			}
-		}
+//		for (Vehiculo v : vehiculos) {
+//			if ((matricula != null && v.getIdentificador().getMatricula().equals(matricula))
+//					|| (tag != 0 && (v.getIdentificador().getTag() == tag))) {
+//				for (PasadaPeaje p : v.getPasadaPeaje()) {
+//					if (p.getFecha().isAfter(fechaInicial) && p.getFecha().isBefore(fechaFinal)) {
+//						pasadas.add(p);
+//					}
+//				}
+//			}
+//		}
 
 		return pasadas;
 	}

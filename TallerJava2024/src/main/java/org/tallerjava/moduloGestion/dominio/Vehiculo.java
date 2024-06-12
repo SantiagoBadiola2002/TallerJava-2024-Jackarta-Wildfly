@@ -46,41 +46,34 @@ public class Vehiculo {
 	@ManyToOne
 	private Usuario usuario;
 
-	@OneToMany
-	private List<PasadasPorPeaje> pasadas;
-
 	@Embedded
 	private Vinculo vinculo;
 	
 	public Vehiculo() {}
 
-	public Vehiculo(Identificador identificador, ClienteTelepeaje cliente, Usuario usuario, Vinculo vinculo, List<PasadasPorPeaje> pasadas) {
+	public Vehiculo(Identificador identificador, ClienteTelepeaje cliente, Usuario usuario, Vinculo vinculo) {
 		this.identificador = identificador;
 		this.cliente = cliente;
-		this.pasadas = pasadas;
 		this.vinculo = vinculo;
 		this.usuario = usuario;
 	}
 
-	public Vehiculo(Identificador identificador, ClienteTelepeaje cliente, List<PasadasPorPeaje> pasadas) {
+	public Vehiculo(Identificador identificador, ClienteTelepeaje cliente) {
 		this.identificador = identificador;
 		this.cliente = cliente;
-		this.pasadas = pasadas;
+
 	}
 
-	public Vehiculo(Identificador identificador, ClienteTelepeaje cliente, List<PasadasPorPeaje> pasadas,
-			Vinculo vinculo) {
+	public Vehiculo(Identificador identificador, ClienteTelepeaje cliente, Vinculo vinculo) {
 		this.identificador = identificador;
 		this.cliente = cliente;
-		this.pasadas = pasadas;
 		this.vinculo = vinculo;
 	}
 
 	public Vehiculo( Identificador identificador, ClienteTelepeaje cliente, 
-			Vinculo vinculo, List<PasadasPorPeaje> pasadas) {
+			Vinculo vinculo, List<PasadaPeaje> pasadas) {
 		this.identificador = identificador;
 		this.cliente = cliente;
-		this.pasadas = pasadas;
 		this.vinculo = vinculo;
 	}
 
@@ -109,13 +102,6 @@ public class Vehiculo {
 		this.cliente = cliente;
 	}
 
-	public List<PasadasPorPeaje> getPasadas() {
-		return pasadas;
-	}
-
-	public void setPasadas(List<PasadasPorPeaje> pasadas) {
-		this.pasadas = pasadas;
-	}
 
 	public Vinculo getVinculo() {
 		return vinculo;

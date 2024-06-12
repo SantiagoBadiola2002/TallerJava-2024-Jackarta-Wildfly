@@ -56,11 +56,11 @@ public class ServicioPagoFacade {
 		servicioPago.agregarTarjeta(ci, nroTarjeta, fechaVtoTarjeta, nombreCompletoUsuario);
 	}
 
-	public List<PasadasPorPeaje> consultarPasadas(int idCliente, LocalDateTime fechaInicial, LocalDateTime fechaFinal) {
+	public List<PasadaPeaje> consultarPasadas(int idCliente, LocalDateTime fechaInicial, LocalDateTime fechaFinal) {
 		return servicioPago.consultarPasadas(idCliente, fechaInicial, fechaFinal);
 	}
 
-	public List<PasadasPorPeaje> consultarPasadas(int idCliente, int tag, String matricula, LocalDateTime fechaInicial,
+	public List<PasadaPeaje> consultarPasadas(int idCliente, int tag, String matricula, LocalDateTime fechaInicial,
 			LocalDateTime fechaFinal) {
 		return servicioPago.consultarPasadas(idCliente, tag, matricula, fechaInicial, fechaFinal);
 	}

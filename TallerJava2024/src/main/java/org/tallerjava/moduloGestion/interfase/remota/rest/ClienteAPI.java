@@ -15,7 +15,7 @@ import java.util.List;
 
 import org.jboss.logging.Logger;
 import org.tallerjava.moduloGestion.aplicacion.ServicioPago;
-import org.tallerjava.moduloGestion.dominio.PasadasPorPeaje;
+import org.tallerjava.moduloGestion.dominio.PasadaPeaje;
 import org.tallerjava.moduloGestion.dominio.Usuario;
 import org.tallerjava.moduloGestion.interfase.remota.rest.dto.*;
 @ApplicationScoped
@@ -27,7 +27,7 @@ public class ClienteAPI {
 	@Inject
 	private ServicioPago servicioPago;
 
-	// curl -X POST -v  http://localhost:8080/TallerJava2024/api/moduloGestion/realizarPrePago -H "Content-Type: application/json" -d '{"tag":123, "importe": 456.78}'
+	// curl -X POST -v  http://localhost:8080/TallerJava2024/api/moduloGestion/realizarPrePago -H "Content-Type: application/json" -d '{"tag":555, "importe": 456.78}'
 	@POST
 	@Path("/realizarPrePago")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -112,7 +112,7 @@ public class ClienteAPI {
 		return servicioPago.obtenerCuentasPorTag(tag.getTag());
 	}
 
-	// curl -X POST -v http://localhost:8080/TallerJava2024/api/moduloGestion/agregarTarjeta -H "Content-Type: application/json" -d '{"idCliente":10000,"nroTarjeta":3333,"fechaVtoTarjeta":"2024-06-12T14:30:00","nombreCompletoUsuario":"Juan Lopez"}'    
+	// curl -X POST -v http://localhost:8080/TallerJava2024/api/moduloGestion/agregarTarjeta -H "Content-Type: application/json" -d '{"idCliente":1,"nroTarjeta":3333,"fechaVtoTarjeta":"2024-06-12T14:30:00","nombreCompletoUsuario":"Juan Lopez"}'    
 	@POST
 	@Path("/agregarTarjeta")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -137,7 +137,7 @@ public class ClienteAPI {
 	@GET
 	@Path("/consultarPasadas")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<PasadasPorPeaje> consultarPasadas(DTPasadas dtPasadas) {
+	public List<PasadaPeaje> consultarPasadas(DTPasadas dtPasadas) {
 		LocalDateTime dateIni = LocalDateTime.parse(dtPasadas.getFechaInicial());
 		LocalDateTime dateFin = LocalDateTime.parse(dtPasadas.getFechaFinal());
 
@@ -155,7 +155,7 @@ public class ClienteAPI {
 
 	}
 
-	// curl -X POST -v http://localhost:8080/TallerJava2024/api/moduloGestion/cargarSaldo -H "Content-Type: application/json" -d '{"idCliente":10000,"importe":1000}'
+	// curl -X POST -v http://localhost:8080/TallerJava2024/api/moduloGestion/cargarSaldo -H "Content-Type: application/json" -d '{"idCliente":1,"importe":1000}'
 	@POST
 	@Path("/cargarSaldo")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -165,7 +165,7 @@ public class ClienteAPI {
 		return nuevoSaldo;
 	}
 
-	// curl -X GET -v http://localhost:8080/TallerJava2024/api/moduloGestion/consultarSaldo/10000
+	// curl -X GET -v http://localhost:8080/TallerJava2024/api/moduloGestion/consultarSaldo/1
 	@GET
 	@Path("/consultarSaldo/{idCliente}")
 	@Produces(MediaType.APPLICATION_JSON)

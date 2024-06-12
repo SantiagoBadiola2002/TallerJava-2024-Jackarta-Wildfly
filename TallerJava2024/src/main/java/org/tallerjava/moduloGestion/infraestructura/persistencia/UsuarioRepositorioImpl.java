@@ -86,6 +86,18 @@ public class UsuarioRepositorioImpl implements UsuarioRepositorio {
 
 		return usu;
 	}
+	
+    @Override
+    public Vehiculo findByTagVehiculo(int tag) {
+        String sql = "select v from Vehiculo_Gestion v where v.identificador.tag= :tag";
+
+        TypedQuery<Vehiculo> findByTag = em.createQuery(sql, Vehiculo.class).setParameter("tag", tag);
+        try {
+            return findByTag.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
 
     @Override
     @Transactional
@@ -179,6 +191,13 @@ public class UsuarioRepositorioImpl implements UsuarioRepositorio {
 		
 	}
 
+	@Override
+	public int salvarPasadaPeaje(PasadaPeaje pasada) {
+		em.persist(pasada);
+	
+		return pasada.getIdPasada();
+		
+	}
 
 	@Override
 	public List<Vinculo> findVinculosByUser(Usuario usr) {
