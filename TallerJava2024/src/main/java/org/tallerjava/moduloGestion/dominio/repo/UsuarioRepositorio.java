@@ -19,12 +19,11 @@ public interface UsuarioRepositorio {
 	public ClienteTelepeaje findCliTelepeaje(int idCliente);
 	
 	public ClienteTelepeaje crearClienteTelepeaje(Usuario usr);
-	
-	public void agregarTarjetaPostPaga(ClienteTelepeaje clienteTelepeaje, PostPaga postPaga);
 
 	public List<Vinculo> findVinculosByUser(Usuario usr);
 	
 	public long salvarVehiculo(Vehiculo vehiculo);
+	public long salvarTarjetaPostPaga(PostPaga postPaga, Tarjeta tarjeta);
 	
 	public void actualizarUsuario(Usuario usr);
 	public void actualizarCliTelepeaje(ClienteTelepeaje clienteTelepeaje);

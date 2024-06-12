@@ -84,7 +84,7 @@ public class ServicioPagoImpl implements ServicioPago {
 				if (ctaPostpaga != null) {
 					List<Vehiculo> vehiculos = repoUsuario.traerVehiculosUsr(usr);
 					log.infof("*** Respuesta Post Pago: tag %s, importe %s, estado Pago %s", tag, importe, realizado);
-					notificarPostPago(usr, tag, importe, ctaPostpaga.getTarjeta().getIdTarjeta());
+					//notificarPostPago(usr, tag, importe, ctaPostpaga.getTarjeta().getIdTarjeta());
 					realizado = true;
 				} else {
 					log.infof(
@@ -233,7 +233,7 @@ public class ServicioPagoImpl implements ServicioPago {
 
 			if (usr.getClienteTelepeaje().getCtaPostpaga() != null) {
 
-				cuentas.add(usr.getClienteTelepeaje().getCtaPostpaga().getIdTarjeta());
+				//cuentas.add(usr.getClienteTelepeaje().getCtaPostpaga());
 			} else {
 				cuentas.add(-1);
 			}
@@ -245,16 +245,23 @@ public class ServicioPagoImpl implements ServicioPago {
 		return cuentas;
 	}
 
-	public ClienteTelepeaje obtenerClienteTelepeajeByCi(long ci) {
-		return null;
-	}
-
 	@Override
-	public void agregarTarjeta(long ci, int nroTarjeta, LocalDateTime fechaVtoTarjeta, String nombreCompletoUsuario) {
-		ClienteTelepeaje clienteTelepeaje = obtenerClienteTelepeajeByCi(ci);
-		Tarjeta tarjeta = new Tarjeta(nroTarjeta, fechaVtoTarjeta, nombreCompletoUsuario);
-		PostPaga postPaga = new PostPaga(LocalDateTime.now(), tarjeta);
-		repoUsuario.agregarTarjetaPostPaga(clienteTelepeaje, postPaga);
+	@Transactional
+	public boolean agregarTarjeta(int idCliente, int nroTarjeta, LocalDateTime fechaVtoTarjeta, String nombreCompletoUsuario) {
+		
+		boolean agregado = false;
+		
+		ClienteTelepeaje clienteTelepeaje = repoUsuario.findCliTelepeaje(idCliente);
+		if (clienteTelepeaje != null) {
+			agregado = true;
+			Tarjeta tarjeta = new Tarjeta(nroTarjeta, fechaVtoTarjeta, nombreCompletoUsuario);
+			PostPaga postPaga = new PostPaga(LocalDateTime.now(), tarjeta);
+			clienteTelepeaje.setCtaPostPaga(postPaga);
+			long idCuenta = repoUsuario.salvarTarjetaPostPaga(postPaga, tarjeta);
+			repoUsuario.actualizarCliTelepeaje(clienteTelepeaje);
+		}
+
+		return agregado; 
 	}
 
 	@Override
@@ -311,8 +318,8 @@ public class ServicioPagoImpl implements ServicioPago {
 
 
 	@Override
-	public double consultarSaldo(long ci) {
-		ClienteTelepeaje clienteTelepeaje = obtenerClienteTelepeajeByCi(ci);
+	public double consultarSaldo(int idCliente) {
+		ClienteTelepeaje clienteTelepeaje = repoUsuario.findCliTelepeaje(idCliente);
 		return clienteTelepeaje.getCtaPrepaga().getSaldo();
 	}
 

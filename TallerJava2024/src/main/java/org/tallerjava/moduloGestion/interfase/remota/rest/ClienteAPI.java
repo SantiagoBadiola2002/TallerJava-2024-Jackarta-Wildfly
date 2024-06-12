@@ -112,19 +112,20 @@ public class ClienteAPI {
 		return servicioPago.obtenerCuentasPorTag(tag.getTag());
 	}
 
-	// curl -X POST -v
-	// http://localhost:8080/TallerJava2024/api/moduloGestion/agregarTarjeta -H
-	// "Content-Type: application/json" -d
-	// '{"ci":123,"nroTarjeta":1,"fechaVtoTarjeta":"23/05/2024","nombreCompletoUsuario":"Juan
-	// Lopez"}'
+	// curl -X POST -v http://localhost:8080/TallerJava2024/api/moduloGestion/agregarTarjeta -H "Content-Type: application/json" -d '{"idCliente":10000,"nroTarjeta":3333,"fechaVtoTarjeta":"2024-06-12T14:30:00","nombreCompletoUsuario":"Juan Lopez"}'    
 	@POST
 	@Path("/agregarTarjeta")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public void agregarTarjeta(DTTarjeta dtTarjeta) {
+	public boolean agregarTarjeta(DTTarjeta dtTarjeta) {
+		log.infof("fecha ANTES del parse: " + dtTarjeta.getFechaVtoTarjeta() + "\n");
 		LocalDateTime date = LocalDateTime.parse(dtTarjeta.getFechaVtoTarjeta());
-		log.infof("######### agregarTarjeta: ci: " + dtTarjeta.getCi() + " nroTarjeta: " + dtTarjeta.getNroTarjeta()
+		
+		log.infof("fecha DESPUES del parse: " + date + "\n");
+		log.infof("fecha HOY: " + LocalDateTime.now()+ "\n");
+		
+		log.infof("######### agregarTarjeta: idClinte: " + dtTarjeta.getIdCliente() + " nroTarjeta: " + dtTarjeta.getNroTarjeta()
 				+ "nombreUsuario: " + dtTarjeta.getNombreCompletoUsuario() + "#########");
-		servicioPago.agregarTarjeta(dtTarjeta.getCi(), dtTarjeta.getNroTarjeta(), date,
+		return servicioPago.agregarTarjeta(dtTarjeta.getIdCliente(), dtTarjeta.getNroTarjeta(), date,
 				dtTarjeta.getNombreCompletoUsuario());
 	}
 
@@ -164,16 +165,13 @@ public class ClienteAPI {
 		return nuevoSaldo;
 	}
 
-	// curl -X GET -v
-	// http://localhost:8080/TallerJava2024/api/moduloGestion/consultarSaldo
-	// -H "Content-Type: application/json" -d
-	// '{"ci":123}'
+	// curl -X GET -v http://localhost:8080/TallerJava2024/api/moduloGestion/consultarSaldo/10000
 	@GET
-	@Path("/consultarSaldo")
+	@Path("/consultarSaldo/{idCliente}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public double consultarSaldo(DTIdCliente dtIdCliente) {
-		log.infof("Consulta saldo: " + dtIdCliente.getIdCliente());
-		return servicioPago.consultarSaldo(dtIdCliente.getIdCliente());
+	public double consultarSaldo(@PathParam("idCliente") int idCliente) {
+		log.infof("Consulta saldo: " + idCliente + "\n");
+		return servicioPago.consultarSaldo(idCliente);
 	}
 
 }

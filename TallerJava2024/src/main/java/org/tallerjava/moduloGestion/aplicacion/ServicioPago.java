@@ -22,7 +22,7 @@ public interface ServicioPago {
     
     public List<Integer> obtenerCuentasPorTag(int tag);
     
-	public void agregarTarjeta(long ci, int nroTarjeta, LocalDateTime fechaVtoTarjeta, String nombreCompletoUsuario);
+	public boolean agregarTarjeta(int idCliente, int nroTarjeta, LocalDateTime fechaVtoTarjeta, String nombreCompletoUsuario);
 
     public List<PasadasPorPeaje> consultarPasadas(int idCliente, LocalDateTime fechaInicial, LocalDateTime fechaFinal);
     
@@ -30,7 +30,7 @@ public interface ServicioPago {
 
     public double cargarSaldo(int idCliente, double importe);
     
-    public double consultarSaldo(long ci);
+    public double consultarSaldo(int idCliente);
 
 	public List<DTVehiculo>  mostrarVehiculoVinculados(int id);
 }

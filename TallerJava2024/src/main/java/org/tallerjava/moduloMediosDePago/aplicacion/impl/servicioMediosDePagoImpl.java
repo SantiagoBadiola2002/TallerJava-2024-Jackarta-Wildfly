@@ -27,7 +27,7 @@ public class servicioMediosDePagoImpl implements servicioMediosDePago {
 	 private ServicioPagoFacade servicioPagoFacade;
 
 	@Override
-	public void altaCliente(long ci, int nroTarjeta, LocalDateTime fechaVtoTarjeta, String nombreCompletoUsuario) {
+	public void altaCliente(int ci, int nroTarjeta, LocalDateTime fechaVtoTarjeta, String nombreCompletoUsuario) {
 		//LLAMA AL MODULO GESTION CLIENTE TELEPEAJE CON CI DEBE EXISTIR PREVIAMENTE
 		//HAY QUE GUARDARLO AQUI?
 		servicioPagoFacade.agregarTarjeta(ci, nroTarjeta, fechaVtoTarjeta, nombreCompletoUsuario);

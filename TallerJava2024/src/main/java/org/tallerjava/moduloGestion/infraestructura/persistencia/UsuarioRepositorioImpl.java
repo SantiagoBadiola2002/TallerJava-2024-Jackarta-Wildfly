@@ -168,11 +168,16 @@ public class UsuarioRepositorioImpl implements UsuarioRepositorio {
 
 
 
-	@Override
-	public void agregarTarjetaPostPaga(ClienteTelepeaje clienteTelepeaje, PostPaga postPaga) {
-		clienteTelepeaje.setCtaPostPaga(postPaga);
-	}
+	
 
+	@Override
+	public long salvarTarjetaPostPaga(PostPaga postPaga, Tarjeta tarjeta) {
+		em.persist(tarjeta);
+		em.persist(postPaga);
+		
+		return postPaga.getIdCuenta();
+		
+	}
 
 
 	@Override

@@ -52,7 +52,7 @@ public class ServicioPagoFacade {
     	return servicioPago.obtenerCuentasPorTag(tag);
     }
 
-	public void agregarTarjeta(long ci, int nroTarjeta, LocalDateTime fechaVtoTarjeta, String nombreCompletoUsuario) {
+	public void agregarTarjeta(int ci, int nroTarjeta, LocalDateTime fechaVtoTarjeta, String nombreCompletoUsuario) {
 		servicioPago.agregarTarjeta(ci, nroTarjeta, fechaVtoTarjeta, nombreCompletoUsuario);
 	}
 
@@ -69,8 +69,8 @@ public class ServicioPagoFacade {
 		return servicioPago.cargarSaldo(idCliente, importe);	
 	}
 
-	public double consultarSaldo(long ci) {
-		return servicioPago.consultarSaldo(ci);
+	public double consultarSaldo(int idCliente) {
+		return servicioPago.consultarSaldo(idCliente);
 	}
   
 }

@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class DTTarjeta {
 	
-	long ci;
+	int idCliente;
 	int nroTarjeta;
 	String fechaVtoTarjeta;
 	String nombreCompletoUsuario;
@@ -16,15 +16,15 @@ public class DTTarjeta {
 		
 	}
 	
-	public DTTarjeta(long ci, int nroTarjeta, String fechaVtoTarjeta, String nombreCompletoUsuario) {
-		this.ci = ci;
+	public DTTarjeta(int idCliente, int nroTarjeta, String fechaVtoTarjeta, String nombreCompletoUsuario) {
+		this.idCliente = idCliente;
 		this.nroTarjeta = nroTarjeta;
 		this.fechaVtoTarjeta = fechaVtoTarjeta;
 		this.nombreCompletoUsuario = nombreCompletoUsuario;
 	}
 
-	public long getCi() {
-		return ci;
+	public int getIdCliente() {
+		return idCliente;
 	}
 
 	public int getNroTarjeta() {
@@ -39,8 +39,8 @@ public class DTTarjeta {
 		return nombreCompletoUsuario;
 	}
 
-	public void setCi(long ci) {
-		this.ci = ci;
+	public void setIdCliente(int idCliente) {
+		this.idCliente = idCliente;
 	}	
 
 }

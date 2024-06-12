@@ -44,5 +44,8 @@ public abstract class Cuenta {
         this.fechaApertura = fechaApertura;
     }
     
+    public long getIdCuenta() {
+    	return id;
+    }
 
 }
