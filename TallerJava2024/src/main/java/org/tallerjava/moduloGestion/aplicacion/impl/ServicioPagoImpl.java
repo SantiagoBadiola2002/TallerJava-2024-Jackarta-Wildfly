@@ -255,7 +255,7 @@ public class ServicioPagoImpl implements ServicioPago {
 		if (clienteTelepeaje != null) {
 			agregado = true;
 			Tarjeta tarjeta = new Tarjeta(nroTarjeta, fechaVtoTarjeta, nombreCompletoUsuario);
-			PostPaga postPaga = new PostPaga(LocalDateTime.now(), tarjeta);
+			PostPaga postPaga = new PostPaga(LocalDateTime.now(), tarjeta, clienteTelepeaje.getCtaPrepaga().getNroCuenta());
 			clienteTelepeaje.setCtaPostPaga(postPaga);
 			long idCuenta = repoUsuario.salvarTarjetaPostPaga(postPaga, tarjeta);
 			repoUsuario.actualizarCliTelepeaje(clienteTelepeaje);

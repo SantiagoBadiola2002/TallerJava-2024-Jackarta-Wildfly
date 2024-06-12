@@ -32,7 +32,7 @@ public abstract class Cuenta {
     public Cuenta() {
     	
     }
-    
+    //para primera cuenta al crear el Cli Telepeaje
     public Cuenta(LocalDateTime fechaApertura) {
         this.id = id;
         //numero aleatorio para asignar a cuenta
@@ -44,8 +44,18 @@ public abstract class Cuenta {
         this.fechaApertura = fechaApertura;
     }
     
-    public long getIdCuenta() {
+    //para cuentas pre y post pagas posteriores (asocio mismo nro cuenta)
+    public Cuenta(LocalDateTime fechaApertura, long nroCuenta) {
+    	this.fechaApertura = fechaApertura;
+    	this.nroCuenta = nroCuenta;
+    }
+    
+
+	public long getIdCuenta() {
     	return id;
     }
 
+    public long getNroCuenta() {
+    	return nroCuenta;
+    }
 }

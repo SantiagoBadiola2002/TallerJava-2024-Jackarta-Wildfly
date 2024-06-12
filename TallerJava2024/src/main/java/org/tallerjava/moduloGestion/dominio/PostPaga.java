@@ -19,8 +19,8 @@ public class PostPaga extends Cuenta{
 	private Tarjeta tarjeta;
 
 
-	 public PostPaga(LocalDateTime fechaApertura, Tarjeta tarjeta) {
-	        super(fechaApertura); // Inicializa los atributos heredados
+	 public PostPaga(LocalDateTime fechaApertura, Tarjeta tarjeta, long nroCuenta) {
+	        super(fechaApertura, nroCuenta); // Inicializa los atributos heredados
 	        this.tarjeta = tarjeta;
 	    }
 
