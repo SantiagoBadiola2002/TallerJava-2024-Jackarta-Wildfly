@@ -37,8 +37,8 @@ public class Vehiculo {
 	
 	public Vehiculo() {}
     
-	public Vehiculo(long id, Identificador identificador, Cliente cliente) {
-		this.id = id;
+	public Vehiculo(Identificador identificador, Cliente cliente) {
+
 		this.identificador = identificador;
 		this.cliente = cliente;
 	}

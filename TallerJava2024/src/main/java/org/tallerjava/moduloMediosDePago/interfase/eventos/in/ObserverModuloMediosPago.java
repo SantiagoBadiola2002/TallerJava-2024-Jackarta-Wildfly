@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import org.jboss.logging.Logger;
 
 import org.tallerjava.moduloGestion.interfase.evento.out.GestionINFONuevaTarjeta;
+import org.tallerjava.moduloGestion.interfase.evento.out.GestionINFONuevoVehiculo;
 import org.tallerjava.moduloMediosDePago.aplicacion.ServicioMediosDePago;
 import org.tallerjava.moduloMediosDePago.dominio.*;
 
@@ -24,6 +25,11 @@ public class ObserverModuloMediosPago {
         servicioMediosPago.altaCliente(event.getIdCliente(), event.getNroTarjeta(), event.getFechaVto(), event.getNombreCompletoUsuario());
     }
     
+    public void accept(@Observes GestionINFONuevoVehiculo event) {
+        log.infof("Evento procesado: MediosPagoNuevoVehiculo: %s", event.toString());
+       
+        servicioMediosPago.altaVehiculo(event.getIdCliente(), event.getMatricula(), event.getTag());
+    }
     
 }
 

@@ -11,6 +11,7 @@ public class Identificador {
     private String matricula;
     private int tag;
     
+    public Identificador() {}
 	public Identificador( String matricula, int tag) {
 
 		this.matricula = matricula;

@@ -24,6 +24,7 @@ public class Tarjeta {
     private LocalDateTime fechaVto;
     private String nombreCompletoUsuario;
     
+    public Tarjeta() {}
 	public Tarjeta(long id, int nro, LocalDateTime fechaVto, String nombreCompletoUsuario) {
 		this.id = id;
 		this.nro = nro;

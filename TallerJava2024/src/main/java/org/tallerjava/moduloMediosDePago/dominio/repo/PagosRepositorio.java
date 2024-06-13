@@ -1,10 +1,13 @@
 package org.tallerjava.moduloMediosDePago.dominio.repo;
 
-import org.tallerjava.moduloMediosDePago.dominio.Cliente;
+import org.tallerjava.moduloMediosDePago.dominio.*;
 
 public interface PagosRepositorio {
 
 	public void salvarCliente(Cliente cli);
+	public void salvarVehiculo(Vehiculo v);
+
+	public Cliente findByIdCliente(int idCliente);
 	
 	/*
 	 *  public Usuario findByTag(int tag);

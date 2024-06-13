@@ -25,7 +25,7 @@ public class UsuarioRepositorioImpl implements UsuarioRepositorio {
 	@PersistenceContext
 	private EntityManager em;
 
-	private static final Logger log = Logger.getLogger(ClienteAPI.class);
+	private static final Logger log = Logger.getLogger(UsuarioRepositorioImpl.class);
 
 
 	public int findIdClienteByTag(int tag) {

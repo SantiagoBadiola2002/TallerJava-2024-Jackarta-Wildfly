@@ -67,13 +67,11 @@ public class ServicioPagosAPI {
 		return RANDOM.nextInt(6) != 0;
 	}
 	
-	// curl -X POST -v http://localhost:8080/ServicioMockMedioPago/api/servicioPagosMock/autorizarPago -H "Content-Type: application/json" -d '{"nroTarjeta":111}'
-	@POST
-    @Path("/autorizarPago")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-	public String autorizarPago(DTNroTarjeta  nroTarjeta) {
-		String numeroTarjeta = nroTarjeta.getNroTarjeta();
+	// curl -X GET -v http://localhost:8080/ServicioMockMedioPago/api/servicioPagosMock/autorizarPago/333
+	@GET
+    @Path("/autorizarPago/{nroTarjeta}")
+	public String autorizarPago(@PathParam("nroTarjeta") String numeroTarjeta) {
+		//String numeroTarjeta = nroTarjeta.getNroTarjeta();
 
 		if (isTarjetaOK(numeroTarjeta)) {
 			return "PAGO APROBADO";

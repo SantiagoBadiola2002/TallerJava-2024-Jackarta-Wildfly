@@ -38,9 +38,7 @@ public class ClienteAPI {
 		// return false;
 	}
 
-	// curl -X POST -v
-	// http://localhost:8080/TallerJava2024/api/moduloGestion/realizarPostPago -H
-	// "Content-Type: application/json" -d '{"tag":123, "importe": 456.78}'
+	// curl -X POST -v http://localhost:8080/TallerJava2024/api/moduloGestion/realizarPostPago -H "Content-Type: application/json" -d '{"tag":555, "importe": 100.78}'
 	@POST
 	@Path("/realizarPostPago")
 	@Consumes(MediaType.APPLICATION_JSON)

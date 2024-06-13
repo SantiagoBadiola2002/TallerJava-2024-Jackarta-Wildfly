@@ -17,6 +17,9 @@ public class PublicadorEvento {
     private Event<GestionERRORVehiculoTagNoEncontradoPorTag> vehiculoTagNoEncontrado;
 	
 	@Inject
+    private Event<GestionERRORTarjetaRechazada> ERRORTarjetaRechazada;
+	
+	@Inject
     private Event<GestionINFONuevoVehiculo> nuevoVehiculo;
 	
 	@Inject
@@ -54,12 +57,17 @@ public class PublicadorEvento {
 		ERRORSaldoInsuficiente.fire(new GestionERRORSaldoInsuficiente(mensaje));
 	}
 	
+	public void publicarTarjetaRechazada(String mensaje) {
+		ERRORTarjetaRechazada.fire(new GestionERRORTarjetaRechazada(mensaje));
+	}
+	
 	//va a obs in Modulo Peaje
 	public void publicarNuevoVehiculo(Vehiculo vehiculo){
         GestionINFONuevoVehiculo evento = new GestionINFONuevoVehiculo(
                 vehiculo.getIdentificador().getTag(),
                 vehiculo.getIdentificador().getMatricula(),
-                vehiculo.getCliente().getUsuario().getNacionalidad()
+                vehiculo.getCliente().getUsuario().getNacionalidad(),
+                vehiculo.getCliente().getIdCliente()
         );
 
         nuevoVehiculo.fire(evento);

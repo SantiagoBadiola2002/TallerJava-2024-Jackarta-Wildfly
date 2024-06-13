@@ -18,7 +18,7 @@ public class PostPaga extends Cuenta{
 	@JoinColumn(name = "idTarjeta", referencedColumnName = "id")
 	private Tarjeta tarjeta;
 
-
+	public PostPaga() {}
 	 public PostPaga(LocalDateTime fechaApertura, Tarjeta tarjeta, long nroCuenta) {
 	        super(fechaApertura, nroCuenta); // Inicializa los atributos heredados
 	        this.tarjeta = tarjeta;

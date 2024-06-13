@@ -1,6 +1,11 @@
 package org.tallerjava.moduloMediosDePago.aplicacion.impl;
 
 import java.time.LocalDateTime;
+import jakarta.ws.rs.client.Client;
+import jakarta.ws.rs.client.ClientBuilder;
+import jakarta.ws.rs.client.Entity;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 
 import java.util.Date;
 import java.util.List;
@@ -27,26 +32,62 @@ public class ServicioMediosDePagoImpl implements ServicioMediosDePago {
 	@Inject
 	private PagosRepositorio repoPagos;
 
-	 @Inject
-	 private ServicioPagoFacade servicioPagoFacade;
+	@Inject
+	private ServicioPagoFacade servicioPagoFacade;
 
 	@Override
 	@Transactional
-	public void altaCliente(int idCliente, int nroTarjeta, LocalDateTime fechaVtoTarjeta, String nombreCompletoUsuario) {
+	public void altaCliente(int idCliente, int nroTarjeta, LocalDateTime fechaVtoTarjeta,
+			String nombreCompletoUsuario) {
 		log.infof("*** Agregando Ciente y Tarjeta: ", idCliente, nroTarjeta);
-		
+
 		Tarjeta tarjeta = new Tarjeta(nroTarjeta, fechaVtoTarjeta, nombreCompletoUsuario);
 		Cliente cli = new Cliente(idCliente, tarjeta, null);
-		
-			
+
 		repoPagos.salvarCliente(cli);
 	}
+
 	@Override
-	public int notificarPago(int idCliente, Vehiculo vehiculo, double importe, Tarjeta tarjeta) {
-		return 0;
+	@Transactional
+	public void altaVehiculo(int idCliente, String matricula, int tag) {
+		log.infof("*** Agregando Ciente y Vehiculo: ", idCliente, tag);
+		Identificador idVehiculo = new Identificador(matricula, tag);
+		Cliente cli = repoPagos.findByIdCliente(idCliente);
+
+		Vehiculo v = new Vehiculo(idVehiculo, cli);
+
+		repoPagos.salvarVehiculo(v);
+
 	}
-	
-	
+
+	@Override
+	public String notificarPago(int idCliente, int tag, double importe, int nroTarjeta) {
+		log.infof("*** Verificando Pago sistema Externo Ciente y Vehiculo: ", idCliente, tag);
+		Client client = ClientBuilder.newClient();
+		String responseBody = "";
+		try {
+            // Realizar la solicitud GET al endpoint autorizarPago con el número de tarjeta en la URL
+            Response response = client.target("http://localhost:8080/ServicioMockMedioPago/api/servicioPagosMock")
+                    .path("/autorizarPago/" + nroTarjeta)
+                    .request(MediaType.TEXT_PLAIN)
+                    .get();
+
+            // Verificar la respuesta
+            if (response.getStatus() == 200) {
+                responseBody = response.readEntity(String.class);
+                System.out.println("Respuesta de la API: " + responseBody);
+            } else {
+                System.out.println("La solicitud falló con código de respuesta: " + response.getStatus());
+            }
+        } finally {
+            // Cerrar el cliente
+            client.close();
+        }
+    
+	return responseBody;
+
+	}
+
 	@Override
 	public List<Pago> consultaDePagos(Date fechaInicial, Date fechaFinal) {
 		//return servicioPagoFacade.consultarPagosPorFechas(fechaInicial, fechaFinal);

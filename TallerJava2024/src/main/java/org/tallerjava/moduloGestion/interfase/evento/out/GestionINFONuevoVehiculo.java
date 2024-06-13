@@ -13,14 +13,21 @@ public class GestionINFONuevoVehiculo {
 	private String matricula;
     private int nacionalidad;
     
+    private int idCliente;
     
-    public GestionINFONuevoVehiculo(int tag, String matricula, int nacionalidad) {
+    
+    public GestionINFONuevoVehiculo(int tag, String matricula, int nacionalidad, int idCliente) {
 		this.tag = tag;
 		this.matricula = matricula;
 		this.nacionalidad = nacionalidad;
+		this.idCliente = idCliente;
 	}
     
-    public String getMatricula() {
+    public int getIdCliente() {
+		return idCliente;
+	}
+
+	public String getMatricula() {
     	return this.matricula;
     }
     
