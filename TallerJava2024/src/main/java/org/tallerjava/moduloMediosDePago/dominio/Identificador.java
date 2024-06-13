@@ -1,29 +1,22 @@
 package org.tallerjava.moduloMediosDePago.dominio;
 
+import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@Embeddable
 public class Identificador {
 	
-	private long id;
     private String matricula;
     private int tag;
     
-	public Identificador(long id, String matricula, int tag) {
-		super();
-		this.id = id;
+	public Identificador( String matricula, int tag) {
+
 		this.matricula = matricula;
 		this.tag = tag;
 	}
 
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
 
 	public String getMatricula() {
 		return matricula;

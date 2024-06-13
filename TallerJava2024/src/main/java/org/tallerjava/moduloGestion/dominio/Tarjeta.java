@@ -40,4 +40,18 @@ public class Tarjeta {
     public int getIdTarjeta() {
     	return (int) this.id;
     }
+    
+    public int getNroTarjeta() {
+    	return this.nro;
+    }
+    
+    public LocalDateTime getFechaVto() {
+    	return this.fechaVto;
+    }
+
+    public String getNombreCompleto() {
+    	return this.nombreCompletoUsuario;
+    }
+
+
 }

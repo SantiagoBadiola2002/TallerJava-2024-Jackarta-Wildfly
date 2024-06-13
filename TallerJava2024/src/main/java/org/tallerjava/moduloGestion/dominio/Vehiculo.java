@@ -38,7 +38,6 @@ public class Vehiculo {
 	@Embedded
 	private Identificador identificador;
 	
-    private int idUsuario;
 
 	@ManyToOne
 	private ClienteTelepeaje cliente;

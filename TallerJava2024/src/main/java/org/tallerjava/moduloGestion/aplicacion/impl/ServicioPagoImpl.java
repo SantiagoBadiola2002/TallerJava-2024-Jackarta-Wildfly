@@ -275,6 +275,8 @@ public class ServicioPagoImpl implements ServicioPago {
 			clienteTelepeaje.setCtaPostPaga(postPaga);
 			long idCuenta = repoUsuario.salvarTarjetaPostPaga(postPaga, tarjeta);
 			repoUsuario.actualizarCliTelepeaje(clienteTelepeaje);
+			
+			evento.publicarNuevaTarjeta(clienteTelepeaje.getIdCliente() , tarjeta);
 		}
 
 		return agregado; 

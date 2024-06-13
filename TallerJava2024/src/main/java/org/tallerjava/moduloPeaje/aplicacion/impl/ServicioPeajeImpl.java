@@ -63,6 +63,9 @@ public class ServicioPeajeImpl implements ServicioPeaje {
             if (!habilitado) {
                 //TODO mando evento al modulo de monitoreo
                 //el auto no pasa
+            	evento.publicarPagoNoRealizadoExtranjero("Pre y Post Pago a vehiculo Extranjero no realizado: " + tag);
+            	
+            	
             }
         }
         return habilitado;
@@ -96,9 +99,18 @@ public class ServicioPeajeImpl implements ServicioPeaje {
             //de cobro previos
             //TODO invocar a modulo de pago Sucive
         	
-            //si es habilitado Sucive true
-            //publico la pasada si lo anterior es true SUCIVE == 3
-            evento.publicarNuevaPasada(vehiculo, tarifa.getValor(), 3);
+        	
+        	
+        	if (habilitado) {
+        		//si es habilitado Sucive true
+        		//publico la pasada si lo anterior es true SUCIVE == 3
+        		evento.publicarNuevaPasada(vehiculo, tarifa.getValor(), 3);
+        	}else {
+        		//TODO mando evento al modulo de monitoreo
+                //el auto no pasa
+            	evento.publicarPagoNoRealizadoNacional("Pre, Post y Sucive Pago a vehiculo Nacional no realizado: " + tag);
+        		
+        	}
         }
 
         return habilitado;

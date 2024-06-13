@@ -1,5 +1,14 @@
 package org.tallerjava.moduloMediosDePago.dominio;
 
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Index;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -12,14 +21,23 @@ import lombok.Data;
  * No importa tener objetos repetidos, ya que estamos priorizando el bajo acoplamiento.
  */
 @Data
+@Entity(name = "Vehiculo_MedioPagos") // no puedo tener dos entidades que se llamen igual, aunque las mismas
+//esten en diferentes paquetes
+//no permitimos dos autos con misma matrícula
+@Table(name = "mediosPago_vehiculo")
 public class Vehiculo {
-  
+	@Id
+	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	private long id;
+	@Embedded
     private Identificador identificador;
-    private ClienteTelepeaje cliente;
+	
+	@ManyToOne
+    private Cliente cliente;
+	
+	public Vehiculo() {}
     
-	public Vehiculo(long id, Identificador identificador, ClienteTelepeaje cliente) {
-		super();
+	public Vehiculo(long id, Identificador identificador, Cliente cliente) {
 		this.id = id;
 		this.identificador = identificador;
 		this.cliente = cliente;
@@ -33,7 +51,7 @@ public class Vehiculo {
 		return identificador;
 	}
 
-	public ClienteTelepeaje getCliente() {
+	public Cliente getCliente() {
 		return cliente;
 	}
 
@@ -45,7 +63,7 @@ public class Vehiculo {
 		this.identificador = identificador;
 	}
 
-	public void setCliente(ClienteTelepeaje cliente) {
+	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
 	

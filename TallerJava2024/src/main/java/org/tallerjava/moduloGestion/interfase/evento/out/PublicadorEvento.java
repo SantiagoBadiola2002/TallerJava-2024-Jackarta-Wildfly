@@ -1,6 +1,7 @@
 package org.tallerjava.moduloGestion.interfase.evento.out;
 
 import org.tallerjava.moduloGestion.dominio.Vehiculo;
+import org.tallerjava.moduloGestion.dominio.Tarjeta;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Event;
@@ -17,6 +18,9 @@ public class PublicadorEvento {
 	
 	@Inject
     private Event<GestionINFONuevoVehiculo> nuevoVehiculo;
+	
+	@Inject
+    private Event<GestionINFONuevaTarjeta> nuevaTarjeta;
 	
 	@Inject
 	private Event<GestionOKPagoPrePago> OKPagoPrePago;
@@ -60,6 +64,17 @@ public class PublicadorEvento {
 
         nuevoVehiculo.fire(evento);
     }
+	
+	public void publicarNuevaTarjeta(int idCliente , Tarjeta tarjeta) {
+		GestionINFONuevaTarjeta evento = new GestionINFONuevaTarjeta(
+				idCliente,
+				tarjeta.getNroTarjeta(),
+				tarjeta.getFechaVto(),
+				tarjeta.getNombreCompleto()
+				);
+		
+		nuevaTarjeta.fire(evento);
+	}
 	
 	
 }

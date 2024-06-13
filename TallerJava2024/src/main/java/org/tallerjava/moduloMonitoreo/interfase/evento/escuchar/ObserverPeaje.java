@@ -2,7 +2,7 @@ package org.tallerjava.moduloMonitoreo.interfase.evento.escuchar;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
-import org.tallerjava.moduloPeaje.interfase.evento.out.PeajeVehiculoNoEncontrado;
+import org.tallerjava.moduloPeaje.interfase.evento.out.PeajeERRORVehiculoNoEncontrado;
 
 /**
  * Observese que este Modulo si esta acoplado con el módulo de Peaje.
@@ -11,7 +11,7 @@ import org.tallerjava.moduloPeaje.interfase.evento.out.PeajeVehiculoNoEncontrado
  */
 @ApplicationScoped
 public class ObserverPeaje {
-    public void accept(@Observes PeajeVehiculoNoEncontrado event) {
+    public void accept(@Observes PeajeERRORVehiculoNoEncontrado event) {
         //en un futuro acá voy a tener que mostrar en una gráfica de error lo ocurrido
         //System.out.println(event.getDescripcion());
     	System.out.println("Evento ObserverPeajeVehiculoNoEncontrado");

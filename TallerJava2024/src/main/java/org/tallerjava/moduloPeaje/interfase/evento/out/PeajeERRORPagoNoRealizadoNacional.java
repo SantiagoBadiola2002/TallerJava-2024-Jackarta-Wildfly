@@ -1,15 +1,14 @@
 package org.tallerjava.moduloPeaje.interfase.evento.out;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-public class PeajeVehiculoNoEncontrado {
+public class PeajeERRORPagoNoRealizadoNacional {
 	
     private String descripcion;
     
 
-	public PeajeVehiculoNoEncontrado(String descripcion) {
+	public PeajeERRORPagoNoRealizadoNacional(String descripcion) {
 		this.descripcion = descripcion;
 	}
 
@@ -24,3 +23,5 @@ public class PeajeVehiculoNoEncontrado {
     
 
 }
+	
+
