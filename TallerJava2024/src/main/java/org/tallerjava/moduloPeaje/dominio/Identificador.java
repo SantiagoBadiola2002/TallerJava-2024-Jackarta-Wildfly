@@ -17,6 +17,8 @@ public class Identificador {
 	@Column(nullable = false)
     private int tag;
     
+	public Identificador() {}
+	
 	public Identificador(String matricula, int tag) {
 		this.matricula = matricula;
 		this.tag = tag;

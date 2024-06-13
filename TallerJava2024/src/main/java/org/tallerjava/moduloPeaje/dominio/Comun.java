@@ -1,5 +1,7 @@
 package org.tallerjava.moduloPeaje.dominio;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import lombok.Getter;
@@ -7,9 +9,12 @@ import lombok.Getter;
 @Entity
 @DiscriminatorValue("comun")
 public class Comun extends Tarifa{
+	
+	public Comun() {}
     
-	public Comun(double valor) {
-        this.valor = valor;
+    public Comun(LocalDateTime fecha, double monto) {
+        this.valor = monto;
+        this.fechaAplicacion = fecha;
     }
 	
     public double getValor() {

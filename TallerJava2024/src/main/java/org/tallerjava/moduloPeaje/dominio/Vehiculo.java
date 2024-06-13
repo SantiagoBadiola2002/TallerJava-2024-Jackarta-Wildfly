@@ -11,8 +11,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-@Entity(name = "Vehiculo_Peaje") 
-@Table(name = "peaje_Vehiculo")
+@Entity
+@Table(name = "peaje_vehiculo")
 public class Vehiculo {
 
 	@Id
@@ -22,6 +22,8 @@ public class Vehiculo {
 	@Embedded
 	private Identificador identificador;
 	private int nacionalidad;
+	
+	public Vehiculo() {}
 
 	public Vehiculo( Identificador identificador, int nacionalidad) {
 		this.identificador = identificador;
@@ -35,7 +37,7 @@ public class Vehiculo {
 	}
 
 	public boolean nacional() {
-		return (nacionalidad ==1);
+		return (nacionalidad == 0);
 	}
 
 	public long getId() {

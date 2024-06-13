@@ -28,7 +28,9 @@ public class PeajeRepositorioImpl implements PeajeRepositorio {
 	    
     @Override
     public Vehiculo findByTag(int tag) {
-    	 String sql = "SELECT v FROM peaje_vehiculo v WHERE v.tag = :tag";
+    	
+    	System.out.println("HASTA ACA");
+    	 String sql = "SELECT v FROM Vehiculo v WHERE v.identificador.tag = :tag";
 
          TypedQuery<Vehiculo> findByTag = em.createQuery(sql, Vehiculo.class).setParameter("tag", tag);
          try {
@@ -40,7 +42,7 @@ public class PeajeRepositorioImpl implements PeajeRepositorio {
 
     @Override
     public Vehiculo findByMatricula(String matricula) {
-    	String sql = "SELECT v FROM peaje_vehiculo v WHERE v.matricula = :matricula";
+    	String sql = "SELECT v FROM Vehiculo v WHERE v.matricula = :matricula";
     	
     	TypedQuery<Vehiculo> findByMatricula = em.createQuery(sql, Vehiculo.class).setParameter("matricula", matricula);
     	 try {
@@ -51,36 +53,27 @@ public class PeajeRepositorioImpl implements PeajeRepositorio {
     }
 
     @Override
-    public Comun obtenerTarifaComun() {
-        String jpql = "SELECT c FROM peaje_tarifa c WHERE c.DTYPE = :comun";
-        TypedQuery<Comun> query = em.createQuery(jpql, Comun.class);
-        query.setParameter("DTYP", "comun");
+    public Preferencial obtenerTarifaPreferencial() {
+        TypedQuery<Preferencial> findLatest = em.createQuery(
+                "select t from Preferencial t order by t.fechaAplicacion desc ", Preferencial.class);
+                 findLatest.setMaxResults(1);
         try {
-            return query.getSingleResult();
+            return findLatest.getSingleResult();
         } catch (NoResultException e) {
+            log.error("Error de inconsistencia de datos, siempre tiene que existir una tarifa Preferencial.");
             return null;
         }
     }
-    
-//    Override
-//    public Comun obtenerTarifaComun() {
-//        String sql = "SELECT * FROM peaje_tarifa WHERE DTYPE = 'comun'";
-//        Query query = em.createNativeQuery(sql, Comun.class);
-//        try {
-//            return (Comun) query.getSingleResult();
-//        } catch (NoResultException e) {
-//            return null;
-//        }
-//    }
 
     @Override
-    public Preferencial obtenerTarifaPreferencial() {
-    	String sql = "SELECT p FROM peaje_tarifa p WHERE p.DTYPE = :preferencial";
-        TypedQuery<Preferencial> query = em.createQuery(sql, Preferencial.class);
-        query.setParameter("DTYP", "preferencial");
+    public Comun obtenerTarifaComun() {
+        TypedQuery<Comun> findLatest = em.createQuery(
+                "select t from Comun t order by t.fechaAplicacion desc ", Comun.class);
+        findLatest.setMaxResults(1);
         try {
-            return query.getSingleResult();
+            return findLatest.getSingleResult();
         } catch (NoResultException e) {
+            log.error("Error de inconsistencia de datos, siempre tiene que existir una tarifa Comun.");
             return null;
         }
     }

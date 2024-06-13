@@ -33,4 +33,8 @@ public interface ServicioPago {
     public double consultarSaldo(int idCliente);
 
 	public List<DTVehiculo>  mostrarVehiculoVinculados(int id);
+	
+	public Vehiculo traerVehiculo(int tag);
+
+	public void altaPasadaPeaje(PasadaPeaje pasada);
 }

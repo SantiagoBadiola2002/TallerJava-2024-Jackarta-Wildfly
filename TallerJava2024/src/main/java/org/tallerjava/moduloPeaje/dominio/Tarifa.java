@@ -1,5 +1,7 @@
 package org.tallerjava.moduloPeaje.dominio;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.Entity;
@@ -19,6 +21,6 @@ public abstract class Tarifa {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-
+	 protected LocalDateTime fechaAplicacion;
 	protected double valor;
 }

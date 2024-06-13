@@ -2,6 +2,9 @@ package TestModuloPeaje;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.spi.Bean;
+
+import java.time.LocalDateTime;
+
 import org.jboss.weld.junit.MockBean;
 import org.jboss.weld.junit5.EnableWeld;
 import org.jboss.weld.junit5.WeldInitiator;
@@ -93,12 +96,12 @@ class VerificoTagExtranjeroConPrePagoOk {
 
             @Override
             public Preferencial obtenerTarifaPreferencial() {
-                return new Preferencial(180);
+                return new Preferencial(LocalDateTime.now(),180);
             }
 
             @Override
             public Comun obtenerTarifaComun() {
-                return new Comun(180);
+                return new Comun(LocalDateTime.now(),180);
             }
         };
     }

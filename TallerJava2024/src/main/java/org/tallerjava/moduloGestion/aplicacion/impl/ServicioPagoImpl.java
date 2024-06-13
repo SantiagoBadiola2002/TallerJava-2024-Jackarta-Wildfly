@@ -45,9 +45,9 @@ public class ServicioPagoImpl implements ServicioPago {
                     ctaPrepaga.descontarSaldo(importe);
 
                     //Cargar pasada por peaje
-                    PasadaPeaje pasada = new PasadaPeaje(LocalDateTime.now(), importe, DTTipoCobro.PREPAGO, vehiculo);
+                    //PasadaPeaje pasada = new PasadaPeaje(LocalDateTime.now(), importe, DTTipoCobro.PREPAGO, vehiculo);
                     //Guardo pasada
-                    repoUsuario.salvarPasadaPeaje(pasada);
+                    //repoUsuario.salvarPasadaPeaje(pasada);
                     
                     log.infof("OK: Realizado pasaje Pre-pago %s", tag);
                     notificarPrePago(cli.getUsuario(), tag, importe);
@@ -85,6 +85,7 @@ public class ServicioPagoImpl implements ServicioPago {
 	}
 
 	@Override
+	@Transactional
 	public boolean realizarPostPago(int tag, double importe) {
 		// TODO muy parecido al anterior con la diferencia de que voy a tener que
 		// interactuar con el modulo de Medios de pagos para cobrar con tarjeta
@@ -153,6 +154,7 @@ public class ServicioPagoImpl implements ServicioPago {
 	}
 
 	@Override
+	@Transactional
 	public boolean altaClienteTelepeaje(Usuario usr) {
 		log.infof("\n######### altaClienteTelepeaje 1 #########\n");
 		// me fijo si es ya cliente telepeaje
@@ -181,6 +183,9 @@ public class ServicioPagoImpl implements ServicioPago {
 		Vehiculo v = new Vehiculo(i,usr.getClienteTelepeaje(), usr ,vinculo);
 		long idVehiculo = repoUsuario.salvarVehiculo(v);
 		log.infof("\n######### Salvar Vehiculo OK. IdVehiculo: #########\n" + idVehiculo);
+		
+		//le digo a modulo peaje del nuevo vehiculo
+		evento.publicarNuevoVehiculo(v);
 		
 		repoUsuario.actualizarUsuario(usr);
 		
@@ -314,6 +319,7 @@ public class ServicioPagoImpl implements ServicioPago {
 	}
 
 	@Override
+	@Transactional
 	public double cargarSaldo(int idCliente, double importe) {
 		ClienteTelepeaje cliTelepeaje = repoUsuario.findCliTelepeaje(idCliente);
 		
@@ -334,4 +340,17 @@ public class ServicioPagoImpl implements ServicioPago {
 		return clienteTelepeaje.getCtaPrepaga().getSaldo();
 	}
 
+	
+	@Override
+	@Transactional
+	public Vehiculo traerVehiculo(int tag) {
+		return repoUsuario.findByTagVehiculo(tag);
+	}
+	
+	@Override
+	@Transactional
+	public void altaPasadaPeaje(PasadaPeaje pasada) {
+		repoUsuario.salvarPasadaPeaje(pasada);
+		
+	}
 }

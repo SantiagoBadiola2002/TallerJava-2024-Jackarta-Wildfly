@@ -1,10 +1,9 @@
 package org.tallerjava.moduloGestion.interfase.evento.out;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-@AllArgsConstructor
+
 public class GestionINFONuevoVehiculo {
     //no uso VehiculoDTO para maneter bajo el acoplamiento
     //de lo contrario el modulo de Peaje que es quien va a escuchar este evento

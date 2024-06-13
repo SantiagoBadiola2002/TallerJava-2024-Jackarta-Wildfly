@@ -34,7 +34,7 @@ public class ServicioPeajeImpl implements ServicioPeaje {
         Vehiculo vehiculo = existeVehiculo(tag, matricula);
         if (vehiculo != null) {
             if (vehiculo.nacional()) {
-                mandarAQueueDePagos(vehiculo);
+                mandarAQueueDePagos(tag, vehiculo);
                 habilitado = true;
 
             } else {
@@ -52,63 +52,63 @@ public class ServicioPeajeImpl implements ServicioPeaje {
         //todos los vehiculos extranjeros son preferenciales
         Preferencial tarifa = repo.obtenerTarifaPreferencial();
         log.infof("Tarifa obtenida %f ",tarifa.getValor());
-    	
-    	//Obtengo cuentas por tag del MGestion (primera pre, segunda post)
-    	List<Integer> cuentasExtranjero = servicioPagoFacade.obtenerCuentasPorTag(tag);
+        //según las reglas del negocio, lo primero es cobrar con PrePago
+        habilitado = servicioPagoFacade.realizarPrePago(tag, tarifa.getValor());
 
-    	System.out.println("que tiene cuentas en 0" +cuentasExtranjero.get(0));
-    	
-    	//según las reglas del negocio, lo primero es cobrar con PrePago
-    	if (cuentasExtranjero.get(0)>= tarifa.getValor()) {
-            habilitado = servicioPagoFacade.realizarPrePago(tag, tarifa.getValor());
-            log.infof("Respuesta prePago habilitado?: %b ",habilitado);
-    	}else {
-    		log.infof("Respuesta prePago no realizado por sin saldo o sin cuenta prepaga asociada. ");
-    	}
-
-        if (!habilitado && cuentasExtranjero.get(1)>=0 ) {
+        log.infof("Respuesta prePago: %b ",habilitado);
+        if (!habilitado) {
             //fallo el cobro prepago, intento con la tarjeta (postPago)
             habilitado = servicioPagoFacade.realizarPostPago(tag, tarifa.getValor());
-            log.infof("Respuesta postPago habilitado?: %b ",habilitado);
-            
-        }else {
-        	log.infof("Respuesta postPago no realizado por postPaga asociada. ");
-        	
-        }
-        
-        if (!habilitado) {
-            //TODO mando evento al modulo de monitoreo
-            //el auto no pasa
-        	evento.publicarPagoNoRealizado(
-        			"Pago no realizado a extranjero: " + tag + " ");
+            log.infof("Respuesta postPago: %b ",habilitado);
+            if (!habilitado) {
+                //TODO mando evento al modulo de monitoreo
+                //el auto no pasa
+            }
         }
         return habilitado;
+       
     }
 
 
     private boolean  procesarVehiculoNacional(int tag, Vehiculo vehiculo) {
+    	log.infof("*** Procesando pago vehículo nacional %s tag:", tag);
         boolean habilitado = false;
 
         Preferencial tarifa = repo.obtenerTarifaPreferencial();
         if (servicioPagoFacade.esClienteTelepeaje(tag)) {
             //según las reglas del negocio, lo primero es cobrar con PrePago
             habilitado = servicioPagoFacade.realizarPrePago(tag, tarifa.getValor());
+            //si es habilitado true
+            //publico la pasada si lo anterior es true PREPAGO == 1
+            log.infof("REGISTRAR PASADA PREPAGA: "+ tag );
+            evento.publicarNuevaPasada(vehiculo, tarifa.getValor(), 1);
+            
             if (!habilitado) {
                 //fallo el cobro prepago, intento con la tarjeta (postPago)
                 habilitado = servicioPagoFacade.realizarPrePago(tag, tarifa.getValor());
+                //si es habilitado true
+                //publico la pasada si lo anterior es true POSTPAGO == 2
+                evento.publicarNuevaPasada(vehiculo, tarifa.getValor(), 2);
             }
         }
         if (!habilitado) {
             //significa que no es cliente preferencial o que fallaron los dos sistemas
             //de cobro previos
             //TODO invocar a modulo de pago Sucive
+        	
+            //si es habilitado Sucive true
+            //publico la pasada si lo anterior es true SUCIVE == 3
+            evento.publicarNuevaPasada(vehiculo, tarifa.getValor(), 3);
         }
 
         return habilitado;
     }
 
-    private void mandarAQueueDePagos(Vehiculo vehiculo) {
-        //TODO esto lo vamos a hacer más adelante.
+    private void mandarAQueueDePagos(int tag, Vehiculo vehiculo) {
+        //TODO por ahor lo procesamos sincrónicamente
+        procesarVehiculoNacional(tag, vehiculo);
+
+        
     }
 
     private Vehiculo existeVehiculo(int tag, String matricula) {

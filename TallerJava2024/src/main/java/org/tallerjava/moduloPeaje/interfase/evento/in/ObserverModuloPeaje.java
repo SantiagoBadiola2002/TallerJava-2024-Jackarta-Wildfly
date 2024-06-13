@@ -22,7 +22,7 @@ public class ObserverModuloPeaje {
         Identificador identificador = new Identificador(event.getMatricula(), event.getTag());
         Vehiculo vehiculo = new Vehiculo(identificador, event.getNacionalidad());
 
-        //servicioPeaje.altaVehiculo(vehiculo);
+        servicioPeaje.altaVehiculo(vehiculo);
     }
 
 }

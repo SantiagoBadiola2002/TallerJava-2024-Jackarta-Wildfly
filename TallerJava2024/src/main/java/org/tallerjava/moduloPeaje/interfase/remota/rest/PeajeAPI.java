@@ -26,7 +26,7 @@ public class PeajeAPI {
 	@Inject
 	private ServicioPeaje servicioPeaje;
 
-	// curl -X POST -v http://localhost:8080/TallerJava2024/api/moduloPeaje/estaHabilitadoSincronico -H Content-Type: application/json" -d '{"tag":123, "matricula":"456.78"}'
+	// curl -X POST -v http://localhost:8080/TallerJava2024/api/moduloPeaje/estaHabilitadoSincronico -H "Content-Type: application/json" -d '{"tag":555, "matricula":"BEC1234"}'
 	@POST
 	@Path("/estaHabilitadoSincronico")
 	@Consumes(MediaType.APPLICATION_JSON)
