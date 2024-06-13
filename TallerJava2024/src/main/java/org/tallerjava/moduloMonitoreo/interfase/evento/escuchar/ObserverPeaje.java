@@ -1,9 +1,8 @@
 package org.tallerjava.moduloMonitoreo.interfase.evento.escuchar;
 
-import org.tallerjava.moduloGestion.interfase.evento.out.ClienteTelepeajeNoEncontradoPorTag;
-
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
+import org.tallerjava.moduloPeaje.interfase.evento.out.PeajeVehiculoNoEncontrado;
 
 /**
  * Observese que este Modulo si esta acoplado con el módulo de Peaje.
@@ -11,10 +10,10 @@ import jakarta.enterprise.event.Observes;
  * Un nivel mayor de desacoplamiento lo podemos lograr con JMS
  */
 @ApplicationScoped
-public class ObserverGestionClienteNoEncontradoPorTag {
-	public void accept(@Observes ClienteTelepeajeNoEncontradoPorTag event) {
+public class ObserverPeaje {
+    public void accept(@Observes PeajeVehiculoNoEncontrado event) {
         //en un futuro acá voy a tener que mostrar en una gráfica de error lo ocurrido
         //System.out.println(event.getDescripcion());
-    	System.out.println("Evento ClienteTelepeajeNoEncontradoPorTag");
+    	System.out.println("Evento ObserverPeajeVehiculoNoEncontrado");
     }
 }

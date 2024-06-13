@@ -4,11 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-public class NotificarPostPago {
+public class GestionOKPagoPostPago {
 	
 	private String descripcion;
 	
-	public NotificarPostPago(String descripcion) {
+	public GestionOKPagoPostPago(String descripcion) {
 		this.descripcion = descripcion;
 	}
 

@@ -49,11 +49,13 @@ public class ServicioPagoImpl implements ServicioPago {
                     //Guardo pasada
                     repoUsuario.salvarPasadaPeaje(pasada);
                     
+                    log.infof("OK: Realizado pasaje Pre-pago %s", tag);
                     notificarPrePago(cli.getUsuario(), tag, importe);
                     realizado = true;
 
                 } else {
-                    log.infof("Saldo insuficiente %s", tag);
+                    log.infof("¡ERROR!: Saldo insuficiente %s", tag);
+                    notificarSaldoInsuficiente(cli.getUsuario(), tag, importe, cli.getCtaPrepaga().getSaldo() );
                     realizado = false;
                 }
 
@@ -61,6 +63,12 @@ public class ServicioPagoImpl implements ServicioPago {
                 //estoy frente a otro problema de inconsistencia ya que para tener un tag
                 //tengo que ser cliente del telepeaje
                 //TODO logear y mandar evento al modulo de monitoreo
+                log.infof("¡ERROR!: Cliente Telepeaje para TAG no encontrado", tag);
+                notificarCliTelepeajeTagNoEncontrado( tag, importe);
+                
+                realizado = false;
+            	
+            	
             }
 
         } else {
@@ -68,7 +76,10 @@ public class ServicioPagoImpl implements ServicioPago {
             // no podemos saber a que Cliente pertenece, recordar que los tags se
             //entregan cuando el Cliente se registra en el sistema
             //TODO logear y mandar evento al modulo de monitorio
-            log.infof("Error grave: No existe el usuario con el tag %d", tag);
+            log.infof("¡ERROR!: Vehiculo para TAG no encontrado", tag);
+            notificarVehiculoTagNoEncontrado( tag, importe);
+            
+            realizado = false;
         }
         return realizado;
 	}
@@ -123,6 +134,16 @@ public class ServicioPagoImpl implements ServicioPago {
 		evento.publicarNotificarSaldoInsuficiente("Saldo insuficiente en PrePago");
 	}
 
+	private void notificarVehiculoTagNoEncontrado(int tag, double importe) {
+		//evento.publicarVehiculoTagNoEncontrado();
+		
+	}
+
+	private void notificarCliTelepeajeTagNoEncontrado(int tag, double importe) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	@Override
 	public boolean esClienteTelepeaje(int tag) {
 		Usuario usuario = repoUsuario.findByTag(tag);

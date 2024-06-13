@@ -4,11 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-public class NotificarPrePago {
+public class GestionERRORSaldoInsuficiente {
 	
 	private String descripcion;
 
-	public NotificarPrePago(String descripcion) {
+	public GestionERRORSaldoInsuficiente(String descripcion) {
 		this.descripcion = descripcion;
 	}
 
@@ -23,3 +23,4 @@ public class NotificarPrePago {
 	
 
 }
+

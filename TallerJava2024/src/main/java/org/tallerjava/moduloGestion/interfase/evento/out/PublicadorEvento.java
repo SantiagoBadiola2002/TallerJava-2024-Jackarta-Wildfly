@@ -11,13 +11,13 @@ public class PublicadorEvento {
     private Event<ClienteTelepeajeNoEncontradoPorTag> cliTelepeajeNoEncontradoPorTag;
 	
 	@Inject
-	private Event<NotificarPrePago> notificarPrePago;
+	private Event<GestionOKPagoPrePago> OKPagoPrePago;
 	
 	@Inject
-	private Event<NotificarPostPago> notificarPostPago;
+	private Event<GestionOKPagoPostPago> OKPagoPostPago;
 	
 	@Inject
-	private Event<NotificarSaldoInsuficiente> notificarSaldoInsuficiente;
+	private Event<GestionERRORSaldoInsuficiente> ERRORSaldoInsuficiente;
 	
 	
 
@@ -31,15 +31,15 @@ public class PublicadorEvento {
 	}
 	
 	public void publicarNotificarPrePago(String mensaje) {
-		notificarPrePago.fire(new NotificarPrePago(mensaje));
+		OKPagoPrePago.fire(new GestionOKPagoPrePago(mensaje));
 	}
 	
 	public void publicarNotificarPostPago(String mensaje) {
-		notificarPostPago.fire(new NotificarPostPago(mensaje));
+		OKPagoPostPago.fire(new GestionOKPagoPostPago(mensaje));
 	}
 	
 	public void publicarNotificarSaldoInsuficiente(String mensaje) {
-		notificarSaldoInsuficiente.fire(new NotificarSaldoInsuficiente(mensaje));
+		ERRORSaldoInsuficiente.fire(new GestionERRORSaldoInsuficiente(mensaje));
 	}
 }
 
