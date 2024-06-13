@@ -2,6 +2,8 @@ package org.tallerjava.moduloPeaje.aplicacion.impl;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
+
 import org.jboss.logging.Logger;
 import org.tallerjava.moduloPeaje.aplicacion.ServicioPeaje;
 import org.tallerjava.moduloPeaje.dominio.Preferencial;
@@ -138,4 +140,12 @@ public class ServicioPeajeImpl implements ServicioPeaje {
     public void actualizarTarifaPreferencial(double importe) {
     	repo.actualizarTarifaPreferencial(importe);
     }
+    
+    @Override
+    @Transactional
+    public void altaVehiculo(Vehiculo vehiculo) {
+        log.infof("Alta de vehiculo %s", vehiculo.toString());
+        repo.saveVehiculo(vehiculo);
+    }
+    
 }

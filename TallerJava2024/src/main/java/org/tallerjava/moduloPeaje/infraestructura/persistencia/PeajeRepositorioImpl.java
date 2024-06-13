@@ -25,11 +25,6 @@ public class PeajeRepositorioImpl implements PeajeRepositorio {
 	
 	private static final Logger log = Logger.getLogger(PeajeAPI.class);
 	
-
-	    @PostConstruct
-	    public void init() {
-	        
-	    }
 	    
     @Override
     public Vehiculo findByTag(int tag) {
@@ -112,5 +107,10 @@ public class PeajeRepositorioImpl implements PeajeRepositorio {
         } catch (Exception e) {
             throw new PersistenceException("Error al actualizar la tarifa común", e);
         }
+    }
+    
+    @Override
+    public void saveVehiculo(Vehiculo vehiculo) {
+        em.persist(vehiculo);
     }
 }

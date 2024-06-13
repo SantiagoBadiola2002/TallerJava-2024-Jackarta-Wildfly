@@ -63,7 +63,7 @@ class VerificoTagExtranjeroConPostPagoOk {
             public Vehiculo findByTag(int tag) {
                 Vehiculo vehiculo = new Vehiculo(1,
                         new Identificador("BAA 1111", tag),
-                        "ford", "fiesta", Nacionalidad.EXTRANJERO);
+                         1);
                 return vehiculo;
             }
             @Override

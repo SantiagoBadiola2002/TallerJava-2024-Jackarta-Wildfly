@@ -98,7 +98,7 @@ public class ServicioPagoImpl implements ServicioPago {
 
 				if (ctaPostpaga != null) {
 					List<Vehiculo> vehiculos = repoUsuario.traerVehiculosUsr(usr);
-					log.infof("*** Respuesta Post Pago: tag %s, importe %s, estado Pago %s", tag, importe, realizado);
+					log.infof("*** OK: Respuesta Post Pago: tag %s, importe %s, estado Pago %s", tag, importe, realizado);
 					//notificarPostPago(usr, tag, importe, ctaPostpaga.getTarjeta().getIdTarjeta());
 					realizado = true;
 				} else {
@@ -108,13 +108,12 @@ public class ServicioPagoImpl implements ServicioPago {
 				}
 
 			} else {
-				evento.publicarClienteTelepeajeNoEncontradoPorTag(
-						"Cliente Telepeaje no encontrado por el tag %s: " + tag + " ");
+				notificarCliTelepeajeTagNoEncontrado( tag, importe);
 
 			}
 			realizado = true;
 		} else {
-			evento.publicarUsuarioNoEncontradoPorTag("Usuario no encontrado por el tag %s: " + tag + " ");
+			//evento.publicarUsuarioNoEncontradoPorTag("Usuario no encontrado por el tag %s: " + tag + " ");
 
 		}
 		return realizado;
@@ -135,12 +134,12 @@ public class ServicioPagoImpl implements ServicioPago {
 	}
 
 	private void notificarVehiculoTagNoEncontrado(int tag, double importe) {
-		//evento.publicarVehiculoTagNoEncontrado();
+		evento.publicarVehiculoTagNoEncontrado("No se encontro Vehiculo por TAG");
 		
 	}
 
 	private void notificarCliTelepeajeTagNoEncontrado(int tag, double importe) {
-		// TODO Auto-generated method stub
+		evento.publicarCliTelepeajeTagNoEncontrado("No se encontro Cliente Telepeaje por TAG");
 		
 	}
 	

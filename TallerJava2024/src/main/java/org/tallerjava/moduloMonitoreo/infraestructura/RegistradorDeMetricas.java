@@ -17,8 +17,14 @@ public class RegistradorDeMetricas {
     public static final String GESTION_COUNTER_PRE_PAGO ="gestionOKPrePago";
     public static final String GESTION_COUNTER_POST_PAGO ="gestionOKPostPago";
     public static final String GESTION_COUNTER_SALDO_INSUFICIENTE ="gestionERRORSaldoInsuficiente";
-
-
+    public static final String PEAJE_COUNTER_PASAJE_VEHICULO ="peajeOKPasajeVehiculo";
+    public static final String MEDIOSPAGO_COUNTER_COBRO_TARJETA ="mediospagoOKCobroTarjeta";
+    public static final String MEDIOSPAGO_COUNTER_COBRO_TARJETA_RECHAZADO ="mediospagoERRORCobroTarjetaRechazado";
+//faltaria el de sucive
+    public static final String SUCIVE_COUNTER_COBRO_SUCIVE ="suciveOKCobroSucive";
+    
+    
+    
     private InfluxConfig config;
 
     @PostConstruct

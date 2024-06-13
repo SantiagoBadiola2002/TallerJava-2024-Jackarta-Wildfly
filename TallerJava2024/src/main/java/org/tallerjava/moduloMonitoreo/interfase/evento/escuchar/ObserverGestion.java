@@ -29,10 +29,16 @@ public class ObserverGestion{
 	    register.incrementarCounter(RegistradorDeMetricas.GESTION_COUNTER_SALDO_INSUFICIENTE);
 	}
 	
-	public void accept(@Observes ClienteTelepeajeNoEncontradoPorTag event) {
+	public void accept(@Observes GestionERRORClienteTelepeajeNoEncontradoPorTag event) {
         //en un futuro acá voy a tener que mostrar en una gráfica de error lo ocurrido
-        //System.out.println(event.getDescripcion());
-    	System.out.println("Evento ClienteTelepeajeNoEncontradoPorTag");
+		log.infof("Evento procesado: Cliente Telepeaje no encontrado: %s", event.getDescripcion());
+	    //register.incrementarCounter(RegistradorDeMetricas);
+    }
+	
+	public void accept(@Observes GestionERRORVehiculoTagNoEncontradoPorTag event) {
+        //en un futuro acá voy a tener que mostrar en una gráfica de error lo ocurrido
+		log.infof("Evento procesado: Vehiculo no encontrado por Tag: %s", event.getDescripcion());
+	    //register.incrementarCounter(RegistradorDeMetricas);
     }
 	
 

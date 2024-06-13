@@ -1,15 +1,10 @@
 package org.tallerjava.moduloGestion.interfase.evento.out;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
-@Getter
-public class ClienteTelepeajeNoEncontradoPorTag {
-
+public class GestionERRORVehiculoTagNoEncontradoPorTag {
 private String descripcion;
     
 
-	public ClienteTelepeajeNoEncontradoPorTag(String descripcion) {
+	public GestionERRORVehiculoTagNoEncontradoPorTag(String descripcion) {
 		this.descripcion = descripcion;
 	}
 
@@ -20,6 +15,4 @@ private String descripcion;
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
-    
 }
-

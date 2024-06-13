@@ -21,21 +21,21 @@ public class Vehiculo {
 
 	@Embedded
 	private Identificador identificador;
-	
-	private String marca;
-	private String modelo;
-	private Nacionalidad nacionalidad;
+	private int nacionalidad;
 
-	public Vehiculo(long id, Identificador identificador, String marca, String modelo, Nacionalidad nacionalidad) {
+	public Vehiculo( Identificador identificador, int nacionalidad) {
+		this.identificador = identificador;
+		this.nacionalidad = nacionalidad;
+	}
+
+	public Vehiculo( long id, Identificador identificador, int nacionalidad) {
 		this.id = id;
 		this.identificador = identificador;
-		this.marca = marca;
-		this.modelo = modelo;
 		this.nacionalidad = nacionalidad;
 	}
 
 	public boolean nacional() {
-		return nacionalidad == Nacionalidad.NACIONAL ? true : false;
+		return (nacionalidad ==1);
 	}
 
 	public long getId() {
@@ -46,15 +46,8 @@ public class Vehiculo {
 		return identificador;
 	}
 
-	public String getMarca() {
-		return marca;
-	}
 
-	public String getModelo() {
-		return modelo;
-	}
-
-	public Nacionalidad getNacionalidad() {
+	public int getNacionalidad() {
 		return nacionalidad;
 	}
 
@@ -66,15 +59,8 @@ public class Vehiculo {
 		this.identificador = identificador;
 	}
 
-	public void setMarca(String marca) {
-		this.marca = marca;
-	}
 
-	public void setModelo(String modelo) {
-		this.modelo = modelo;
-	}
-
-	public void setNacionalidad(Nacionalidad nacionalidad) {
+	public void setNacionalidad(int nacionalidad) {
 		this.nacionalidad = nacionalidad;
 	}
 
