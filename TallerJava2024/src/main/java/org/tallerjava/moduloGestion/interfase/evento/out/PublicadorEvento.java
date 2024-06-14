@@ -14,7 +14,7 @@ public class PublicadorEvento {
     private Event<GestionERRORClienteTelepeajeNoEncontradoPorTag> cliTelepeajeNoEncontradoPorTag;
 	
 	@Inject
-    private Event<GestionERRORVehiculoTagNoEncontradoPorTag> vehiculoTagNoEncontrado;
+    private Event<GestionERRORVehiculoTagNoEncontrado> vehiculoTagNoEncontrado;
 	
 	@Inject
     private Event<GestionERRORTarjetaRechazada> ERRORTarjetaRechazada;
@@ -41,7 +41,7 @@ public class PublicadorEvento {
     }
 
     public void publicarVehiculoTagNoEncontrado(String mensaje){
-    	vehiculoTagNoEncontrado.fire(new GestionERRORVehiculoTagNoEncontradoPorTag(mensaje));
+    	vehiculoTagNoEncontrado.fire(new GestionERRORVehiculoTagNoEncontrado(mensaje));
     }
 
 	

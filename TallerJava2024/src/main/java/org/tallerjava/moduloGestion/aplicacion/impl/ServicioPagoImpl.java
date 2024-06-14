@@ -49,12 +49,13 @@ public class ServicioPagoImpl implements ServicioPago {
                     ctaPrepaga.descontarSaldo(importe);
                     
                     log.infof("OK: Realizado pasaje Pre-pago %s", tag);
-                    notificarPrePago(cli.getUsuario(), tag, importe);
+                    evento.publicarNotificarPrePago("Se ha realizado el PrePago");
+                  
                     realizado = true;
 
                 } else {
                     log.infof("¡ERROR!: Saldo insuficiente %s", tag);
-                    notificarSaldoInsuficiente(cli.getUsuario(), tag, importe, cli.getCtaPrepaga().getSaldo() );
+                    evento.publicarNotificarSaldoInsuficiente("Saldo insuficiente en PrePago");
                     realizado = false;
                 }
 
@@ -63,7 +64,7 @@ public class ServicioPagoImpl implements ServicioPago {
                 //tengo que ser cliente del telepeaje
                 //TODO logear y mandar evento al modulo de monitoreo
                 log.infof("¡ERROR!: Cliente Telepeaje para TAG no encontrado", tag);
-                notificarCliTelepeajeTagNoEncontrado( tag, importe);
+                evento.publicarCliTelepeajeTagNoEncontrado("Cliente Telepeaje no encontrado en pre pago tag: " + tag);
                 
                 realizado = false;
             	
@@ -76,7 +77,7 @@ public class ServicioPagoImpl implements ServicioPago {
             //entregan cuando el Cliente se registra en el sistema
             //TODO logear y mandar evento al modulo de monitorio
             log.infof("¡ERROR!: Vehiculo para TAG no encontrado", tag);
-            notificarVehiculoTagNoEncontrado( tag, importe);
+            evento.publicarVehiculoTagNoEncontrado("Vehiculo no encontrado en Pre pago tag: " + tag);
             
             realizado = false;
         }
@@ -89,7 +90,7 @@ public class ServicioPagoImpl implements ServicioPago {
 		// TODO muy parecido al anterior con la diferencia de que voy a tener que
 		// interactuar con el modulo de Medios de pagos para cobrar con tarjeta
 
-		log.infof("*** Respuesta Pre Pago realizado: tag , importe , estado Pago ", tag, importe);
+		log.infof("*** Respuesta Post Pago realizado: tag , importe , estado Pago ", tag, importe);
 		boolean realizado = false;
         Vehiculo vehiculo = repoUsuario.findByTagVehiculo(tag);
         if (vehiculo != null) {
@@ -106,12 +107,14 @@ public class ServicioPagoImpl implements ServicioPago {
                 		
                     
                 		log.infof("OK: Realizado pasaje Post-pago %s", tag);
-                		notificarPostPago(cli.getIdCliente(), tag, importe, cli.getCtaPostpaga().getTarjeta().getNroTarjeta());
+                		evento.publicarNotificarPostPago("Se ha realizado el PostPago");
                 		realizado = true;
+                		
 
                 	} else {
                 		log.infof("¡ERROR!: Tarjeta Rechaza en Post Pago", tag);
-                		notificarTarjetaRechazada(cli.getIdCliente(), tag, importe, cli.getCtaPostpaga().getTarjeta().getNroTarjeta() );
+                		evento.publicarTarjetaRechazada("Tarjeta Rechazada en el PostPago");
+                		evento.publicarCliTelepeajeTagNoEncontrado("No se encontro Cliente Telepeaje por TAG");
                 		realizado = false;
                 	}
                 }else {
@@ -124,11 +127,11 @@ public class ServicioPagoImpl implements ServicioPago {
                 //tengo que ser cliente del telepeaje
                 //TODO logear y mandar evento al modulo de monitoreo
                 log.infof("¡ERROR!: Cliente Telepeaje para TAG no encontrado", tag);
-                notificarCliTelepeajeTagNoEncontrado( tag, importe);
+                evento.publicarCliTelepeajeTagNoEncontrado("No se encontro Cliente Telepeaje por TAG");
                 
                 realizado = false;
             	
-            	
+                
             }
 
         } else {
@@ -137,40 +140,13 @@ public class ServicioPagoImpl implements ServicioPago {
             //entregan cuando el Cliente se registra en el sistema
             //TODO logear y mandar evento al modulo de monitorio
             log.infof("¡ERROR!: Vehiculo para TAG no encontrado", tag);
-            notificarVehiculoTagNoEncontrado( tag, importe);
+            evento.publicarVehiculoTagNoEncontrado("No se encontro Vehiculo por TAG");
             
             realizado = false;
         }
         return realizado;
 	}
 
-	private void notificarPrePago(Usuario usr, int tag, double importe) {
-		evento.publicarNotificarPrePago("Se ha realizado el PrePago");
-	}
-	
-	
-
-	private void notificarPostPago(int idCliente, int tag, double importe, int idTarjeta) {
-		evento.publicarNotificarPostPago("Se ha realizado el PostPago");
-	}
-	
-	private void notificarTarjetaRechazada(int idCliente, int tag, double importe, int idTarjeta) {
-		evento.publicarTarjetaRechazada("Tarjeta Rechazada en el PostPago");
-	}
-
-	private void notificarSaldoInsuficiente(Usuario usr, int tag, double importe, double saldo) {
-		evento.publicarNotificarSaldoInsuficiente("Saldo insuficiente en PrePago");
-	}
-
-	private void notificarVehiculoTagNoEncontrado(int tag, double importe) {
-		evento.publicarVehiculoTagNoEncontrado("No se encontro Vehiculo por TAG");
-		
-	}
-
-	private void notificarCliTelepeajeTagNoEncontrado(int tag, double importe) {
-		evento.publicarCliTelepeajeTagNoEncontrado("No se encontro Cliente Telepeaje por TAG");
-		
-	}
 	
 	@Override
 	public boolean esClienteTelepeaje(int tag) {
@@ -212,7 +188,7 @@ public class ServicioPagoImpl implements ServicioPago {
 		long idVehiculo = repoUsuario.salvarVehiculo(v);
 		log.infof("\n######### Salvar Vehiculo OK. IdVehiculo: #########\n" + idVehiculo);
 		
-		//le digo a modulo peaje del nuevo vehiculo
+		//le digo a modulo peaje y modulo medios pago del nuevo vehiculo
 		evento.publicarNuevoVehiculo(v);
 		
 		repoUsuario.actualizarUsuario(usr);

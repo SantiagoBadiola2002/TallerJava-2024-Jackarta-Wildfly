@@ -32,13 +32,19 @@ public class ObserverGestion{
 	public void accept(@Observes GestionERRORClienteTelepeajeNoEncontradoPorTag event) {
         //en un futuro acá voy a tener que mostrar en una gráfica de error lo ocurrido
 		log.infof("Evento procesado: Cliente Telepeaje no encontrado: %s", event.getDescripcion());
-	    //register.incrementarCounter(RegistradorDeMetricas);
+	    register.incrementarCounter(RegistradorDeMetricas.GESTION_COUNTER_CLIENTE_NO_ENCONTRADO);
     }
 	
-	public void accept(@Observes GestionERRORVehiculoTagNoEncontradoPorTag event) {
+	public void accept(@Observes GestionERRORTarjetaRechazada event) {
         //en un futuro acá voy a tener que mostrar en una gráfica de error lo ocurrido
 		log.infof("Evento procesado: Vehiculo no encontrado por Tag: %s", event.getDescripcion());
-	    //register.incrementarCounter(RegistradorDeMetricas);
+	    register.incrementarCounter(RegistradorDeMetricas.GESTION_COUNTER_TARJETA_RECHAZADA);
+    }
+	
+	public void accept(@Observes GestionERRORVehiculoTagNoEncontrado event) {
+        //en un futuro acá voy a tener que mostrar en una gráfica de error lo ocurrido
+		log.infof("Evento procesado: Vehiculo no encontrado por Tag: %s", event.getDescripcion());
+	    register.incrementarCounter(RegistradorDeMetricas.GESTION_COUNTER_VEHICULO_NO_ENCONTRADO);
     }
 	
 

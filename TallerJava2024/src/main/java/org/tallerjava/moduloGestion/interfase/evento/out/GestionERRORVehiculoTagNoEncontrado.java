@@ -1,10 +1,10 @@
 package org.tallerjava.moduloGestion.interfase.evento.out;
 
-public class GestionERRORVehiculoTagNoEncontradoPorTag {
+public class GestionERRORVehiculoTagNoEncontrado {
 private String descripcion;
     
 
-	public GestionERRORVehiculoTagNoEncontradoPorTag(String descripcion) {
+	public GestionERRORVehiculoTagNoEncontrado(String descripcion) {
 		this.descripcion = descripcion;
 	}
 

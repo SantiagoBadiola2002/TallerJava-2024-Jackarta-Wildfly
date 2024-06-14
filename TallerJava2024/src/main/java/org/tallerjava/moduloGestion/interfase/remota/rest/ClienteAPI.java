@@ -27,7 +27,7 @@ public class ClienteAPI {
 	@Inject
 	private ServicioPago servicioPago;
 
-	// curl -X POST -v  http://localhost:8080/TallerJava2024/api/moduloGestion/realizarPrePago -H "Content-Type: application/json" -d '{"tag":555, "importe": 456.78}'
+	// curl -X POST -v  http://localhost:8080/TallerJava2024/api/moduloGestion/realizarPrePago -H "Content-Type: application/json" -d '{"tag":555, "importe": 10.78}'
 	@POST
 	@Path("/realizarPrePago")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -89,7 +89,7 @@ public class ClienteAPI {
 		return servicioPago.desvincularVehiculo(dtVehiculo.getIdCliente(), dtVehiculo.getTag(), dtVehiculo.getMatricula());
 	}
 	
-	// curl -X GET -v http://localhost:8080/TallerJava2024/api/moduloGestion/mostrarVehiculoVinculados/10000
+	// curl -X GET -v http://localhost:8080/TallerJava2024/api/moduloGestion/mostrarVehiculoVinculados/1
 	@GET
 	@Path("/mostrarVehiculoVinculados/{id}")
 	@Produces({MediaType.APPLICATION_JSON})

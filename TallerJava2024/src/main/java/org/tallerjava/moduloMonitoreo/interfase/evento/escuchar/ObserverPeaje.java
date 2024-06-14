@@ -2,7 +2,11 @@ package org.tallerjava.moduloMonitoreo.interfase.evento.escuchar;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
-import org.tallerjava.moduloPeaje.interfase.evento.out.PeajeERRORVehiculoNoEncontrado;
+import jakarta.inject.Inject;
+
+import org.jboss.logging.Logger;
+import org.tallerjava.moduloMonitoreo.infraestructura.RegistradorDeMetricas;
+import org.tallerjava.moduloPeaje.interfase.evento.out.*;
 
 /**
  * Observese que este Modulo si esta acoplado con el módulo de Peaje.
@@ -11,9 +15,26 @@ import org.tallerjava.moduloPeaje.interfase.evento.out.PeajeERRORVehiculoNoEncon
  */
 @ApplicationScoped
 public class ObserverPeaje {
+	private static final Logger log = Logger.getLogger(ObserverGestion.class);
+	
+	@Inject
+    private RegistradorDeMetricas register;
+	
     public void accept(@Observes PeajeERRORVehiculoNoEncontrado event) {
-        //en un futuro acá voy a tener que mostrar en una gráfica de error lo ocurrido
-        //System.out.println(event.getDescripcion());
-    	System.out.println("Evento ObserverPeajeVehiculoNoEncontrado");
+		log.infof("Evento procesado: Vehiculo no encontrado por Tag: %s", event.getDescripcion());
+	    register.incrementarCounter(RegistradorDeMetricas.PEAJE_COUNTER_VEHICULO_NO_ENCONTRADO);
+    	
+    }
+    
+    public void accept(@Observes PeajeERRORPagoNoRealizadoExtranjero event) {
+		log.infof("Evento procesado: Pago Extranjero no realizado: %s", event.getDescripcion());
+	    register.incrementarCounter(RegistradorDeMetricas.PEAJE_COUNTER_PAGO_EXTRANJERO_NO_PASA);
+    	
+    }
+    
+    public void accept(@Observes PeajeERRORPagoNoRealizadoNacional event) {
+		log.infof("Evento procesado: Pago Nacional no realizado: %s", event.getDescripcion());
+	    register.incrementarCounter(RegistradorDeMetricas.PEAJE_COUNTER_PAGO_NACIONAL_NO_PASA);
+    	
     }
 }
