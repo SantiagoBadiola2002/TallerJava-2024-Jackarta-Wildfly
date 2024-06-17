@@ -4,6 +4,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.tallerjava.moduloGestion.aplicacion.ServicioPago;
 import org.tallerjava.moduloGestion.dominio.*;
+import org.tallerjava.moduloGestion.interfase.remota.rest.dto.DTPasadaPeaje;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -56,11 +57,11 @@ public class ServicioPagoFacade {
 		servicioPago.agregarTarjeta(ci, nroTarjeta, fechaVtoTarjeta, nombreCompletoUsuario);
 	}
 
-	public List<PasadaPeaje> consultarPasadas(int idCliente, LocalDateTime fechaInicial, LocalDateTime fechaFinal) {
+	public List<DTPasadaPeaje> consultarPasadas(int idCliente, LocalDateTime fechaInicial, LocalDateTime fechaFinal) {
 		return servicioPago.consultarPasadas(idCliente, fechaInicial, fechaFinal);
 	}
 
-	public List<PasadaPeaje> consultarPasadas(int idCliente, int tag, String matricula, LocalDateTime fechaInicial,
+	public List<DTPasadaPeaje> consultarPasadas(int idCliente, int tag, String matricula, LocalDateTime fechaInicial,
 			LocalDateTime fechaFinal) {
 		return servicioPago.consultarPasadas(idCliente, tag, matricula, fechaInicial, fechaFinal);
 	}

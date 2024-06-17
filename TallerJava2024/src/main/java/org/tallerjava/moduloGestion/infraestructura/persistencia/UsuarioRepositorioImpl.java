@@ -223,6 +223,25 @@ public class UsuarioRepositorioImpl implements UsuarioRepositorio {
 	    return query.getResultList();
 	
 	}
+
+
+
+	@Override
+	public void actualizarVehiculo(Vehiculo v) {
+		em.merge(v);
+		
+	}
+
+
+
+	@Override
+	public List<PasadaPeaje> traerPasadasVehiculo(Vehiculo v) {
+	    String jpql = "SELECT p FROM PasadaPeaje p WHERE p.vehiculo = : vehiculo";
+	    TypedQuery<PasadaPeaje> query = em.createQuery(jpql, PasadaPeaje.class);
+	    query.setParameter("vehiculo", v);
+	    return query.getResultList();
+		
+	}
 	
 
 

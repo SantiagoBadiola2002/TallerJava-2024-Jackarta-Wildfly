@@ -36,6 +36,10 @@ public interface UsuarioRepositorio {
 	
 	public Usuario findUsuario(int id);
 
+	public void actualizarVehiculo(Vehiculo v);
+
+	public List<PasadaPeaje> traerPasadasVehiculo(Vehiculo v);
+
 	
 	
 }

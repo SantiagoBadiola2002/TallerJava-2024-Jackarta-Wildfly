@@ -4,6 +4,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.ws.rs.Produces;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -77,10 +78,8 @@ public class ClienteAPI {
 		return servicioPago.vincularVehiculo(dtVehiculo.getIdCliente(), dtVehiculo.getTag(), dtVehiculo.getMatricula());
 	}
 
-	// curl -X POST -v
-	// http://localhost:8080/TallerJava2024/api/moduloGestion/desvincularVehiculo -H
-	// "Content-Type: application/json" -d '{"idCliente":123,"tag":1,"matricula":1}'
-	@POST
+	// curl -X DELETE -v http://localhost:8080/TallerJava2024/api/moduloGestion/desvincularVehiculo -H "Content-Type: application/json" -d '{"idCliente":123,"tag":1,"matricula":1}'
+	@DELETE
 	@Path("/desvincularVehiculo")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public boolean desvincularVehiculo(DTVehiculo dtVehiculo) {
@@ -127,26 +126,24 @@ public class ClienteAPI {
 				dtTarjeta.getNombreCompletoUsuario());
 	}
 
-	// curl -X GET -v
-	// http://localhost:8080/TallerJava2024/api/moduloGestion/consultarPasadas
-	// -H
-	// "Content-Type: application/json" -d
-	// '{"idCliente":123,"tag":1,"matricula":"abc","fechaInicial":"23/05/2024","fechaFinal":"23/06/2024"}'
+	// curl -X GET -v http://localhost:8080/TallerJava2024/api/moduloGestion/consultarPasadas -H "Content-Type: application/json" -d '{"idCliente":1,"tag":666,"matricula":"abc","fechaInicial":"2024-06-12T14:30:00","fechaFinal":"2024-07-12T14:30:00"}'
+	// curl -X GET -v http://localhost:8080/TallerJava2024/api/moduloGestion/consultarPasadas -H "Content-Type: application/json" -d '{"idCliente":1,"fechaInicial":"2024-06-12T14:30:00","fechaFinal":"2024-07-12T14:30:00"}'
 	@GET
 	@Path("/consultarPasadas")
+	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<PasadaPeaje> consultarPasadas(DTPasadas dtPasadas) {
+	public List<DTPasadaPeaje> consultarPasadas(DTPasada dtPasadas) {
 		LocalDateTime dateIni = LocalDateTime.parse(dtPasadas.getFechaInicial());
 		LocalDateTime dateFin = LocalDateTime.parse(dtPasadas.getFechaFinal());
 
-		if ((dtPasadas.getTag() == 0) && (dtPasadas.getMatricula() == null)) {
-			log.infof("######### consultarPasadas: idCliente: " + dtPasadas.getIdCliente() + "desde: " + dtPasadas.getFechaInicial()
-					+ " hasta: " + dtPasadas.getFechaFinal() + " #########");
+		if ((dtPasadas.getIdCliente() != 0) && (dtPasadas.getTag() ==0)) {
+			log.infof("######### consultarPasadas: idCliente: " + dtPasadas.getIdCliente() + "desde: " + dateIni
+					+ " hasta: " + dateFin + " #########\n");
 			
 			return servicioPago.consultarPasadas(dtPasadas.getIdCliente(), dateIni, dateFin);
 		} else {
-			log.infof("######### consultarPasadas con tag o matricula: ci: " + dtPasadas.getIdCliente() + "desde: "
-					+ dtPasadas.getFechaInicial() + " hasta: " + dtPasadas.getFechaFinal() + " #########");
+			log.infof("######### consultarPasadas con tag o matricula: ci: " + dtPasadas.getIdCliente() + "desde: " + dateIni
+					+ " hasta: " + dateFin + ", TAG: " + dtPasadas.getTag() + " #########\n");
 			return servicioPago.consultarPasadas(dtPasadas.getIdCliente(), dtPasadas.getTag(), dtPasadas.getMatricula(),
 					dateIni, dateFin);
 		}

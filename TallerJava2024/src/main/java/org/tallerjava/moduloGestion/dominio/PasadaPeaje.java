@@ -7,10 +7,12 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.Data;
 
 @Data
-@Entity (name = "gestion_pasadaPeaje")
+@Entity
+@Table(name = "gestion_pasadaPeaje")
 public class PasadaPeaje {
 	
 	@Id
@@ -23,6 +25,7 @@ public class PasadaPeaje {
 	@ManyToOne
 	Vehiculo vehiculo;
 	
+	public PasadaPeaje() {}
 	
 	public PasadaPeaje(LocalDateTime fecha, double costo, DTTipoCobro tipoCobro, Vehiculo vehiculo) {
 		this.fecha = fecha;

@@ -64,8 +64,8 @@ public class ServicioMediosDePagoImpl implements ServicioMediosDePago {
 	public String notificarPago(int idCliente, int tag, double importe, int nroTarjeta) {
 		log.infof("*** Verificando Pago sistema Externo Ciente y Vehiculo: ", idCliente, tag);
 
-		String responseBody = "PAGO RECHAZADO";
-		evento.publicarPagoTarjetaNoRealizado(responseBody);
+		String responseBody = "PAGO APROBADO";
+		//DESCOMENTAR LUEGO DE LEVANTAR EL SERVIDOR PAGOS
 		
 //		Client client = ClientBuilder.newClient();
 //		String responseBody = "";

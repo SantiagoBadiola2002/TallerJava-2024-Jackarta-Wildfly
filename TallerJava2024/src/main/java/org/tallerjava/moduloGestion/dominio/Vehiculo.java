@@ -92,6 +92,10 @@ public class Vehiculo {
 	public void setId(long id) {
 		this.id = id;
 	}
+	
+	public void setUsuario(Usuario usr) {
+		this.usuario = usr;
+	}
 
 	public void setIdentificador(Identificador identificador) {
 		this.identificador = identificador;

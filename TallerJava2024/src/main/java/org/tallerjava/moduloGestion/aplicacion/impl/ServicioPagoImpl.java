@@ -11,6 +11,7 @@ import org.tallerjava.moduloGestion.dominio.*;
 import org.tallerjava.moduloGestion.dominio.repo.UsuarioRepositorio;
 import org.tallerjava.moduloGestion.interfase.evento.out.PublicadorEvento;
 import org.tallerjava.moduloGestion.interfase.remota.rest.dto.DTIdCliente;
+import org.tallerjava.moduloGestion.interfase.remota.rest.dto.DTPasadaPeaje;
 import org.tallerjava.moduloGestion.interfase.remota.rest.dto.DTVehiculo;
 import org.tallerjava.moduloMediosDePago.aplicacion.ServicioMediosDePago;
 
@@ -114,7 +115,7 @@ public class ServicioPagoImpl implements ServicioPago {
                 	} else {
                 		log.infof("¡ERROR!: Tarjeta Rechaza en Post Pago", tag);
                 		evento.publicarTarjetaRechazada("Tarjeta Rechazada en el PostPago");
-                		evento.publicarCliTelepeajeTagNoEncontrado("No se encontro Cliente Telepeaje por TAG");
+                		
                 		realizado = false;
                 	}
                 }else {
@@ -198,22 +199,35 @@ public class ServicioPagoImpl implements ServicioPago {
 		return vinculado;
 
 	}
-	
+	//desvincula el vehiculo pero no borro sus pasadas por peaje 
+	@Transactional
 	 public boolean desvincularVehiculo(int idCliente, int tag, String matricula) {
 		 boolean desvincular = false;
-//		 Usuario usr = repoUsuario.findUsuarioByCi(ci);
-//		List<Vinculo> vinculos = repoUsuario.findVinculosByUser(usr);
-//		 for(Vinculo v : vinculos) {
-//			 if(((tag != 0) && (v.getVehiculo().getIdentificador().getTag() == tag)) || (
-//			 (matricula != null) && (v.getVehiculo().getIdentificador().getMatricula().equals(matricula)))) {
-//				 v.setActivo(false);
-//				 v.getVehiculo().setCliente(null);
-//				 return desvincular = true;
-//			 }
-//		 }
-//		 
+		 Usuario usr = repoUsuario.findUsuarioCliTelepeaje(idCliente);
+		 if (usr != null) {
+			 Vehiculo v = repoUsuario.findByTagVehiculo(tag);
+			 if (v != null && v.getVinculo().isActivo()) {
+				 //desvinculo cliente y el usuario
+				 v.setUsuario(null);
+				 v.setCliente(null);
+				 //paso a falso el vinculo
+				 v.getVinculo().setActivo(false);
+				 repoUsuario.actualizarVehiculo(v);//no lo borro, lo desasocio del cliente
+				 desvincular = true;
+			 }else {
+				 log.infof("\n######### No se encontro Vehiculo por TAG #########\n" + tag);
+				 evento.publicarVehiculoTagNoEncontrado("No se encontro Vehiculo por TAG");
+			 }
+		 }else {
+			 log.infof("\n######### No se encontro Cliente Telepeaje #########\n" + idCliente);
+			 evento.publicarCliTelepeajeTagNoEncontrado("No se encontro Cliente Telepeaje por idCliente");
+		 }
+		 
+
+		 
 		 return desvincular;
 	 }
+	//muestra los vehiculos activos del cliente
 	 @Override
 	 public List<DTVehiculo> mostrarVehiculoVinculados(int id){
 		 List<DTVehiculo> dtVehiculos = new ArrayList<>();
@@ -225,13 +239,15 @@ public class ServicioPagoImpl implements ServicioPago {
 		 List<Vehiculo> vehiculos = repoUsuario.traerVehiculosUsr(usr);
 		 
 		 for (Vehiculo v : vehiculos) {
+			 //solo traigo los vehiculos activos del Cliente Telepeaje
+			 if (v.getVinculo().isActivo()) {
+				 log.infof("\n######### Vehiculos del idCliente: " + id + " Vehiculo activo: " +v.getIdentificador().getTag() + "#############\n");
 			 
-			 log.infof("\n######### SERVICIO PAGO TAG #########\n" + v.getIdentificador().getTag() + "#############");
-			 
-			 DTVehiculo dtV = new DTVehiculo(v.getCliente().getIdCliente(), 
+				 DTVehiculo dtV = new DTVehiculo(v.getCliente().getIdCliente(), 
 					 							v.getIdentificador().getTag(), 
 					 							v.getIdentificador().getMatricula());
-			 dtVehiculos.add(dtV);
+				 dtVehiculos.add(dtV);
+			 }
 		 }
 		 
 		 return dtVehiculos;
@@ -287,39 +303,68 @@ public class ServicioPagoImpl implements ServicioPago {
 	}
 
 	@Override
-	public List<PasadaPeaje> consultarPasadas(int idCliente, LocalDateTime fechaInicial, LocalDateTime fechaFinal) {
-		Usuario usu = repoUsuario.findUsuario(idCliente);
-		List<Vehiculo> vehiculos = repoUsuario.traerVehiculosUsr(usu);
-		List<PasadaPeaje> pasadas = new ArrayList<>();
-
-//		for (Vehiculo v : vehiculos) {
-//			for (PasadaPeaje p : v.getPasadaPeaje()) {
-//				if (p.getFecha().isAfter(fechaInicial) && p.getFecha().isBefore(fechaFinal)) {
-//					pasadas.add(p);
-//				}
-//			}
-//		}
+	public List<DTPasadaPeaje> consultarPasadas(int idCliente, LocalDateTime fechaInicial, LocalDateTime fechaFinal) {
+		Usuario usr = repoUsuario.findUsuarioCliTelepeaje(idCliente);
+		List<Vehiculo> vehiculos = repoUsuario.traerVehiculosUsr(usr);
+		List<DTPasadaPeaje> pasadas = new ArrayList<>();
+		//System.out.println("PASAda fecha:" + fechaInicial + "///"+ fechaFinal +"\n");
+		for (Vehiculo v : vehiculos) {
+			//si esta activo el vehiculo para el cliente
+			if (v.getVinculo().isActivo()) {
+				//me traigo las pasadas del vehiculo
+				List<PasadaPeaje> listaPasadas = repoUsuario.traerPasadasVehiculo(v);
+				//chequeo las fechas
+				for (PasadaPeaje p : listaPasadas) {
+					
+					System.out.println("PASADA:" + p.getVehiculo().getIdentificador().getTag() + "///"+ p.getFecha() +"\n");
+					if (p.getFecha().isAfter(fechaInicial) && p.getFecha().isBefore(fechaFinal)) {
+						//lo agrego al listado
+						DTPasadaPeaje dtPasada = new DTPasadaPeaje(idCliente,
+																	p.getVehiculo().getIdentificador().getTag(),
+																	p.getVehiculo().getIdentificador().getMatricula(), 
+																	p.getFecha().toString(),
+																	p.getCosto());
+						pasadas.add(dtPasada);
+					}
+				}
+				
+			}
+			
+		}
 
 		return pasadas;
 	}
 
 	@Override
-	public List<PasadaPeaje> consultarPasadas(int idCliente, int tag, String matricula, LocalDateTime fechaInicial,
+	public List<DTPasadaPeaje> consultarPasadas(int idCliente, int tag, String matricula, LocalDateTime fechaInicial,
 			LocalDateTime fechaFinal) {
-		Usuario usu = repoUsuario.findUsuario(idCliente);
-		List<Vehiculo> vehiculos = repoUsuario.traerVehiculosUsr(usu);
-		List<PasadaPeaje> pasadas = new ArrayList<>();
-
-//		for (Vehiculo v : vehiculos) {
-//			if ((matricula != null && v.getIdentificador().getMatricula().equals(matricula))
-//					|| (tag != 0 && (v.getIdentificador().getTag() == tag))) {
-//				for (PasadaPeaje p : v.getPasadaPeaje()) {
-//					if (p.getFecha().isAfter(fechaInicial) && p.getFecha().isBefore(fechaFinal)) {
-//						pasadas.add(p);
-//					}
-//				}
-//			}
-//		}
+		Usuario usr = repoUsuario.findUsuarioCliTelepeaje(idCliente);
+		List<Vehiculo> vehiculos = repoUsuario.traerVehiculosUsr(usr);
+		List<DTPasadaPeaje> pasadas = new ArrayList<>();
+		//System.out.println("PASAda fecha:" + fechaInicial + "///"+ fechaFinal +"\n");
+		for (Vehiculo v : vehiculos) {
+			//si esta activo el vehiculo para el cliente
+			if (v.getVinculo().isActivo() && v.getIdentificador().getTag()==tag) {
+				//me traigo las pasadas del vehiculo
+				List<PasadaPeaje> listaPasadas = repoUsuario.traerPasadasVehiculo(v);
+				//chequeo las fechas
+				for (PasadaPeaje p : listaPasadas) {
+					
+					//System.out.println("PASADA:" + p.getVehiculo().getIdentificador().getTag() + "///"+ p.getFecha() +"\n");
+					if (p.getFecha().isAfter(fechaInicial) && p.getFecha().isBefore(fechaFinal)) {
+						//lo agrego al listado
+						DTPasadaPeaje dtPasada = new DTPasadaPeaje(idCliente,
+																	p.getVehiculo().getIdentificador().getTag(),
+																	p.getVehiculo().getIdentificador().getMatricula(), 
+																	p.getFecha().toString(),
+																	p.getCosto());
+						pasadas.add(dtPasada);
+					}
+				}
+				
+			}
+			
+		}
 
 		return pasadas;
 	}

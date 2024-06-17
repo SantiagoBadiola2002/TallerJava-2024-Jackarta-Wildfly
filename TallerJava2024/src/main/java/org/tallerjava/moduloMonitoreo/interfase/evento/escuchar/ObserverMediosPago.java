@@ -15,21 +15,21 @@ public class ObserverMediosPago{
 	
 	@Inject
     private RegistradorDeMetricas register;
-	
-	public void accept(@Observes MediosPagoERRORAlProcesarPago event) {
-		log.infof("Evento procesado: MediosPago Error ProcesarPago: %s", event.getDescripcion());
-        register.incrementarCounter(RegistradorDeMetricas.MEDIOSPAGO_COUNTER_FALLO_PROCESAR_PAGO);
-	}
-
-	public void accept(@Observes MediosPagoERRORPagoTarjetaNoRealizado event) {
-		log.infof("Evento procesado: MediosPago Error PagoTarjetaNoRealizado: %s", event.getDescripcion());
-	    register.incrementarCounter(RegistradorDeMetricas.MEDIOSPAGO_COUNTER_COBRO_TARJETA_RECHAZADO);
-	}
-	
-	public void accept(@Observes MediosPagoOKPagoTarjetaRealizado event) {
-		log.infof("Evento procesado: MediosPago Ok PagoTarjetaRealizado: %s", event.getDescripcion());
-	    register.incrementarCounter(RegistradorDeMetricas.MEDIOSPAGO_COUNTER_COBRO_TARJETA);
-	}
-	
+//	
+//	public void accept(@Observes MediosPagoERRORAlProcesarPago event) {
+//		log.infof("Evento procesado: MediosPago Error ProcesarPago: %s", event.getDescripcion());
+//        register.incrementarCounter(RegistradorDeMetricas.MEDIOSPAGO_COUNTER_FALLO_PROCESAR_PAGO);
+//	}
+//
+//	public void accept(@Observes MediosPagoERRORPagoTarjetaNoRealizado event) {
+//		log.infof("Evento procesado: MediosPago Error PagoTarjetaNoRealizado: %s", event.getDescripcion());
+//	    register.incrementarCounter(RegistradorDeMetricas.MEDIOSPAGO_COUNTER_COBRO_TARJETA_RECHAZADO);
+//	}
+//	
+//	public void accept(@Observes MediosPagoOKPagoTarjetaRealizado event) {
+//		log.infof("Evento procesado: MediosPago Ok PagoTarjetaRealizado: %s", event.getDescripcion());
+//	    register.incrementarCounter(RegistradorDeMetricas.MEDIOSPAGO_COUNTER_COBRO_TARJETA);
+//	}
+//	
 
 }

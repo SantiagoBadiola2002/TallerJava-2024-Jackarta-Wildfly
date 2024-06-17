@@ -2,6 +2,7 @@ package org.tallerjava.moduloGestion.aplicacion;
 
 import org.tallerjava.moduloGestion.dominio.*;
 import org.tallerjava.moduloGestion.interfase.remota.rest.dto.*;
+import org.tallerjava.moduloGestion.interfase.remota.rest.dto.DTPasadaPeaje;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,9 +25,9 @@ public interface ServicioPago {
     
 	public boolean agregarTarjeta(int idCliente, int nroTarjeta, LocalDateTime fechaVtoTarjeta, String nombreCompletoUsuario);
 
-    public List<PasadaPeaje> consultarPasadas(int idCliente, LocalDateTime fechaInicial, LocalDateTime fechaFinal);
+    public List<DTPasadaPeaje> consultarPasadas(int idCliente, LocalDateTime fechaInicial, LocalDateTime fechaFinal);
     
-    public List<PasadaPeaje> consultarPasadas(int idCliente, int tag, String matricula, LocalDateTime fechaInicial, LocalDateTime fechaFinal);
+    public List<DTPasadaPeaje> consultarPasadas(int idCliente, int tag, String matricula, LocalDateTime fechaInicial, LocalDateTime fechaFinal);
 
     public double cargarSaldo(int idCliente, double importe);
     
