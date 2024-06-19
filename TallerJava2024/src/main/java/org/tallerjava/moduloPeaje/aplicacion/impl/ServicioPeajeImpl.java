@@ -6,17 +6,27 @@ import jakarta.transaction.Transactional;
 
 import org.jboss.logging.Logger;
 import org.tallerjava.moduloPeaje.aplicacion.ServicioPeaje;
-import org.tallerjava.moduloPeaje.dominio.Preferencial;
-import org.tallerjava.moduloPeaje.dominio.Vehiculo;
-import org.tallerjava.moduloPeaje.dominio.repo.PeajeRepositorio;
+import org.tallerjava.moduloPeaje.dominio.*;
+import org.tallerjava.moduloPeaje.dominio.repo.*;
 import org.tallerjava.moduloGestion.interfase.api.local.ServicioPagoFacade;
 import org.tallerjava.moduloPeaje.interfase.evento.out.PublicadorEvento;
+import org.tallerjava.moduloPeaje.interfase.remota.rest.dto.DTVehiculo;
+import org.tallerjava.moduloPeaje.infraestructura.messaging.EnviarMensajaQueueUtil;
+import org.tallerjava.moduloPeaje.infraestructura.messaging.PagoRealizadoMessage;
+//import ejemplo00.interfase.api.PagoDTO;
+
+import jakarta.annotation.Resource;
+import jakarta.jms.JMSContext;
+import jakarta.jms.Queue;
 
 import java.util.List;
 
 @ApplicationScoped
 public class ServicioPeajeImpl implements ServicioPeaje {
 	private static final Logger log = Logger.getLogger(ServicioPeajeImpl.class);
+    
+	@Inject
+    private EnviarMensajaQueueUtil mensajePago;
 	
 	@Inject
     private PeajeRepositorio repo;
@@ -33,12 +43,14 @@ public class ServicioPeajeImpl implements ServicioPeaje {
     	boolean habilitado = false;
         Vehiculo vehiculo = existeVehiculo(tag, matricula);
         if (vehiculo != null) {
+        	DTVehiculo dtVehiculo = new DTVehiculo(tag, vehiculo.getIdentificador().getMatricula(), vehiculo.getNacionalidad());
             if (vehiculo.nacional()) {
-                mandarAQueueDePagos(tag, vehiculo);
+            	
+                mandarAQueueDePagos(dtVehiculo);
                 habilitado = true;
 
             } else {
-                habilitado = procesarVehiculoExtranjero(tag, vehiculo);
+                habilitado = procesarVehiculoExtranjero(dtVehiculo);
             }
         }
 
@@ -46,24 +58,24 @@ public class ServicioPeajeImpl implements ServicioPeaje {
         return habilitado;
     }
 
-    private boolean  procesarVehiculoExtranjero(int tag, Vehiculo vehiculo) {
-    	log.infof("*** Procesando pago vehículo extranjero %s tag:", tag);
+    private boolean  procesarVehiculoExtranjero(DTVehiculo dtVehiculo) {
+    	log.infof("*** Procesando pago vehículo extranjero %s tag:", dtVehiculo.getTag());
     	boolean habilitado = false;
         //todos los vehiculos extranjeros son preferenciales
         Preferencial tarifa = repo.obtenerTarifaPreferencial();
         log.infof("Tarifa obtenida %f ",tarifa.getValor());
         //según las reglas del negocio, lo primero es cobrar con PrePago
-        habilitado = servicioPagoFacade.realizarPrePago(tag, tarifa.getValor());
+        habilitado = servicioPagoFacade.realizarPrePago(dtVehiculo.getTag(), tarifa.getValor());
 
         log.infof("Respuesta prePago: %b ",habilitado);
         if (!habilitado) {
             //fallo el cobro prepago, intento con la tarjeta (postPago)
-            habilitado = servicioPagoFacade.realizarPostPago(tag, tarifa.getValor());
+            habilitado = servicioPagoFacade.realizarPostPago(dtVehiculo.getTag(), tarifa.getValor());
             log.infof("Respuesta postPago: %b ",habilitado);
             if (!habilitado) {
                 //TODO mando evento al modulo de monitoreo
                 //el auto no pasa
-            	evento.publicarPagoNoRealizadoExtranjero("Pre y Post Pago a vehiculo Extranjero no realizado: " + tag);
+            	evento.publicarPagoNoRealizadoExtranjero("Pre y Post Pago a vehiculo Extranjero no realizado: " + dtVehiculo.getTag());
             	
             	
             }
@@ -72,26 +84,35 @@ public class ServicioPeajeImpl implements ServicioPeaje {
        
     }
 
-
-    private boolean  procesarVehiculoNacional(int tag, Vehiculo vehiculo) {
-    	log.infof("*** Procesando pago vehículo nacional %s tag:", tag);
+    @Override
+    public boolean  procesarVehiculoNacional(PagoRealizadoMessage pago) {
+    	//convierto/desarmo json al dt objeto (podria ser una instancia de vehiculo)
+    	DTVehiculo dtVehiculo = new DTVehiculo(
+    								pago.tag(), 
+    								pago.matricula(), 
+    								pago.nacionalidad());
+    	//para ver el proceso en el servidor
+    	System.out.println("ESTOY POR ENTRAR A LA ESPERA....");
+    	pausa();
+    	
+    	log.infof("*** Procesando pago vehículo nacional %s tag:", dtVehiculo.getTag());
         boolean habilitado = false;
 
         Preferencial tarifa = repo.obtenerTarifaPreferencial();
-        if (servicioPagoFacade.esClienteTelepeaje(tag)) {
+        if (servicioPagoFacade.esClienteTelepeaje(dtVehiculo.getTag())) {
             //según las reglas del negocio, lo primero es cobrar con PrePago
-            habilitado = servicioPagoFacade.realizarPrePago(tag, tarifa.getValor());
+            habilitado = servicioPagoFacade.realizarPrePago(dtVehiculo.getTag(), tarifa.getValor());
             //si es habilitado true
             //publico la pasada si lo anterior es true PREPAGO == 1
-            log.infof("REGISTRAR PASADA PREPAGA: "+ tag );
-            evento.publicarNuevaPasada(vehiculo, tarifa.getValor(), 1);
+            log.infof("REGISTRAR PASADA PREPAGA: "+ dtVehiculo.getTag() );
+            evento.publicarNuevaPasada(dtVehiculo, tarifa.getValor(), 1);
             
             if (!habilitado) {
                 //fallo el cobro prepago, intento con la tarjeta (postPago)
-                habilitado = servicioPagoFacade.realizarPrePago(tag, tarifa.getValor());
+                habilitado = servicioPagoFacade.realizarPrePago(dtVehiculo.getTag(), tarifa.getValor());
                 //si es habilitado true
                 //publico la pasada si lo anterior es true POSTPAGO == 2
-                evento.publicarNuevaPasada(vehiculo, tarifa.getValor(), 2);
+                evento.publicarNuevaPasada(dtVehiculo, tarifa.getValor(), 2);
             }
         }
         if (!habilitado) {
@@ -104,11 +125,11 @@ public class ServicioPeajeImpl implements ServicioPeaje {
         	if (habilitado) {
         		//si es habilitado Sucive true
         		//publico la pasada si lo anterior es true SUCIVE == 3
-        		evento.publicarNuevaPasada(vehiculo, tarifa.getValor(), 3);
+        		evento.publicarNuevaPasada(dtVehiculo, tarifa.getValor(), 3);
         	}else {
         		//TODO mando evento al modulo de monitoreo
                 //el auto no pasa
-            	evento.publicarPagoNoRealizadoNacional("Pre, Post y Sucive Pago a vehiculo Nacional no realizado: " + tag);
+            	evento.publicarPagoNoRealizadoNacional("Pre, Post y Sucive Pago a vehiculo Nacional no realizado: " + dtVehiculo.getTag());
         		
         	}
         }
@@ -116,11 +137,31 @@ public class ServicioPeajeImpl implements ServicioPeaje {
         return habilitado;
     }
 
-    private void mandarAQueueDePagos(int tag, Vehiculo vehiculo) {
-        //TODO por ahor lo procesamos sincrónicamente
-        procesarVehiculoNacional(tag, vehiculo);
+    private void mandarAQueueDePagos(DTVehiculo dtVehiculo) {
+        //TODO por ahora lo procesamos sincrónicamente
+    	
+    	PagoRealizadoMessage pagoMessage = new PagoRealizadoMessage(
+    			dtVehiculo.getTag(),
+    			dtVehiculo.getMatricula(),
+    			dtVehiculo.getNacionalidad()
+    			);
+    	String repreDTVehiculoJson = pagoMessage.toJson();
+    	log.infof("Convierto DT a json: %s", repreDTVehiculoJson);
+        
+    	mensajePago.enviarMensaje(repreDTVehiculoJson);
+    	//procesarVehiculoNacional(dtVehiculo);
 
         
+    }
+    
+    private void pausa() {
+        //simula algo de trabajo
+        try {
+            log.info("8 realizando pago...");
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private Vehiculo existeVehiculo(int tag, String matricula) {

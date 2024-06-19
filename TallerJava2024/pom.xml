@@ -135,6 +135,8 @@
 					<scripts>
 						<!-- ver archivo config.cli que está en ./ -->
 						<script>config.cli</script>
+						<!-- ver archivo queue.config que está en ./ -->
+						<script>queue.config</script>
 					</scripts>
 					
 				</configuration>

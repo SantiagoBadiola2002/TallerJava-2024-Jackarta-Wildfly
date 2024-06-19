@@ -37,41 +37,6 @@ public class ServicioPagoFacade {
         return servicioPago.esClienteTelepeaje(tag);
     }
     
-    public void altaClienteTelepeaje(Usuario usr) {
-    	servicioPago.altaClienteTelepeaje(usr);
-    };
     
-    public boolean vincularVehiculo(int idCliente, int tag, String matricula) {
-    	return servicioPago.vincularVehiculo(idCliente,tag,matricula);
-    };
-    
-	public boolean desvincularVehiculo(int idCliente, int tag, String matricula) {
-		return servicioPago.desvincularVehiculo(idCliente, tag, matricula);
-	}
-	
-    public List<Integer> obtenerCuentasPorTag(int tag){
-    	return servicioPago.obtenerCuentasPorTag(tag);
-    }
-
-	public void agregarTarjeta(int ci, int nroTarjeta, LocalDateTime fechaVtoTarjeta, String nombreCompletoUsuario) {
-		servicioPago.agregarTarjeta(ci, nroTarjeta, fechaVtoTarjeta, nombreCompletoUsuario);
-	}
-
-	public List<DTPasadaPeaje> consultarPasadas(int idCliente, LocalDateTime fechaInicial, LocalDateTime fechaFinal) {
-		return servicioPago.consultarPasadas(idCliente, fechaInicial, fechaFinal);
-	}
-
-	public List<DTPasadaPeaje> consultarPasadas(int idCliente, int tag, String matricula, LocalDateTime fechaInicial,
-			LocalDateTime fechaFinal) {
-		return servicioPago.consultarPasadas(idCliente, tag, matricula, fechaInicial, fechaFinal);
-	}
-
-	public double cargarSaldo(int idCliente, double importe) {
-		return servicioPago.cargarSaldo(idCliente, importe);	
-	}
-
-	public double consultarSaldo(int idCliente) {
-		return servicioPago.consultarSaldo(idCliente);
-	}
   
 }

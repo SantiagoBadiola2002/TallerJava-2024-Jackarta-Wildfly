@@ -14,8 +14,8 @@ import java.util.List;
 
 import org.jboss.logging.Logger;
 import org.tallerjava.moduloPeaje.aplicacion.ServicioPeaje;
-import org.tallerjava.moduloPeaje.interfase.remota.rest.dto.DTIdentificador;
 import org.tallerjava.moduloPeaje.interfase.remota.rest.dto.DTImporte;
+import org.tallerjava.moduloPeaje.interfase.remota.rest.dto.DTVehiculo;
 
 @ApplicationScoped
 @Path("/moduloPeaje")
@@ -26,14 +26,14 @@ public class PeajeAPI {
 	@Inject
 	private ServicioPeaje servicioPeaje;
 
-	// curl -X POST -v http://localhost:8080/TallerJava2024/api/moduloPeaje/estaHabilitadoSincronico -H "Content-Type: application/json" -d '{"tag":666, "matricula":"BEC1234"}'
+	// curl -X POST -v http://localhost:8080/TallerJava2024/api/moduloPeaje/estaHabilitadoSincronico -H "Content-Type: application/json" -d '{"tag":555, "matricula":"BEC1234", "nacionalidad": 0}'
 	@POST
 	@Path("/estaHabilitadoSincronico")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public boolean estaHabilitadoSincronico(DTIdentificador dtIdentificador) {
-		log.infof("######### estaHabilitadoSincronico: Tag: " + dtIdentificador.getTag() + ", matricula: "
-				+ dtIdentificador.getMatricula() + " #########");
-		return servicioPeaje.estaHabilitadoSincronico(dtIdentificador.getTag(), dtIdentificador.getMatricula());
+	public boolean estaHabilitadoSincronico(DTVehiculo dtVehiculo) {
+		log.infof("######### estaHabilitadoSincronico: Tag: %s %s" + dtVehiculo.getTag() + ", matricula: "
+				+ dtVehiculo.getMatricula() + " #########");
+		return servicioPeaje.estaHabilitadoSincronico(dtVehiculo.getTag(), dtVehiculo.getMatricula());
 	}
 
 	// curl -X POST -v http://localhost:8080/TallerJava2024/api/moduloPeaje/actualizarTarifaComun -H "Content-Type: application/json" -d '{"importe":"456.78"}'

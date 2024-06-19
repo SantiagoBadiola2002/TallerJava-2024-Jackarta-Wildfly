@@ -3,6 +3,7 @@ package org.tallerjava.moduloPeaje.interfase.evento.out;
 import java.time.LocalDateTime;
 
 import org.tallerjava.moduloPeaje.dominio.Vehiculo;
+import org.tallerjava.moduloPeaje.interfase.remota.rest.dto.DTVehiculo;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Event;
@@ -36,10 +37,10 @@ public class PublicadorEvento {
     	vehiculoNoEncontrado.fire(new PeajeERRORVehiculoNoEncontrado(mensaje));
     }
     
-    public void publicarNuevaPasada(Vehiculo vehiculo, double costo, int tipoCobro){
+    public void publicarNuevaPasada(DTVehiculo vehiculo, double costo, int tipoCobro){
     	System.out.println("PUBLICADOR EVENTO PEAJE cobro: " + tipoCobro);
     	nuevaPasada.fire(new PeajeINFONuevaPasada(LocalDateTime.now(), costo, tipoCobro, 
-    												vehiculo.getIdentificador().getTag(), 
-    												vehiculo.getIdentificador().getMatricula()));
+    												vehiculo.getTag(), 
+    												vehiculo.getMatricula()));
     }
 }
