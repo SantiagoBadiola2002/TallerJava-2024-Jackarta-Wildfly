@@ -106,7 +106,7 @@ public class ServicioPeajeImpl implements ServicioPeaje {
     	System.out.println(VIOLET + "ESTOY POR ENTRAR A LA ESPERA....");
     	pausa();
     	
-    	log.infof(BLUE + "*** Procesando pago vehículo nacional tag:", dtVehiculo.getTag());
+    	log.infof(BLUE + "*** Procesando pago vehículo nacional con tag: "+ dtVehiculo.getTag() + " y matricula: " + dtVehiculo.getMatricula() +".");
         boolean habilitado = false;
 
         Preferencial tarifa = repo.obtenerTarifaPreferencial();
@@ -129,20 +129,37 @@ public class ServicioPeajeImpl implements ServicioPeaje {
                     //significa que no es cliente preferencial o que fallaron los dos sistemas
                     //de cobro previos
                     //TODO invocar a modulo de pago Sucive
-                	habilitado = servicioPagoSuvice.notificarPago(dtVehiculo.getMatricula(), tarifa.getValor());
+                	Comun tarifaComun = repo.obtenerTarifaComun();
+                	habilitado = servicioPagoSuvice.notificarPago(dtVehiculo.getMatricula(), tarifaComun.getValor());
                 	if(habilitado) {
                 		//publico la pasada si lo anterior es true SUCIVE == 3
                     	log.infof(GREEN + "Registro pasada Nacional por peaje con pago Sucive: "+ dtVehiculo.getTag() );
-                    	evento.publicarNuevaPasada(dtVehiculo, tarifa.getValor(), 3);
+                    	evento.publicarNuevaPasada(dtVehiculo, tarifaComun.getValor(), 3);
                 	}else {
                 		//TODO mando evento al modulo de monitoreo
                         //el auto no pasa
-                		log.infof(ORANGE + "Vehiculo Nacional por peaje NO PASA tag: "+ dtVehiculo.getTag() );
-                    	evento.publicarPagoNoRealizadoNacional("Pre, Post y Sucive Pago a vehiculo Nacional NO realizado: " + dtVehiculo.getTag());
+                		log.infof(ORANGE + "Vehiculo Nacional por peaje NO PASA matricula: "+ dtVehiculo.getMatricula() );
+                    	evento.publicarPagoNoRealizadoNacional("Pre, Post y Sucive Pago a vehiculo Nacional NO realizado matricula: " + dtVehiculo.getMatricula());
                 	}
                 	
                 }
             }
+        }else {
+            //no es cliente telepeaje y es nacional 
+            //TODO invocar a modulo de pago Sucive
+        	Comun tarifaComun = repo.obtenerTarifaComun();
+        	habilitado = servicioPagoSuvice.notificarPago(dtVehiculo.getMatricula(), tarifaComun.getValor());
+        	if(habilitado) {
+        		//publico la pasada si lo anterior es true SUCIVE == 3
+            	log.infof(GREEN + "Registro pasada Nacional por peaje con pago Sucive (sin CliTelepeaje): "+ dtVehiculo.getMatricula() );
+            	evento.publicarNuevaPasada(dtVehiculo, tarifaComun.getValor(), 3);
+        	}else {
+        		//TODO mando evento al modulo de monitoreo
+                //el auto no pasa
+        		log.infof(ORANGE + "Vehiculo Nacional por peaje NO PASA tag: "+ dtVehiculo.getTag() );
+            	evento.publicarPagoNoRealizadoNacional("Pago Sucive a Vehiculo Nacional NO realizado (sin CliTelepeaje): " + dtVehiculo.getMatricula());
+        	}
+        	
         }
        
 

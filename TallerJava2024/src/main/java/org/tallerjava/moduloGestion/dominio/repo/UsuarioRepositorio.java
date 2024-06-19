@@ -22,7 +22,6 @@ public interface UsuarioRepositorio {
 	
 	public ClienteTelepeaje crearClienteTelepeaje(Usuario usr);
 
-	public List<Vinculo> findVinculosByUser(Usuario usr);
 	
 	public long salvarVehiculo(Vehiculo vehiculo);
 	public long salvarTarjetaPostPaga(PostPaga postPaga, Tarjeta tarjeta);

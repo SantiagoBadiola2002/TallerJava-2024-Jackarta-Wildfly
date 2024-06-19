@@ -69,13 +69,21 @@ public class UsuarioRepositorioImpl implements UsuarioRepositorio {
 
 	@Override
 	public Usuario findUsuario(int id) {
+		try {
+			return em.find(Usuario.class, id);
+		}catch (NoResultException e) {
+            return null;
+        }
 		
-		return em.find(Usuario.class, id);
 	}
 	
 	@Override
 	public ClienteTelepeaje findCliTelepeaje(int idCliente) {
-		return em.find(ClienteTelepeaje.class, idCliente);
+		try{
+			return em.find(ClienteTelepeaje.class, idCliente);
+		} catch (NoResultException e) {
+            return null;
+        }
 		
 	}
 	
@@ -199,11 +207,6 @@ public class UsuarioRepositorioImpl implements UsuarioRepositorio {
 		
 	}
 
-	@Override
-	public List<Vinculo> findVinculosByUser(Usuario usr) {
-
-		return null;
-	}
 	
 	@Override
 	
