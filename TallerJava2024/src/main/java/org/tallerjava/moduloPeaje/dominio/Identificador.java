@@ -14,6 +14,7 @@ public class Identificador {
 	
 	@Column(nullable = false)
     private String matricula;
+	//puedo tener un nacional que no sea cliente telepeaje
 	@Column(nullable = false)
     private int tag;
     

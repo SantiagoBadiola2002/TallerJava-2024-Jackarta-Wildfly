@@ -196,13 +196,14 @@ public class ServicioPeajeImpl implements ServicioPeaje {
         Vehiculo vehiculo = repo.findByTag(tag);
 
         if (vehiculo != null) {
-            log.infof("Vehiculo encontrado con tag: %s", tag);
+            log.infof(GREEN + "Vehiculo encontrado con tag: " + tag);
         } else {
             vehiculo = repo.findByMatricula(matricula);
             if (vehiculo != null) {
-                log.infof("Vehiculo encontrado com matricula: %s", tag);
+                log.infof(GREEN+"Vehiculo encontrado com matricula: " + matricula);
             } else {
                 //error grave el vehiculo no esta en el sistema
+            	log.infof(ORANGE +"Vehiculo NO encontrado con matricula: " + matricula);
                 evento.publicarVehiculoNoEncontrado(
                         "Vehiculo no encontrado: " + tag + " " + matricula);
             }

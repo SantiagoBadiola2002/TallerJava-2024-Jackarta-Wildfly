@@ -42,7 +42,7 @@ public class PeajeRepositorioImpl implements PeajeRepositorio {
 
     @Override
     public Vehiculo findByMatricula(String matricula) {
-    	String sql = "SELECT v FROM Vehiculo v WHERE v.matricula = :matricula";
+    	String sql = "SELECT v FROM Vehiculo v WHERE v.identificador.matricula = :matricula";
     	
     	TypedQuery<Vehiculo> findByMatricula = em.createQuery(sql, Vehiculo.class).setParameter("matricula", matricula);
     	 try {
