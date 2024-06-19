@@ -6,7 +6,7 @@ import org.tallerjava.moduloPeaje.interfase.remota.rest.dto.DTVehiculo;
 
 public interface ServicioPeaje {
 	
-    public boolean estaHabilitadoSincronico(int tag, String matricula);
+    public boolean estaHabilitado(int tag, String matricula);
     public void actualizarTarifaComun(double importe);
     public void actualizarTarifaPreferencial(double importe);
     void altaVehiculo(Vehiculo vehiculo);

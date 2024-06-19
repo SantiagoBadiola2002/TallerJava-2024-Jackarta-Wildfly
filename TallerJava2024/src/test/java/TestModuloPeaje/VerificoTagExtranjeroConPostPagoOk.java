@@ -101,6 +101,6 @@ class VerificoTagExtranjeroConPostPagoOk {
     @DisplayName("Verifico tag extranjero con PostPago confirmado ok")
     void testear(ServicioPeajeImpl servicioPeaje) {
         Assertions.assertTrue(
-                servicioPeaje.estaHabilitadoSincronico(10001,"BAA 1111"));
+                servicioPeaje.estaHabilitado(10001,"BAA 1111"));
     }
 }

@@ -13,10 +13,10 @@ import java.time.Duration;
 @ApplicationScoped
 public class RegistradorDeMetricas {
     public static final String PEAJE_COUNTER_VEHICULO_NO_ENCONTRADO ="peajeERRORVehiculoNoEncontrado";
-
     public static final String PEAJE_COUNTER_PAGO_EXTRANJERO_NO_PASA ="peajeERRORPagoNoRealizadoExtranjero";
     public static final String PEAJE_COUNTER_PAGO_NACIONAL_NO_PASA ="peajeERRORPagoNoRealizadoNacional";
     public static final String PEAJE_COUNTER_PAGO_SUCIVE ="peajeOKPagoSucive";
+    
     public static final String GESTION_COUNTER_PRE_PAGO ="gestionOKPrePago";
     public static final String GESTION_COUNTER_POST_PAGO ="gestionOKPostPago";
     public static final String GESTION_COUNTER_SALDO_INSUFICIENTE ="gestionERRORSaldoInsuficiente";
@@ -27,7 +27,7 @@ public class RegistradorDeMetricas {
     public static final String MEDIOSPAGO_COUNTER_COBRO_TARJETA ="mediospagoOKCobroTarjeta";
     public static final String MEDIOSPAGO_COUNTER_COBRO_TARJETA_RECHAZADO ="mediospagoERRORCobroTarjetaRechazado";
     public static final String MEDIOSPAGO_COUNTER_FALLO_PROCESAR_PAGO ="mediospagoERRORAlProcesarPago";
-//faltaria el de sucive
+
     public static final String SUCIVE_COUNTER_COBRO_SUCIVE ="suciveOKCobroSucive";
     
     

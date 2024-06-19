@@ -46,6 +46,6 @@ class VerificoTagExtranjeroConPostPagoError extends VerificoTagExtranjeroConPost
     @Override
     void testear(ServicioPeajeImpl servicioPeaje) {
         Assertions.assertFalse(
-                servicioPeaje.estaHabilitadoSincronico(10001,"BAA 1111"));
+                servicioPeaje.estaHabilitado(10001,"BAA 1111"));
     }
 }

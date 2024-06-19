@@ -129,6 +129,6 @@ class VerificoTagExtranjeroConPrePagoOk {
                 //obervese que los valores pasados como parámetros tiene poca relevancia
                 //en este test, ya que el vehiculo recuperado desde el fake de repositorio
                 //(implementado arriba) siempre devolverá un vehiculo con tag hardcoded.
-                servicioPeaje.estaHabilitadoSincronico(10001,"BAA 1111"));
+                servicioPeaje.estaHabilitado(10001,"BAA 1111"));
     }
 }

@@ -14,6 +14,7 @@ import org.tallerjava.moduloGestion.interfase.remota.rest.dto.DTIdCliente;
 import org.tallerjava.moduloGestion.interfase.remota.rest.dto.DTPasadaPeaje;
 import org.tallerjava.moduloGestion.interfase.remota.rest.dto.DTVehiculo;
 import org.tallerjava.moduloMediosDePago.aplicacion.ServicioMediosDePago;
+import org.tallerjava.moduloSucive.aplicacion.ServicioSucive;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
