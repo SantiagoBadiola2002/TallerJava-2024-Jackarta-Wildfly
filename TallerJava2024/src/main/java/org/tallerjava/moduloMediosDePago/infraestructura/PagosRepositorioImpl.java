@@ -1,7 +1,11 @@
 package org.tallerjava.moduloMediosDePago.infraestructura;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import org.jboss.logging.Logger;
 import org.tallerjava.moduloMediosDePago.dominio.Cliente;
+import org.tallerjava.moduloMediosDePago.dominio.Pago;
 import org.tallerjava.moduloMediosDePago.dominio.repo.PagosRepositorio;
 import org.tallerjava.moduloMediosDePago.dominio.Vehiculo;
 
@@ -43,6 +47,28 @@ public class PagosRepositorioImpl implements PagosRepositorio{
 		
 		
 	}
+
+	@Override
+	public void salvarPago(Pago pago) {
+		em.persist(pago);
+		
+	}
+
+	
+	public double traerImportesPorDia(LocalDateTime fecha) {
+		
+        String jpql = "SELECT SUM(p.importe) FROM Pago p WHERE p.fecha >= :fechaInicio AND p.fecha < :fechaFin";
+
+        LocalDateTime fechaInicio = fecha.withHour(0).withMinute(0).withSecond(0);
+        LocalDateTime fechaFin = fecha.withHour(23).withMinute(59).withSecond(59);
+        Double totalImportes = em.createQuery(jpql, Double.class)
+        		  						.setParameter("fechaInicio", fechaInicio)
+        		  						.setParameter("fechaFin", fechaFin)
+        		  						.getSingleResult();
+
+        // Manejar el caso donde no hay pagos en la fecha especificada
+        return totalImportes != null ? totalImportes : 0.0;
+    }
 
 
 }

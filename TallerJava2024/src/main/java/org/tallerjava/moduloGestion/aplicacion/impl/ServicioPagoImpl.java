@@ -14,8 +14,10 @@ import org.tallerjava.moduloGestion.interfase.remota.rest.dto.DTIdCliente;
 import org.tallerjava.moduloGestion.interfase.remota.rest.dto.DTPasadaPeaje;
 import org.tallerjava.moduloGestion.interfase.remota.rest.dto.DTVehiculo;
 import org.tallerjava.moduloMediosDePago.aplicacion.ServicioMediosDePago;
+import org.tallerjava.moduloPeaje.aplicacion.impl.ServicioPeajeImpl;
 import org.tallerjava.moduloSucive.aplicacion.ServicioSucive;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +25,11 @@ import java.util.List;
 @ApplicationScoped
 public class ServicioPagoImpl implements ServicioPago {
 	private static final Logger log = Logger.getLogger(ServicioPagoImpl.class);
-
+	public static final String BLUE = "\u001B[34m";
+	public static final String GREEN = "\u001B[32m";
+	 public static final String RED = "\u001B[31m";
+	 public static final String ORANGE = "\u001B[38;5;208m";
+	 public static final String VIOLET = "\u001B[35m";
 	@Inject
 	private PublicadorEvento evento;
 
@@ -37,7 +43,7 @@ public class ServicioPagoImpl implements ServicioPago {
 	@Override
 	@Transactional
 	public boolean realizarPrePago(int tag, double importe) {
-		log.infof("*** Respuesta Pre Pago realizado: tag , importe , estado Pago ", tag, importe);
+		log.infof(VIOLET + "*** Inicio realizar PrePago a: tag: " + tag + " importe: " + importe);
 		boolean realizado = false;
         Vehiculo vehiculo = repoUsuario.findByTagVehiculo(tag);
         if (vehiculo != null) {
@@ -50,13 +56,13 @@ public class ServicioPagoImpl implements ServicioPago {
                     //TODO controllar que el salo sea suficente
                     ctaPrepaga.descontarSaldo(importe);
                     
-                    log.infof("OK: Realizado pasaje Pre-pago %s", tag);
+                    log.infof(GREEN + "OK: Realizado pasaje Pre-pago %s", tag);
                     evento.publicarNotificarPrePago("Se ha realizado el PrePago");
                   
                     realizado = true;
 
                 } else {
-                    log.infof("¡ERROR!: Saldo insuficiente %s", tag);
+                    log.infof(ORANGE + "¡ERROR!: Saldo insuficiente %s", tag);
                     evento.publicarNotificarSaldoInsuficiente("Saldo insuficiente en PrePago");
                     realizado = false;
                 }
@@ -65,7 +71,7 @@ public class ServicioPagoImpl implements ServicioPago {
                 //estoy frente a otro problema de inconsistencia ya que para tener un tag
                 //tengo que ser cliente del telepeaje
                 //TODO logear y mandar evento al modulo de monitoreo
-                log.infof("¡ERROR!: Cliente Telepeaje para TAG no encontrado", tag);
+                log.infof(ORANGE + "¡ERROR!: Cliente Telepeaje para TAG no encontrado", tag);
                 evento.publicarCliTelepeajeTagNoEncontrado("Cliente Telepeaje no encontrado en pre pago tag: " + tag);
                 
                 realizado = false;
@@ -78,7 +84,7 @@ public class ServicioPagoImpl implements ServicioPago {
             // no podemos saber a que Cliente pertenece, recordar que los tags se
             //entregan cuando el Cliente se registra en el sistema
             //TODO logear y mandar evento al modulo de monitorio
-            log.infof("¡ERROR!: Vehiculo para TAG no encontrado", tag);
+            log.infof(ORANGE + "¡ERROR!: Vehiculo para TAG no encontrado", tag);
             evento.publicarVehiculoTagNoEncontrado("Vehiculo no encontrado en Pre pago tag: " + tag);
             
             realizado = false;
@@ -92,7 +98,8 @@ public class ServicioPagoImpl implements ServicioPago {
 		// TODO muy parecido al anterior con la diferencia de que voy a tener que
 		// interactuar con el modulo de Medios de pagos para cobrar con tarjeta
 
-		log.infof("*** Respuesta Post Pago realizado: tag , importe , estado Pago ", tag, importe);
+		log.infof(VIOLET + "*** Inicio realizar Post Pago a: tag: " + tag + " importe: " + importe);
+		
 		boolean realizado = false;
         Vehiculo vehiculo = repoUsuario.findByTagVehiculo(tag);
         if (vehiculo != null) {
@@ -104,17 +111,15 @@ public class ServicioPagoImpl implements ServicioPago {
                 	PostPaga ctaPrepaga = cli.getCtaPostpaga();
                 	
                 	String codAutorizada = servicioPagos.notificarPago(cli.getIdCliente(), tag, importe, cli.getCtaPostpaga().getTarjeta().getNroTarjeta());
-                	if (codAutorizada.equals("PAGO APROBADO")) {
-                		//TODO controllar que el salo sea suficente
-                		
+                	if (codAutorizada.equals("PAGO APROBADO")) {                		
                     
-                		log.infof("OK: Realizado pasaje Post-pago %s", tag);
-                		evento.publicarNotificarPostPago("Se ha realizado el PostPago");
+                		log.infof(GREEN + "OK: Realizado pago Post-pago al tag: "+ tag);
+                		evento.publicarNotificarPostPago("Se ha realizado el pagos PostPago");
                 		realizado = true;
                 		
 
                 	} else {
-                		log.infof("¡ERROR!: Tarjeta Rechaza en Post Pago", tag);
+                		log.infof(ORANGE + "¡ERROR!: Tarjeta Rechaza en Post Pago al tag: "+ tag);
                 		evento.publicarTarjetaRechazada("Tarjeta Rechazada en el PostPago");
                 		
                 		realizado = false;
@@ -122,13 +127,13 @@ public class ServicioPagoImpl implements ServicioPago {
                 }else {
                 	//no tiene cuenta post paga
                 	//no puedo realizar el pago 
-                	log.infof("¡ERROR!: No tiene Tarjeta asociada para Post pago %s", tag);
+                	log.infof(ORANGE +"¡ERROR!: No tiene Tarjeta asociada para Post pago al tag: "+ tag);
                 }
             } else {
                 //estoy frente a otro problema de inconsistencia ya que para tener un tag
                 //tengo que ser cliente del telepeaje
                 //TODO logear y mandar evento al modulo de monitoreo
-                log.infof("¡ERROR!: Cliente Telepeaje para TAG no encontrado", tag);
+                log.infof(ORANGE + "¡ERROR!: Cliente Telepeaje para TAG no encontrado", tag);
                 evento.publicarCliTelepeajeTagNoEncontrado("No se encontro Cliente Telepeaje por TAG");
                 
                 realizado = false;
@@ -141,7 +146,7 @@ public class ServicioPagoImpl implements ServicioPago {
             // no podemos saber a que Cliente pertenece, recordar que los tags se
             //entregan cuando el Cliente se registra en el sistema
             //TODO logear y mandar evento al modulo de monitorio
-            log.infof("¡ERROR!: Vehiculo para TAG no encontrado", tag);
+            log.infof(ORANGE + "¡ERROR!: Vehiculo para TAG no encontrado", tag);
             evento.publicarVehiculoTagNoEncontrado("No se encontro Vehiculo por TAG");
             
             realizado = false;
@@ -381,6 +386,8 @@ public class ServicioPagoImpl implements ServicioPago {
 		
 		repoUsuario.actualizarCuentaPrepaga(cliTelepeaje.getCtaPrepaga());
 		repoUsuario.actualizarCliTelepeaje(cliTelepeaje);
+		
+		
 		return cliTelepeaje.getCtaPrepaga().getSaldo();
 	}
 
@@ -389,6 +396,7 @@ public class ServicioPagoImpl implements ServicioPago {
 	@Override
 	public double consultarSaldo(int idCliente) {
 		ClienteTelepeaje clienteTelepeaje = repoUsuario.findCliTelepeaje(idCliente);
+		
 		return clienteTelepeaje.getCtaPrepaga().getSaldo();
 	}
 

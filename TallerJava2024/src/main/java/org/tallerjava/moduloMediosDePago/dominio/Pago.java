@@ -25,10 +25,10 @@ public class Pago {
 	
 	@OneToOne
     private Tarjeta tarjeta;
-    private String tag;
+    private int tag;
     private double importe;
 
-	public Pago(LocalDateTime fecha, Cliente cliente, Tarjeta tarjeta, String tag, double importe) {
+	public Pago(LocalDateTime fecha, Cliente cliente, Tarjeta tarjeta, int tag, double importe) {
 		this.fecha = fecha;
 		this.cliente = cliente;
 		this.tarjeta = tarjeta;
@@ -48,7 +48,7 @@ public class Pago {
 		return tarjeta;
 	}
 
-	public String getTag() {
+	public int getTag() {
 		return tag;
 	}
 
@@ -64,8 +64,8 @@ public class Pago {
 		this.tarjeta = tarjeta;
 	}
 
-	public void setTag(String vehiculo) {
-		this.tag = vehiculo;
+	public void setTag(int tag) {
+		this.tag = tag;
 	}
 
 	public double getImporte() {

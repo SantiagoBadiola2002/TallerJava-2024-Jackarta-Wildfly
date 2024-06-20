@@ -11,6 +11,7 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.core.MediaType;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -58,7 +59,7 @@ public class ClienteAPI {
 		return servicioPago.esClienteTelepeaje(tag.getTag());
 	}
 
-	// curl -X POST -v http://localhost:8080/TallerJava2024/api/moduloGestion/altaClienteTelepeaje -H "Content-Type: application/json" -d '{"nombre":"nomNacional","email":"nom1Nacional@gmail.com", "nacionalidad":0}'
+	// curl -X POST -v http://localhost:8080/TallerJava2024/api/moduloGestion/altaClienteTelepeaje -H "Content-Type: application/json" -d '{"nombre":"nomNacional","email":"nom1Nacional@gmail.com", "nacionalidad":0}'  
 	@POST
 	@Path("/altaClienteTelepeaje")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -166,6 +167,8 @@ public class ClienteAPI {
 	@Produces(MediaType.APPLICATION_JSON)
 	public double consultarSaldo(@PathParam("idCliente") int idCliente) {
 		log.infof("Consulta saldo: " + idCliente + "\n");
+
+		
 		return servicioPago.consultarSaldo(idCliente);
 	}
 
