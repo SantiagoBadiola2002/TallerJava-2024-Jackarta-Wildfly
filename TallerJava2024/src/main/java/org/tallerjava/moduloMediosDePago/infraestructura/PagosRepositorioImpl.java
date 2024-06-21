@@ -2,6 +2,7 @@ package org.tallerjava.moduloMediosDePago.infraestructura;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.jboss.logging.Logger;
 import org.tallerjava.moduloMediosDePago.dominio.Cliente;
@@ -69,6 +70,22 @@ public class PagosRepositorioImpl implements PagosRepositorio{
         // Manejar el caso donde no hay pagos en la fecha especificada
         return totalImportes != null ? totalImportes : 0.0;
     }
+
+
+	public List<Pago> traerPagosCliente(int idCliente) {	
+        return em.createQuery(
+                "SELECT p FROM Pago p WHERE p.cliente.idCliente = :cliente", Pago.class)
+                .setParameter("cliente", idCliente)
+                .getResultList();
+	}
+	
+	public List<Pago> traerPagosClienteYTag(int idCliente, int tag) {	
+        return em.createQuery(
+                "SELECT p FROM Pago p WHERE p.cliente.idCliente = :cliente AND p.tag = : tag", Pago.class)
+                .setParameter("cliente", idCliente)
+                .setParameter("tag", tag)
+                .getResultList();
+	}
 
 
 }

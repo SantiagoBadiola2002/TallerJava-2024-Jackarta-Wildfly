@@ -27,7 +27,14 @@ import jakarta.jms.MessageListener;
     )
 public class NuevoPagoConsumer implements MessageListener {
     private static final Logger log = Logger.getLogger(NuevoPagoConsumer.class);
-
+	public static final String BLUE = "\u001B[34m";
+	public static final String GREEN = "\u001B[32m";
+	 public static final String RED = "\u001B[31m";
+	 public static final String ORANGE = "\u001B[38;5;208m";
+	 public static final String VIOLET = "\u001B[35m";
+    
+    
+    
     @Inject
     private ServicioPeaje pagosServicios;
 
@@ -44,7 +51,7 @@ public class NuevoPagoConsumer implements MessageListener {
         try {
 
             String body = message.getBody(String.class);
-            log.infof("6 Nuevo pago recibido: %s, body: %s", message.toString(),
+            log.infof(VIOLET+"Inicio nuevo pago recibido de la Queue: \n"+message.toString()+ " body: "+
                     body);
 
             PagoRealizadoMessage pago = PagoRealizadoMessage.buildFromJson(body);
@@ -53,7 +60,7 @@ public class NuevoPagoConsumer implements MessageListener {
             pagosServicios.procesarVehiculoNacional(pago);
 
         } catch (JMSException e) {
-            log.errorf("Se produjo un error al consumir el mensaej Pago %s",e.getMessage());
+            log.errorf(ORANGE+"Se produjo un error al consumir el mensaej Pago %s",e.getMessage());
         }
     }
 }

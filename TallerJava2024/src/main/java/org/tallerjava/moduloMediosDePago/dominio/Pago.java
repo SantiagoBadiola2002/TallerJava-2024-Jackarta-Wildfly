@@ -28,6 +28,8 @@ public class Pago {
     private int tag;
     private double importe;
 
+    public Pago() {}
+    
 	public Pago(LocalDateTime fecha, Cliente cliente, Tarjeta tarjeta, int tag, double importe) {
 		this.fecha = fecha;
 		this.cliente = cliente;

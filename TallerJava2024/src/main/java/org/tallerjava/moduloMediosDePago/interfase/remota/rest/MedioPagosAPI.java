@@ -34,22 +34,24 @@ public class MedioPagosAPI {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<DTPagos>consultaDePago(DTFechas dtFecha){
-		
+		log.infof(VIOLET+"####  Medios Pago - consultarDePagos por fechas  ####");
 		return servicioMedioPago.consultaDePagos(dtFecha.getFechaInicial(), dtFecha.getFechaFinal());
 	}
 	
-//	// curl -X GET -v http://localhost:8080/TallerJava2024/api/moduloMediosDePago/consultarDePagos -H "Content-Type: application/json" -d '{"idCliente":1,"tag":555000}'   
-//	// curl -X GET -v http://localhost:8080/TallerJava2024/api/moduloMediosDePago/consultarDePagos -H "Content-Type: application/json" -d '{"idCliente":1}'    
-//	@GET
-//	@Path("/consultarDePagos")
-//	@Consumes(MediaType.APPLICATION_JSON)
-//	@Produces(MediaType.APPLICATION_JSON)
-//	public List<DTPagos>consultaDePago(DTPagos dtPagos){
-//		if (dtPagos.getTag()!= 0) {
-//			return servicioMedioPago.consultaDePagos(dtPagos.getIdCliente(), dtPagos.getTag());
-//		}else {
-//			return servicioMedioPago.consultaDePagos(dtPagos.getIdCliente());
-//		}
-//	}
+	// curl -X GET -v http://localhost:8080/TallerJava2024/api/moduloMediosDePago/consultarDePagosCliente -H "Content-Type: application/json" -d '{"idCliente":1,"tag":555000}'   
+	// curl -X GET -v http://localhost:8080/TallerJava2024/api/moduloMediosDePago/consultarDePagosCliente -H "Content-Type: application/json" -d '{"idCliente":1}'    
+	@GET
+	@Path("/consultarDePagosCliente")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<DTPagos>consultaDePago(DTPagos dtPagos){
+		if (dtPagos.getTag()!= 0) {
+			log.infof(VIOLET+"####  Medios Pago - consultarDePagos por Cliente y Tag  ####");
+			return servicioMedioPago.consultaDePagos(dtPagos.getIdCliente(), dtPagos.getTag());
+		}else {
+			log.infof(VIOLET+"####  Medios Pago - consultarDePagos por Cliente  ####");
+			return servicioMedioPago.consultaDePagos(dtPagos.getIdCliente());
+		}
+	}
 	
 }

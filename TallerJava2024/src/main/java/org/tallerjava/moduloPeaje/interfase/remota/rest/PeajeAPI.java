@@ -38,8 +38,8 @@ public class PeajeAPI {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public boolean estaHabilitado(DTVehiculo dtVehiculo) {
 		System.out.println(BLUE + "estaHabilitado");
-		log.infof(BLUE + "######### estaHabilitado: Tag: %s %s" + dtVehiculo.getTag() + ", matricula: "
-				+ dtVehiculo.getMatricula() + " #########");
+		log.infof(VIOLET+"####  estaHabilitado - tag: " + dtVehiculo.getTag() + ", matricula: "
+				+ dtVehiculo.getMatricula() + " ###");
 		return servicioPeaje.estaHabilitado(dtVehiculo.getTag(), dtVehiculo.getMatricula());
 	}
 
@@ -48,7 +48,7 @@ public class PeajeAPI {
 	@Path("/actualizarTarifaComun")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void actualizarTarifaComun(DTImporte dtImporte) {
-		log.infof("######### actualizarTarifaComun: importe: " + dtImporte.getImporte() + " #########");
+		log.infof(VIOLET+"####  actualizarTarifaComun - importe: " + dtImporte.getImporte() + " ###");
 		servicioPeaje.actualizarTarifaComun(dtImporte.getImporte());
 	}
 
@@ -57,7 +57,7 @@ public class PeajeAPI {
 	@Path("/actualizarTarifaPreferencial")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void actualizarTarifaPreferencial(DTImporte dtImporte) {
-		log.infof("######### actualizarTarifaPreferencial: importe: " + dtImporte.getImporte() + " #########");
+		log.infof(VIOLET+"####  actualizarTarifaPreferencial - importe: " + dtImporte.getImporte() + " ###");
 		servicioPeaje.actualizarTarifaPreferencial(dtImporte.getImporte());
 	}
 

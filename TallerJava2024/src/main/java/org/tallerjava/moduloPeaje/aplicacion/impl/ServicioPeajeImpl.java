@@ -186,7 +186,7 @@ public class ServicioPeajeImpl implements ServicioPeaje {
         //simula algo de trabajo
         try {
             log.info("8 realizando pago...");
-            Thread.sleep(5000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

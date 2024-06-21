@@ -49,18 +49,18 @@ public class ServicioMediosDePagoImpl implements ServicioMediosDePago {
 	@Transactional
 	public void altaCliente(int idCliente, int nroTarjeta, LocalDateTime fechaVtoTarjeta,
 			String nombreCompletoUsuario) {
-		log.infof("*** Agregando Ciente y Tarjeta: ", idCliente, nroTarjeta);
+		log.infof(BLUE+ "Medios Pago - Agregando Ciente: " +idCliente + "numero Tarjeta: " +nroTarjeta);
 
 		Tarjeta tarjeta = new Tarjeta(nroTarjeta, fechaVtoTarjeta, nombreCompletoUsuario);
 		Cliente cli = new Cliente(idCliente, tarjeta, null);
-
+		log.infof(GREEN + "OK: Tarjeta agregada nro: "+ tarjeta.getNro());
 		repoPagos.salvarCliente(cli);
 	}
 
 	@Override
 	@Transactional
 	public void altaVehiculo(int idCliente, String matricula, int tag) {
-		log.infof(BLUE + "Agregando Ciente y Vehiculo en medios pago idCliente: "+ idCliente + " tag: "+tag);
+		log.infof(BLUE+ "Medios Pago - Agregando Ciente y Vehiculo idCliente: "+ idCliente + " tag: "+tag);
 		Identificador idVehiculo = new Identificador(matricula, tag);
 		Cliente cli = repoPagos.findByIdCliente(idCliente);
 
@@ -118,39 +118,52 @@ public class ServicioMediosDePagoImpl implements ServicioMediosDePago {
 
 	@Override
 	public List<DTPagos> consultaDePagos(LocalDate fechaInicial, LocalDate fechaFinal) {
-		List<DTPagos> pagosDia = new ArrayList<>();
-		
-
+		log.infof(VIOLET +"*** Inicio consultaDePagos por fechas");
+		List<DTPagos> pagosDia = new ArrayList<>();	
 		long dias = (int) ChronoUnit.DAYS.between(fechaInicial, fechaFinal);
 		
 		double importe = 0;
 		LocalDateTime fechaIni = fechaInicial.atTime(0,0);
 		
-		for (int i=0; i<=dias; i++) {
-			
+		for (int i=0; i<=dias; i++) {			
 			importe = repoPagos.traerImportesPorDia(fechaIni.plusDays(i));
-			System.out.println(RED + "DIA: "+ fechaInicial.plusDays(i) + " importe "+importe+"\n");
+			log.infof(BLUE+  "Medios Pago - Consulta por fechas DIA: "+ fechaInicial.plusDays(i) + " importe "+importe+"\n");
 		
 			DTPagos dtPago = new DTPagos("Dia", fechaIni.plusDays(i), importe);
 			pagosDia.add(dtPago);
-		
 		}
-
-		
 		
 		return pagosDia;
 	}
 
 	@Override
 	public List<DTPagos> consultaDePagos(int idCliente) {
-		// TODO Auto-generated method stub
-		return null;
+		log.infof(VIOLET +"*** Inicio consultaDePagos por idCliente: " + idCliente);
+		List<DTPagos> pagosCli = new ArrayList<>();	
+		
+		List<Pago> pagos = repoPagos.traerPagosCliente(idCliente);
+		
+		for (Pago p : pagos) {
+			log.infof(BLUE+  "Medios Pago - Consulta por Cliente al tag: " + p.getTag()+" fecha: "+ p.getFecha() + " importe: "+ p.getImporte()+"\n");
+			DTPagos dtPago = new DTPagos("Cliente", p.getFecha() , p.getImporte(), idCliente);
+			pagosCli.add(dtPago);
+		}
+		return pagosCli;
 	}
 
 	@Override
 	public List<DTPagos> consultaDePagos(int idCliente, int tag) {
-		// TODO Auto-generated method stub
-		return null;
+		log.infof(VIOLET +"*** Inicio consultaDePagos por idCliente: " + idCliente + " y tag: "+tag);
+		List<DTPagos> pagosCliTag = new ArrayList<>();	
+		
+		List<Pago> pagos = repoPagos.traerPagosClienteYTag(idCliente, tag);
+		
+		for (Pago p : pagos) {
+			log.infof(BLUE+  "Medios Pago - Consulta por Cliente y TAG: "+ p.getFecha() + " importe: "+ p.getImporte()+"\n");
+			DTPagos dtPago = new DTPagos("Vehiculo", p.getFecha() , p.getImporte(), idCliente, tag);
+			pagosCliTag.add(dtPago);
+		}
+		return pagosCliTag;
 	}
 
 }

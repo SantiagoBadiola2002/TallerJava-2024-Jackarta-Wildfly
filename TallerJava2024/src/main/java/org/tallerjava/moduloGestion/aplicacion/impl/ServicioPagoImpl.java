@@ -56,7 +56,7 @@ public class ServicioPagoImpl implements ServicioPago {
                     //TODO controllar que el salo sea suficente
                     ctaPrepaga.descontarSaldo(importe);
                     
-                    log.infof(GREEN + "OK: Realizado pasaje Pre-pago %s", tag);
+                    log.infof(GREEN + "OK: Realizado pasaje Pre-pago al tag: ", tag);
                     evento.publicarNotificarPrePago("Se ha realizado el PrePago");
                   
                     realizado = true;
@@ -167,19 +167,19 @@ public class ServicioPagoImpl implements ServicioPago {
 	@Override
 	@Transactional
 	public boolean altaClienteTelepeaje(Usuario usr) {
-		log.infof("\n######### altaClienteTelepeaje 1 #########\n");
+		log.infof(VIOLET + "*** Inicio altaClienteTelepeaje");
 		// me fijo si es ya cliente telepeaje
 		if (usr.getClienteTelepeaje() == null) {
-			// diferencio Nacional o Extranjero
+			// diferencio Nacional o Extranjero en la BD
 			ClienteTelepeaje cliTelepeaje = repoUsuario.crearClienteTelepeaje(usr);
 			//esto seria alguna excepcion de la BD verrr
 			if (cliTelepeaje !=null) {
-				log.infof("\n######### altaClienteTelepeaje OK. IdCliente: #########\n" + cliTelepeaje.getIdCliente());
+				log.infof(GREEN + "OK: altaClienteTelepeaje OK. IdCliente: " + cliTelepeaje.getIdCliente() + " nombre: " + cliTelepeaje.getUsuario().getNombre() + " nacionalidad: " + cliTelepeaje.getUsuario().getNacionalidad());
 				return true;
+			}else {
+				log.infof(ORANGE + "¡ERROR! no se pudo crear el cliente Telepeaje al usuario: " + usr.getNombre() + " nacionalidad: "+usr.getNacionalidad());
 			}
-//			if (usr.getNacionalidad()==0) {
-//				repoUsuario.crearClienteSucive((Nacional) usr);
-//			}
+
 		}
 		return false;
 	}
@@ -187,13 +187,13 @@ public class ServicioPagoImpl implements ServicioPago {
 	@Transactional
 	public boolean vincularVehiculo(int idCliente, int tag, String matricula) {
 		boolean vinculado = true;
-
+		log.infof(VIOLET + "*** Inicio vincularVehiculo ");
 		Usuario usr = repoUsuario.findUsuarioCliTelepeaje(idCliente);
 		Identificador i = new Identificador(matricula, tag);
 		Vinculo vinculo = new Vinculo(LocalDateTime.now(), true);
 		Vehiculo v = new Vehiculo(i,usr.getClienteTelepeaje(), usr ,vinculo);
 		long idVehiculo = repoUsuario.salvarVehiculo(v);
-		log.infof("\n######### Salvar Vehiculo OK. IdVehiculo: #########\n" + idVehiculo);
+		log.infof(GREEN + "OK: Vehiculo vinculado al Cliente con idVehiculo: " + idVehiculo);
 		
 		//le digo a modulo peaje y modulo medios pago del nuevo vehiculo
 		evento.publicarNuevoVehiculo(v);
@@ -209,6 +209,7 @@ public class ServicioPagoImpl implements ServicioPago {
 	@Transactional
 	 public boolean desvincularVehiculo(int idCliente, int tag, String matricula) {
 		 boolean desvincular = false;
+		 log.infof(VIOLET + "*** Inicio desvincularVehiculo ");
 		 Usuario usr = repoUsuario.findUsuarioCliTelepeaje(idCliente);
 		 if (usr != null) {
 			 Vehiculo v = repoUsuario.findByTagVehiculo(tag);
@@ -220,12 +221,13 @@ public class ServicioPagoImpl implements ServicioPago {
 				 v.getVinculo().setActivo(false);
 				 repoUsuario.actualizarVehiculo(v);//no lo borro, lo desasocio del cliente
 				 desvincular = true;
+				 log.infof(GREEN + "OK: Vehiculo con tag: "+tag+" desvinculado al Cliente con idCliente: " + idCliente );
 			 }else {
-				 log.infof("\n######### No se encontro Vehiculo por TAG #########\n" + tag);
+				 log.infof(ORANGE + "¡ERROR! No se encontro Vehiculo por tag: " + tag);
 				 evento.publicarVehiculoTagNoEncontrado("No se encontro Vehiculo por TAG");
 			 }
 		 }else {
-			 log.infof("\n######### No se encontro Cliente Telepeaje #########\n" + idCliente);
+			 log.infof(ORANGE + "¡ERROR! No se encontro Cliente Telepeaje por idCliente: " + idCliente);
 			 evento.publicarCliTelepeajeTagNoEncontrado("No se encontro Cliente Telepeaje por idCliente");
 		 }
 		 
@@ -236,6 +238,7 @@ public class ServicioPagoImpl implements ServicioPago {
 	//muestra los vehiculos activos del cliente
 	 @Override
 	 public List<DTVehiculo> mostrarVehiculoVinculados(int id){
+		 log.infof(VIOLET + "*** Inicio mostrarVehiculoVinculados ");
 		 List<DTVehiculo> dtVehiculos = new ArrayList<>();
 		 ///cambiar por find de usuario comun
 		 
@@ -247,7 +250,7 @@ public class ServicioPagoImpl implements ServicioPago {
 		 for (Vehiculo v : vehiculos) {
 			 //solo traigo los vehiculos activos del Cliente Telepeaje
 			 if (v.getVinculo().isActivo()) {
-				 log.infof("\n######### Vehiculos del idCliente: " + id + " Vehiculo activo: " +v.getIdentificador().getTag() + "#############\n");
+				 log.infof(BLUE+" Vehiculos del idCliente: " + id + " Vehiculo activo con tag: " +v.getIdentificador().getTag() + "\n");
 			 
 				 DTVehiculo dtV = new DTVehiculo(v.getCliente().getIdCliente(), 
 					 							v.getIdentificador().getTag(), 
@@ -290,7 +293,7 @@ public class ServicioPagoImpl implements ServicioPago {
 	@Override
 	@Transactional
 	public boolean agregarTarjeta(int idCliente, int nroTarjeta, LocalDateTime fechaVtoTarjeta, String nombreCompletoUsuario) {
-		
+		log.infof(VIOLET + "*** Inicio agregarTarjeta ");
 		boolean agregado = false;
 		
 		ClienteTelepeaje clienteTelepeaje = repoUsuario.findCliTelepeaje(idCliente);
@@ -301,7 +304,7 @@ public class ServicioPagoImpl implements ServicioPago {
 			clienteTelepeaje.setCtaPostPaga(postPaga);
 			long idCuenta = repoUsuario.salvarTarjetaPostPaga(postPaga, tarjeta);
 			repoUsuario.actualizarCliTelepeaje(clienteTelepeaje);
-			
+			log.infof(GREEN + "OK: Tarjeta asociada al idCliente: "+idCliente+" nombre completo: " + nombreCompletoUsuario );
 			evento.publicarNuevaTarjeta(clienteTelepeaje.getIdCliente() , tarjeta);
 		}
 
@@ -310,6 +313,7 @@ public class ServicioPagoImpl implements ServicioPago {
 
 	@Override
 	public List<DTPasadaPeaje> consultarPasadas(int idCliente, LocalDateTime fechaInicial, LocalDateTime fechaFinal) {
+		log.infof(VIOLET + "*** Inicio consultarPasadas por fechas ");
 		Usuario usr = repoUsuario.findUsuarioCliTelepeaje(idCliente);
 		List<Vehiculo> vehiculos = repoUsuario.traerVehiculosUsr(usr);
 		List<DTPasadaPeaje> pasadas = new ArrayList<>();
@@ -322,7 +326,7 @@ public class ServicioPagoImpl implements ServicioPago {
 				//chequeo las fechas
 				for (PasadaPeaje p : listaPasadas) {
 					
-					System.out.println("PASADA:" + p.getVehiculo().getIdentificador().getTag() + "///"+ p.getFecha() +"\n");
+					log.infof(BLUE+ "Pasada tag:" + p.getVehiculo().getIdentificador().getTag() + " fecha: "+ p.getFecha() +"\n");
 					if (p.getFecha().isAfter(fechaInicial) && p.getFecha().isBefore(fechaFinal)) {
 						//lo agrego al listado
 						DTPasadaPeaje dtPasada = new DTPasadaPeaje(idCliente,
@@ -344,6 +348,7 @@ public class ServicioPagoImpl implements ServicioPago {
 	@Override
 	public List<DTPasadaPeaje> consultarPasadas(int idCliente, int tag, String matricula, LocalDateTime fechaInicial,
 			LocalDateTime fechaFinal) {
+		log.infof(VIOLET + "*** Inicio consultarPasadas por idCliente ");
 		Usuario usr = repoUsuario.findUsuarioCliTelepeaje(idCliente);
 		List<Vehiculo> vehiculos = repoUsuario.traerVehiculosUsr(usr);
 		List<DTPasadaPeaje> pasadas = new ArrayList<>();
@@ -356,7 +361,7 @@ public class ServicioPagoImpl implements ServicioPago {
 				//chequeo las fechas
 				for (PasadaPeaje p : listaPasadas) {
 					
-					//System.out.println("PASADA:" + p.getVehiculo().getIdentificador().getTag() + "///"+ p.getFecha() +"\n");
+					log.infof(BLUE+ "Pasada idCliente: "+idCliente+ " con tag: " + p.getVehiculo().getIdentificador().getTag() + " fecha: "+ p.getFecha() +"\n");
 					if (p.getFecha().isAfter(fechaInicial) && p.getFecha().isBefore(fechaFinal)) {
 						//lo agrego al listado
 						DTPasadaPeaje dtPasada = new DTPasadaPeaje(idCliente,
@@ -378,11 +383,12 @@ public class ServicioPagoImpl implements ServicioPago {
 	@Override
 	@Transactional
 	public double cargarSaldo(int idCliente, double importe) {
+		log.infof(VIOLET + "*** Inicio cargarSaldo ");
 		ClienteTelepeaje cliTelepeaje = repoUsuario.findCliTelepeaje(idCliente);
 		
-		log.infof("\n######### CARGAR SALDO aqui #########\n" + cliTelepeaje.getCtaPrepaga().getSaldo() + "#############");
+		//log.infof("\n######### CARGAR SALDO aqui #########\n" + cliTelepeaje.getCtaPrepaga().getSaldo() + "#############");
 		cliTelepeaje.getCtaPrepaga().incrementarSaldo(importe);
-		log.infof("\n######### CARGAR SALDO despues #########\n" + cliTelepeaje.getCtaPrepaga().getSaldo() + "#############");
+		log.infof(GREEN + "OK: se cargo saldo al idCliente: "+idCliente+" saldo actual: " + cliTelepeaje.getCtaPrepaga().getSaldo());
 		
 		repoUsuario.actualizarCuentaPrepaga(cliTelepeaje.getCtaPrepaga());
 		repoUsuario.actualizarCliTelepeaje(cliTelepeaje);
@@ -395,8 +401,9 @@ public class ServicioPagoImpl implements ServicioPago {
 
 	@Override
 	public double consultarSaldo(int idCliente) {
+		log.infof(VIOLET + "*** Inicio cargarSaldo ");
 		ClienteTelepeaje clienteTelepeaje = repoUsuario.findCliTelepeaje(idCliente);
-		
+		log.infof(BLUE + "Saldo del idCliente: "+idCliente+" saldo actual: " + clienteTelepeaje.getCtaPrepaga().getSaldo());
 		return clienteTelepeaje.getCtaPrepaga().getSaldo();
 	}
 

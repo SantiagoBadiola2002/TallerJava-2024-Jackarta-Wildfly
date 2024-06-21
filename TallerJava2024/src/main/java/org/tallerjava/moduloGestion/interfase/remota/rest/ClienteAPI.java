@@ -25,7 +25,12 @@ import org.tallerjava.moduloGestion.interfase.remota.rest.dto.*;
 public class ClienteAPI {
 
 	private static final Logger log = Logger.getLogger(ClienteAPI.class);
-
+	public static final String BLUE = "\u001B[34m";
+	public static final String GREEN = "\u001B[32m";
+	 public static final String RED = "\u001B[31m";
+	 public static final String ORANGE = "\u001B[38;5;208m";
+	 public static final String VIOLET = "\u001B[35m";
+	 
 	@Inject
 	private ServicioPago servicioPago;
 
@@ -45,7 +50,7 @@ public class ClienteAPI {
 	@Path("/realizarPostPago")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public boolean realizarPostPago(DTPago dtPago) {
-		log.infof("######### realizarPostPago: Tag: " + dtPago.getTag() + ", importe: " + dtPago.getImporte()
+		log.infof(VIOLET+"#### realizarPostPago - Tag: " + dtPago.getTag() + ", importe: " + dtPago.getImporte()
 				+ " #########");
 		return servicioPago.realizarPostPago(dtPago.getTag(), dtPago.getImporte());
 	}
@@ -55,7 +60,7 @@ public class ClienteAPI {
 	@Path("/esClienteTelepeaje")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public boolean esClienteTelepeaje(DTTag tag) {
-		log.infof("######### esClienteTelepeaje: Tag: " + tag.getTag() + " #########");
+		log.infof(VIOLET+"#### esClienteTelepeaje - Tag: " + tag.getTag() + " ###");
 		return servicioPago.esClienteTelepeaje(tag.getTag());
 	}
 
@@ -64,7 +69,7 @@ public class ClienteAPI {
 	@Path("/altaClienteTelepeaje")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public boolean altaClienteTelepeaje(DTUsuario usr) {
-		log.infof("######### altaClienteTelepeaje #########");
+		log.infof(VIOLET+"####  altaClienteTelepeaje ####");
 		Usuario usu = usr.buildUsuario();
 		return servicioPago.altaClienteTelepeaje(usu);
 	}
@@ -74,8 +79,8 @@ public class ClienteAPI {
 	@Path("/vincularVehiculo")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public boolean vincularVehiculo(DTVehiculo dtVehiculo) {
-		log.infof("######### vincularVehiculo: idCliente: " + dtVehiculo.getIdCliente() + " tag: " + dtVehiculo.getTag()
-				+ "matricula: " + dtVehiculo.getMatricula() + "#########");
+		log.infof(VIOLET+"####  vincularVehiculo - idCliente: " + dtVehiculo.getIdCliente() + " tag: " + dtVehiculo.getTag()
+				+ "matricula: " + dtVehiculo.getMatricula() + " ###");
 		return servicioPago.vincularVehiculo(dtVehiculo.getIdCliente(), dtVehiculo.getTag(), dtVehiculo.getMatricula());
 	}
 
@@ -84,8 +89,8 @@ public class ClienteAPI {
 	@Path("/desvincularVehiculo")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public boolean desvincularVehiculo(DTVehiculo dtVehiculo) {
-		log.infof("######### desvincularVehiculo: idCliente: " + dtVehiculo.getIdCliente() + " tag: " + dtVehiculo.getTag()
-				+ "matricula: " + dtVehiculo.getMatricula() + "#########");
+		log.infof(VIOLET+"#### desvincularVehiculo - idCliente: " + dtVehiculo.getIdCliente() + " tag: " + dtVehiculo.getTag()
+				+ "matricula: " + dtVehiculo.getMatricula() + " ###");
 		return servicioPago.desvincularVehiculo(dtVehiculo.getIdCliente(), dtVehiculo.getTag(), dtVehiculo.getMatricula());
 	}
 	
@@ -94,7 +99,7 @@ public class ClienteAPI {
 	@Path("/mostrarVehiculoVinculados/{id}")
 	@Produces({MediaType.APPLICATION_JSON})
 	public List<DTVehiculo> mostrarVehiculoVinculados(@PathParam("id") int id) {
-		log.infof("######### mostrarVehiculoVinculados: idCliente: " + id+ "#########");
+		log.infof(VIOLET+"####  mostrarVehiculoVinculados: idCliente: " + id+ " ###");
 		return servicioPago.mostrarVehiculoVinculados(id);
 	}
 
@@ -106,7 +111,7 @@ public class ClienteAPI {
 	@Path("/obtenerCuentasPorTag")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Integer> obtenerCuentasPorTag(DTTag tag) {
-		log.infof("######### obtenerCuentasPorTag: Tag: " + tag.getTag() + " #########");
+		log.infof(VIOLET+"####  obtenerCuentasPorTag: Tag: " + tag.getTag() + " ###");
 		return servicioPago.obtenerCuentasPorTag(tag.getTag());
 	}
 
@@ -138,13 +143,13 @@ public class ClienteAPI {
 		LocalDateTime dateFin = LocalDateTime.parse(dtPasadas.getFechaFinal());
 
 		if ((dtPasadas.getIdCliente() != 0) && (dtPasadas.getTag() ==0)) {
-			log.infof("######### consultarPasadas: idCliente: " + dtPasadas.getIdCliente() + "desde: " + dateIni
-					+ " hasta: " + dateFin + " #########\n");
+			log.infof(VIOLET+"#### consultarPasadas - idCliente: " + dtPasadas.getIdCliente() + "desde: " + dateIni
+					+ " hasta: " + dateFin + " ###");
 			
 			return servicioPago.consultarPasadas(dtPasadas.getIdCliente(), dateIni, dateFin);
 		} else {
-			log.infof("######### consultarPasadas con tag o matricula: ci: " + dtPasadas.getIdCliente() + "desde: " + dateIni
-					+ " hasta: " + dateFin + ", TAG: " + dtPasadas.getTag() + " #########\n");
+			log.infof(VIOLET+"#### consultarPasadas con tag o matricula - ci: " + dtPasadas.getIdCliente() + "desde: " + dateIni
+					+ " hasta: " + dateFin + ", TAG: " + dtPasadas.getTag() + " ###");
 			return servicioPago.consultarPasadas(dtPasadas.getIdCliente(), dtPasadas.getTag(), dtPasadas.getMatricula(),
 					dateIni, dateFin);
 		}
@@ -156,7 +161,7 @@ public class ClienteAPI {
 	@Path("/cargarSaldo")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public double cargarSaldo(DTSaldo saldoDTO) {
-		log.infof("Carga saldo cliente %s : ", saldoDTO.getIdCliente() + " $" + saldoDTO.getImporte());
+		log.infof(VIOLET+"#### Carga saldo cliente - idCliente: ", saldoDTO.getIdCliente() + " $" + saldoDTO.getImporte() + " ###");
 		double nuevoSaldo = servicioPago.cargarSaldo(saldoDTO.getIdCliente(), saldoDTO.getImporte());
 		return nuevoSaldo;
 	}
@@ -166,7 +171,7 @@ public class ClienteAPI {
 	@Path("/consultarSaldo/{idCliente}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public double consultarSaldo(@PathParam("idCliente") int idCliente) {
-		log.infof("Consulta saldo: " + idCliente + "\n");
+		log.infof(VIOLET+"#### Consulta saldo - idCliente " + idCliente + " ###");
 
 		
 		return servicioPago.consultarSaldo(idCliente);
