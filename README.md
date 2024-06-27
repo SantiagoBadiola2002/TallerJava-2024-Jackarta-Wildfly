@@ -1,4 +1,5 @@
 # Iteración 1
+
 Módulos Implementado: Gestion - MediosDePago - Monitoreo - Peaje
 
 Cada módulo posee sus respectivas capas: Aplicación, Dominio, Infraestructura e Interfase
@@ -8,6 +9,7 @@ El módulo de monitoreo solo posee los Observers de los eventos
 Para realizar los test, se ha provisionado de mocks que nos hará posible realizar los test sin la necesidad de la invocación de las dependencias, estos mocks proveen datos pre cargados.
 
 # Iteración 2
+
 Se han generado 2 API´s, ClienteAPI para el módulo de Gestión y PeajeAPI para el módulo de Peaje.
 
 Se ha generado la necesidad de crear datatypes los cuales nos van a servir para los datos que entran en las API´s
@@ -49,6 +51,7 @@ Entrar por SSH al contenedor
 Ejecutar comando influx
 
 Modulo de Monitoreo:
+
 Se creo una clase RegistradorDeMetricas que tiene los parámetros de configuración para Micrometer y la BD de Influx. Influx gestiona una BD de tipo Time Series.  
 Se crearon Observer para los distintos módulos, con el fin de recibir e incrementar los contadores de los eventos que se graficaran en Grafana.
 En Grafana se crearon varios Dashboard que gráfica los eventos en tiempo que muestra:
@@ -57,9 +60,15 @@ En Grafana se crearon varios Dashboard que gráfica los eventos en tiempo que mu
 -OK pagos sucive
 -OK cantidad de vehículos nacionales 
 -OK cantidad de vehículos extranjeros
+-OK pago con tarjeta
 -Error Saldo Insuficiente
 -Error Tarjeta Rechazada
--Error
+-Error Cliente no encontrado por TAG
+
+La configuración del Dashboard con las gráficas es DashboardGrafana.json.
+
+# Iteración 4 Implementación de Queue de pagos y JMeter para análisis de tiempo de respuesta del servidor
+
 
 
 
