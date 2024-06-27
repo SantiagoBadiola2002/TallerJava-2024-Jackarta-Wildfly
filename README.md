@@ -12,6 +12,8 @@ Para realizar los test, se ha provisionado de mocks que nos hará posible realiz
 
 Se han generado 2 API´s, ClienteAPI para el módulo de Gestión y PeajeAPI para el módulo de Peaje.
 
+Se han generado 2 API´s, SuciveAPI para el módulo de Sucive y MediosPagoAPI para el módulo de Medios Pago para visualizar los pagos tanto por Sucive como con Tarjeta en formato json.
+
 Se ha generado la necesidad de crear datatypes los cuales nos van a servir para los datos que entran en las API´s
 
 Se ha implementado la API REST "ServicioMockMedioDePago", está se va a encargar de exponer una API Rest con funcionalidad que simule la autorización o no de un pago.
@@ -72,6 +74,20 @@ La configuración del Dashboard con las gráficas es DashboardGrafana.json.
 Implementación de Queue de pagos y JMeter para análisis de tiempo de respuesta del servidor.
 
 Se implemento una Queue de pagos ya que el caso de pasada por peaje de vehiculo nacional siempre se va a poder cobrar: sea si tiene saldo en la cuenta pre-paga; tiene tarjeta asociada en la cuenta post-paga; o por la matricula en Sucive.
+
+En en módulo Peaje se implemento tres clases: EnviarMensajeQueue; NuevoPagoConsumer; y PagoRealizadoMessage. 
+
+NuevoPagoConsumer: realiza el procesamiento de los mensjaes que se encuentran encolados.
+EnviarMensajeQueue: defino la direccion de jndi y es donde se encolan los mensajes para luego tratarse. Los mensjaes están encapsulados como json. 
+PagoRealizadoMessage: convierte DTs a json. 
+
+Para visualizar la útilidad de la Queue se utilizo JMeter para crear carga en el servidor. 
+
+La configuración se encuentra en: Plan de Pruebas JMS.jmx
+
+Response sin Queue:
+
+
 
 
 
