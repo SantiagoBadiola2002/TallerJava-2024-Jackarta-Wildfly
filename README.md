@@ -86,7 +86,7 @@ Para visualizar la útilidad de la Queue se utilizo JMeter para crear carga en e
 La configuración se encuentra en: Plan de Pruebas JMS.jmx
 
 Response sin Queue:
-![Tiempo de respuesta del servidor sin Queue implementada](url completa de la imagen)
+![Tiempo de respuesta del servidor sin Queue implementada](WhatsApp Image 2024-06-27 at 18.20.51 (1).jpeg)
 
 
 
