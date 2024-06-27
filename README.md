@@ -86,7 +86,7 @@ Para visualizar la útilidad de la Queue se utilizo JMeter para crear carga en e
 La configuración se encuentra en: Plan de Pruebas JMS.jmx
 
 Response sin Queue:
-![image](https://drive.google.com/file/d/1Wsd_SWo9Wm6r0XLpw-d8rwEZlHyTAqW2/view?usp=drive_link)
+![image](https://github.com/SantiagoBadiola2002/TallerJava-2024-Jackarta-Wildfly/blob/main/SinQueue.png)
 
 
 
