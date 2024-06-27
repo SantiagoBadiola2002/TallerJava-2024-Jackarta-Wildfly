@@ -63,6 +63,9 @@ public class ServicioPeajeImpl implements ServicioPeaje {
             } else {
                 habilitado = procesarVehiculoExtranjero(dtVehiculo);
             }
+        }else {
+        	DTVehiculo dtVehiculo = new DTVehiculo(tag, matricula, 1);
+        	habilitado = procesarVehiculoExtranjero(dtVehiculo);
         }
 
         log.infof(BLUE + "*** Resultado esta habilitado tag: " + tag + " matricula: " + matricula + " es " + habilitado);
@@ -87,10 +90,21 @@ public class ServicioPeajeImpl implements ServicioPeaje {
                 //TODO mando evento al modulo de monitoreo
                 //el auto no pasa
             	log.infof(ORANGE + "***Vehiculo Extranjero por peaje NO PASA tag: "+ dtVehiculo.getTag() + " matricula: "+ dtVehiculo.getMatricula() );
-            	evento.publicarPagoNoRealizadoExtranjero("Pre y Post Pago a vehiculo Extranjero no realizado: " + dtVehiculo.getTag());
+            	//evento.publicarPagoNoRealizadoExtranjero("Pre y Post Pago a vehiculo Extranjero no realizado: " + dtVehiculo.getTag());
             	
+ 	
+            }else {
+            	//contar pasada extranjero post paga
+            	log.infof(GREEN + "***OK: Registro pasada Extranjero por peaje con pago postpago: "+ dtVehiculo.getTag() );
+            	evento.publicarNuevaPasada(dtVehiculo, tarifa.getValor(), 2);
+            	evento.publicarPagoRealizadoExtranjero("OK: PASA - pago post paga vehiculo extranjero realizado con tag: " + dtVehiculo.getTag());
             	
             }
+        }else {
+        	//contar pasada extranjero pre paga
+        	log.infof(GREEN + "***OK: Registro pasada Extranjero por peaje con pago prepago: "+ dtVehiculo.getTag() );
+        	evento.publicarNuevaPasada(dtVehiculo, tarifa.getValor(), 1);
+        	evento.publicarPagoRealizadoExtranjero("OK: PASA - pago pre pago vehiculo extranjero realizado con tag: " + dtVehiculo.getTag());
         }
         return habilitado;
        
@@ -103,7 +117,7 @@ public class ServicioPeajeImpl implements ServicioPeaje {
     								pago.tag(), 
     								pago.matricula(), 
     								pago.nacionalidad());
-
+    
     	log.infof(VIOLET + "*** Inicio de procesar pago a vehículo nacional tag: "+ dtVehiculo.getTag() + " y matricula: " + dtVehiculo.getMatricula() +".");
     	
     	//para ver el proceso en el servidor
@@ -118,16 +132,18 @@ public class ServicioPeajeImpl implements ServicioPeaje {
             habilitado = servicioPagoFacade.realizarPrePago(dtVehiculo.getTag(), tarifa.getValor());
             if (habilitado) {
             	//publico la pasada si lo anterior es true PREPAGO == 1
-            	log.infof(BLUE + "***Registro pasada Nacional por peaje con pago prepago: "+ dtVehiculo.getTag() );
+            	log.infof(GREEN + "***OK: Registro pasada Nacional por peaje con pago prepago: "+ dtVehiculo.getTag() );
             	evento.publicarNuevaPasada(dtVehiculo, tarifa.getValor(), 1);
+            	evento.publicarPagoRealizadoNacional("OK: PASA - pago vehiculo nacional realizado con tag: " + dtVehiculo.getTag());
             }else {
                 //fallo el cobro prepago, intento con la tarjeta (postPago)
-                habilitado = servicioPagoFacade.realizarPrePago(dtVehiculo.getTag(), tarifa.getValor());
+                habilitado = servicioPagoFacade.realizarPostPago(dtVehiculo.getTag(), tarifa.getValor());
                 //si es habilitado true
                 if (habilitado) {
                 	//publico la pasada si lo anterior es true POSTPAGO == 2
-                	log.infof(BLUE + "***Registro pasada Nacional por peaje con pago postpago: "+ dtVehiculo.getTag() );
+                	log.infof(GREEN + "***OK: Registro pasada Nacional por peaje con pago postpago: "+ dtVehiculo.getTag() );
                 	evento.publicarNuevaPasada(dtVehiculo, tarifa.getValor(), 2);
+                	evento.publicarPagoRealizadoNacional("OK: PASA - pago vehiculo nacional realizado con tag: " + dtVehiculo.getTag());
                 }else {
                     //significa que no es cliente preferencial o que fallaron los dos sistemas
                     //de cobro previos
@@ -136,13 +152,14 @@ public class ServicioPeajeImpl implements ServicioPeaje {
                 	habilitado = servicioPagoSuvice.notificarPago(dtVehiculo.getMatricula(), tarifaComun.getValor());
                 	if(habilitado) {
                 		//publico la pasada si lo anterior es true SUCIVE == 3
-                    	log.infof(BLUE + "***Registro pasada Nacional por peaje con pago Sucive tag: "+ dtVehiculo.getTag() + " matricula: "+ dtVehiculo.getMatricula() );
+                    	log.infof(GREEN + "***OK: Registro pasada Nacional por peaje con pago Sucive tag: "+ dtVehiculo.getTag() + " matricula: "+ dtVehiculo.getMatricula() );
                     	evento.publicarNuevaPasada(dtVehiculo, tarifaComun.getValor(), 3);
+                    	evento.publicarPagoRealizadoNacional("OK: PASA - pago vehiculo nacional realizado con matricula: " + dtVehiculo.getMatricula());
                 	}else {
                 		//TODO mando evento al modulo de monitoreo
                         //el auto no pasa
                 		log.infof(ORANGE + "***Vehiculo Nacional por peaje NO PASA tag: "+ dtVehiculo.getTag() + " matricula: "+ dtVehiculo.getMatricula() );
-                    	evento.publicarPagoNoRealizadoNacional("Pre, Post y Sucive Pago a vehiculo Nacional NO realizado matricula: " + dtVehiculo.getMatricula());
+                    	//evento.publicarPagoNoRealizadoNacional("Pre, Post y Sucive Pago a vehiculo Nacional NO realizado matricula: " + dtVehiculo.getMatricula());
                 	}
                 	
                 }
@@ -156,11 +173,12 @@ public class ServicioPeajeImpl implements ServicioPeaje {
         		//publico la pasada si lo anterior es true SUCIVE == 3
             	log.infof(BLUE + "***Registro pasada Nacional por peaje con pago Sucive (sin CliTelepeaje) matricula: "+ dtVehiculo.getMatricula() );
             	evento.publicarNuevaPasada(dtVehiculo, tarifaComun.getValor(), 3);
+            	evento.publicarPagoRealizadoNacional("OK: PASA - pago vehiculo nacional realizado con matricula: " + dtVehiculo.getMatricula());
         	}else {
         		//TODO mando evento al modulo de monitoreo
                 //el auto no pasa
         		log.infof(ORANGE + "***Vehiculo Nacional por peaje NO PASA (sin CliTelepeaje) matricula: "+ dtVehiculo.getMatricula());
-            	evento.publicarPagoNoRealizadoNacional("Pago Sucive a Vehiculo Nacional NO realizado (sin CliTelepeaje): " + dtVehiculo.getMatricula());
+            	//evento.publicarPagoNoRealizadoNacional("Pago Sucive a Vehiculo Nacional NO realizado (sin CliTelepeaje): " + dtVehiculo.getMatricula());
         	}
         	
         }
@@ -229,5 +247,8 @@ public class ServicioPeajeImpl implements ServicioPeaje {
         log.infof("Alta de vehiculo %s", vehiculo.toString());
         repo.saveVehiculo(vehiculo);
     }
+
+
+
     
 }

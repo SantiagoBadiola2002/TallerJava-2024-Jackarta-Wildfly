@@ -4,12 +4,12 @@ package org.tallerjava.moduloPeaje.interfase.evento.out;
 import lombok.Getter;
 
 @Getter
-public class PeajeERRORPagoNoRealizadoExtranjero {
+public class PeajeOKPagoRealizadoExtranjero {
 	
     private String descripcion;
     
 
-	public PeajeERRORPagoNoRealizadoExtranjero(String descripcion) {
+	public PeajeOKPagoRealizadoExtranjero(String descripcion) {
 		this.descripcion = descripcion;
 	}
 

@@ -6,7 +6,7 @@ import lombok.Data;
 public class DTVehiculo {
 	int tag; 
 	String matricula;
-	int nacionalidad;
+	int nacionalidad; //0 nacional 1 extranjero
 	
 	public DTVehiculo() {}
 	
@@ -14,6 +14,11 @@ public class DTVehiculo {
 		this.tag = tag;
 		this.matricula = matricula;
 		this.nacionalidad = nacionalidad;
+	}
+	public DTVehiculo(int tag, String matricula) {
+		this.tag = tag;
+		this.matricula = matricula;
+	
 	}
 	public int getTag() {
 		return tag;

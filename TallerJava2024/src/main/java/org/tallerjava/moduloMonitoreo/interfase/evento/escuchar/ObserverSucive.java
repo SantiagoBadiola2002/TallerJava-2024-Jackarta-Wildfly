@@ -16,8 +16,8 @@ public class ObserverSucive {
 	@Inject
     private RegistradorDeMetricas register;
 	
-//	public void accept(@Observes SuciveOKPago event) {
-//		log.infof("Evento procesado: Sucive Pago OK Procesado: %s", event.getDescripcion());
-//        register.incrementarCounter(RegistradorDeMetricas.SUCIVE_COUNTER_COBRO_SUCIVE);
-//	}
+	public void accept(@Observes SuciveOKPago event) {
+		log.infof("Evento procesado: Sucive Pago OK Procesado: %s", event.getDescripcion());
+        register.incrementarCounter(RegistradorDeMetricas.SUCIVE_COUNTER_COBRO_SUCIVE);
+	}
 }

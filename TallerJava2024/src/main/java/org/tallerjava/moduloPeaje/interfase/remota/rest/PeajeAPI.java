@@ -32,12 +32,12 @@ public class PeajeAPI {
 	@Inject
 	private ServicioPeaje servicioPeaje;
 
-	// curl -X POST -v http://localhost:8080/TallerJava2024/api/moduloPeaje/estaHabilitado -H "Content-Type: application/json" -d '{"tag":555, "matricula":"BEC1234", "nacionalidad": 0}'
+	// curl -X POST -v http://localhost:8080/TallerJava2024/api/moduloPeaje/estaHabilitado -H "Content-Type: application/json" -d '{"tag":0, "matricula":"BEC1234"}'
 	@POST
 	@Path("/estaHabilitado")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public boolean estaHabilitado(DTVehiculo dtVehiculo) {
-		System.out.println(BLUE + "estaHabilitado");
+		//System.out.println(BLUE + "estaHabilitado");
 		log.infof(VIOLET+"####  estaHabilitado - tag: " + dtVehiculo.getTag() + ", matricula: "
 				+ dtVehiculo.getMatricula() + " ###");
 		return servicioPeaje.estaHabilitado(dtVehiculo.getTag(), dtVehiculo.getMatricula());

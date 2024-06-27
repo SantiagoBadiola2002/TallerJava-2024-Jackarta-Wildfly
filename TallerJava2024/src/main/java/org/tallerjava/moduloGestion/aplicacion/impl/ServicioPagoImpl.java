@@ -56,13 +56,13 @@ public class ServicioPagoImpl implements ServicioPago {
                     //TODO controllar que el salo sea suficente
                     ctaPrepaga.descontarSaldo(importe);
                     
-                    log.infof(GREEN + "OK: Realizado pasaje Pre-pago al tag: ", tag);
+                    log.infof(GREEN + "OK: Realizado pasaje Pre-pago al tag: " +tag);
                     evento.publicarNotificarPrePago("Se ha realizado el PrePago");
                   
                     realizado = true;
 
                 } else {
-                    log.infof(ORANGE + "¡ERROR!: Saldo insuficiente %s", tag);
+                    log.infof(ORANGE + "¡ERROR!: Saldo insuficiente tag: "+tag);
                     evento.publicarNotificarSaldoInsuficiente("Saldo insuficiente en PrePago");
                     realizado = false;
                 }

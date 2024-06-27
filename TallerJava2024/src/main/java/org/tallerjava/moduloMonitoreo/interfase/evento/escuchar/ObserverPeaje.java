@@ -20,21 +20,21 @@ public class ObserverPeaje {
 	@Inject
     private RegistradorDeMetricas register;
 	
-//    public void accept(@Observes PeajeERRORVehiculoNoEncontrado event) {
-//		log.infof("Evento procesado: Vehiculo no encontrado por Tag: %s", event.getDescripcion());
-//	    register.incrementarCounter(RegistradorDeMetricas.PEAJE_COUNTER_VEHICULO_NO_ENCONTRADO);
-//    	
-//    }
-//    
-//    public void accept(@Observes PeajeERRORPagoNoRealizadoExtranjero event) {
-//		log.infof("Evento procesado: Pago Extranjero no realizado: %s", event.getDescripcion());
-//	    register.incrementarCounter(RegistradorDeMetricas.PEAJE_COUNTER_PAGO_EXTRANJERO_NO_PASA);
-//    	
-//    }
-//    
-//    public void accept(@Observes PeajeERRORPagoNoRealizadoNacional event) {
-//		log.infof("Evento procesado: Pago Nacional no realizado: %s", event.getDescripcion());
-//	    register.incrementarCounter(RegistradorDeMetricas.PEAJE_COUNTER_PAGO_NACIONAL_NO_PASA);
-//    	
-//    }
+    public void accept(@Observes PeajeERRORVehiculoNoEncontrado event) {
+		log.infof("Evento procesado: Vehiculo no encontrado por Tag: %s", event.getDescripcion());
+	    register.incrementarCounter(RegistradorDeMetricas.PEAJE_COUNTER_VEHICULO_NO_ENCONTRADO);
+    	
+    }
+    
+    public void accept(@Observes PeajeOKPagoRealizadoExtranjero event) {
+		log.infof("Evento procesado: Pago Extranjero no realizado: %s", event.getDescripcion());
+	    register.incrementarCounter(RegistradorDeMetricas.PEAJE_COUNTER_PAGO_EXTRANJERO);
+    	
+    }
+    
+    public void accept(@Observes PeajeOKPagoRealizadoNacional event) {
+		log.infof("Evento procesado: Pago Nacional no realizado: %s", event.getDescripcion());
+	    register.incrementarCounter(RegistradorDeMetricas.PEAJE_COUNTER_PAGO_NACIONAL);
+    	
+    }
 }

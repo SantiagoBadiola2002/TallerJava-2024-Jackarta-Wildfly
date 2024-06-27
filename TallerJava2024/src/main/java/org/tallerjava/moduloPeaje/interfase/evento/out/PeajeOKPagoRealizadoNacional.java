@@ -3,12 +3,12 @@ package org.tallerjava.moduloPeaje.interfase.evento.out;
 import lombok.Getter;
 
 @Getter
-public class PeajeERRORPagoNoRealizadoNacional {
+public class PeajeOKPagoRealizadoNacional {
 	
     private String descripcion;
     
 
-	public PeajeERRORPagoNoRealizadoNacional(String descripcion) {
+	public PeajeOKPagoRealizadoNacional(String descripcion) {
 		this.descripcion = descripcion;
 	}
 

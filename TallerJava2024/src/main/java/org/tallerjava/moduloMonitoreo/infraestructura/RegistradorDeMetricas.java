@@ -13,8 +13,8 @@ import java.time.Duration;
 @ApplicationScoped
 public class RegistradorDeMetricas {
     public static final String PEAJE_COUNTER_VEHICULO_NO_ENCONTRADO ="peajeERRORVehiculoNoEncontrado";
-    public static final String PEAJE_COUNTER_PAGO_EXTRANJERO_NO_PASA ="peajeERRORPagoNoRealizadoExtranjero";
-    public static final String PEAJE_COUNTER_PAGO_NACIONAL_NO_PASA ="peajeERRORPagoNoRealizadoNacional";
+    public static final String PEAJE_COUNTER_PAGO_EXTRANJERO ="peajeOKPagoRealizadoExtranjero";
+    public static final String PEAJE_COUNTER_PAGO_NACIONAL ="peajeOKPagoRealizadoNacional";
     public static final String PEAJE_COUNTER_PAGO_SUCIVE ="peajeOKPagoSucive";
     
     public static final String GESTION_COUNTER_PRE_PAGO ="gestionOKPrePago";

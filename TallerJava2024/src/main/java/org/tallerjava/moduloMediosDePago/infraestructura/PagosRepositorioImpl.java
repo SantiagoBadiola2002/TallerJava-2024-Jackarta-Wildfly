@@ -36,7 +36,7 @@ public class PagosRepositorioImpl implements PagosRepositorio{
 	
 	public Cliente findByIdCliente(int idCliente) {
 		
-		System.out.println("HASTA ACA Medios");
+		//System.out.println("HASTA ACA Medios");
    	 String sql = "SELECT c FROM Cliente c WHERE c.idCliente = :idCliente";
 
         TypedQuery<Cliente> findByIdCliente = em.createQuery(sql, Cliente.class).setParameter("idCliente", idCliente);

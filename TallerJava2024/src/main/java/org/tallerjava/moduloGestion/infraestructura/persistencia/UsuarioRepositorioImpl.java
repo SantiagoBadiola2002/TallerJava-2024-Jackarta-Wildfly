@@ -146,7 +146,7 @@ public class UsuarioRepositorioImpl implements UsuarioRepositorio {
 	@Override
 	@Transactional
 	public ClienteTelepeaje crearClienteTelepeaje(Usuario usr) {
-		log.infof("\n######### altaClienteTelepeaje 2 #########\n");
+		//log.infof("\n######### altaClienteTelepeaje 2 #########\n");
     	//incio saldo prePaga en 0 sin tarjeta
     	LocalDateTime ahora = LocalDateTime.now();
     	
@@ -159,9 +159,9 @@ public class UsuarioRepositorioImpl implements UsuarioRepositorio {
     		ClienteSucive cliSucive = new ClienteSucive(nacional);
     		nacional.setClienteSucive(cliSucive);
     		nacional.setClienteTelepeaje(cliTelepeaje);
-    		log.infof("\n######### altaClienteTelepeaje 3 #########\n");
+    		//log.infof("\n######### altaClienteTelepeaje 3 #########\n");
             em.persist(nacional.getClienteTelepeaje().getCtaPrepaga());
-            log.infof("\n######### altaClienteTelepeaje 4 #########\n");
+            //log.infof("\n######### altaClienteTelepeaje 4 #########\n");
             em.persist(nacional.getClienteTelepeaje());
             em.persist(nacional.getClienteSucive());
             em.persist(nacional);
@@ -175,9 +175,9 @@ public class UsuarioRepositorioImpl implements UsuarioRepositorio {
     		PrePaga prePaga = new PrePaga( ahora, 0); //nroCuenta verrr
     		ClienteTelepeaje cliTelepeaje = new ClienteTelepeaje(extranjero, prePaga, null);
     		extranjero.setClienteTelepeaje(cliTelepeaje);
-    		log.infof("\n######### altaClienteTelepeaje 1 extra #########\n");
+    		//log.infof("\n######### altaClienteTelepeaje 1 extra #########\n");
             em.persist(extranjero.getClienteTelepeaje().getCtaPrepaga());
-            log.infof("\n######### altaClienteTelepeaje 2 extra #########\n");
+            //log.infof("\n######### altaClienteTelepeaje 2 extra #########\n");
             em.persist(extranjero.getClienteTelepeaje());
             em.persist(extranjero);
     		

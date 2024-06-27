@@ -1,0 +1,81 @@
+Caso 1
+curl -X POST -v http://localhost:8080/TallerJava2024/api/moduloPeaje/estaHabilitado -H "Content-Type: application/json" -d '{"tag":0, "matricula":"BEC1234"}'
+Pasada por matricula -sucive
+curl -X GET -v http://localhost:8080/TallerJava2024/api/moduloSucive/consultarDePagosMatricula -H "Content-Type: application/json" -d '{"matricula": "BEC1234"}'   
+
+Caso 2:
+Alta cliTelepeaje
+curl -X POST -v http://localhost:8080/TallerJava2024/api/moduloGestion/altaClienteTelepeaje -H "Content-Type: application/json" -d '{"nombre":"nomNacional","email":"nom1Nacional@gmail.com", "nacionalidad":0}' 
+Vincular vehiculo
+curl -X POST -v http://localhost:8080/TallerJava2024/api/moduloGestion/vincularVehiculo -H "Content-Type: application/json" -d '{"idCliente":1,"tag":555666,"matricula":"RED1111"}' 
+Cargar saldo
+curl -X POST -v http://localhost:8080/TallerJava2024/api/moduloGestion/cargarSaldo -H "Content-Type: application/json" -d '{"idCliente":1,"importe":1000}'
+Peaje
+curl -X POST -v http://localhost:8080/TallerJava2024/api/moduloPeaje/estaHabilitado -H "Content-Type: application/json" -d '{"tag":555666, "matricula":"RED1111"}'
+Pasada por Cliente
+curl -X GET -v http://localhost:8080/TallerJava2024/api/moduloGestion/consultarPasadas -H "Content-Type: application/json" -d '{"idCliente":1,"fechaInicial":"2024-06-27T00:00:00","fechaFinal":"2024-07-05T00:00:00"}'
+Pasada por Cliente y el Vehiculo
+curl -X GET -v http://localhost:8080/TallerJava2024/api/moduloGestion/consultarPasadas -H "Content-Type: application/json" -d '{"idCliente":1,"tag":555666,"matricula":"RED1111","fechaInicial":"2024-06-27T00:00:00","fechaFinal":"2024-07-05T00:00:00"}'
+Consulta de Saldo
+curl -X GET -v http://localhost:8080/TallerJava2024/api/moduloGestion/consultarSaldo/1
+
+Caso 3:
+Cambiar saldo en la BD a $0
+Asociar tarjeta
+curl -X POST -v http://localhost:8080/TallerJava2024/api/moduloGestion/agregarTarjeta -H "Content-Type: application/json" -d '{"idCliente":1,"nroTarjeta":222233334444,"fechaVtoTarjeta":"2025-06-12T00:00:00","nombreCompletoUsuario":"Juan Lopez"}' 
+Peaje
+curl -X POST -v http://localhost:8080/TallerJava2024/api/moduloPeaje/estaHabilitado -H "Content-Type: application/json" -d '{"tag":555666, "matricula":"RED1111"}'
+
+Pasada por Cliente -gestion
+curl -X GET -v http://localhost:8080/TallerJava2024/api/moduloGestion/consultarPasadas -H "Content-Type: application/json" -d '{"idCliente":1,"fechaInicial":"2024-06-27T00:00:00","fechaFinal":"2024-07-05T00:00:00"}'
+
+Pasada por Cliente -medios pago
+curl -X GET -v http://localhost:8080/TallerJava2024/api/moduloMediosDePago/consultarDePagosCliente -H "Content-Type: application/json" -d '{"idCliente":1}'  
+
+Caso 4:
+Modificar Mock Medios pago para rechazar la tarjeta 222233334444
+
+Peaje
+curl -X POST -v http://localhost:8080/TallerJava2024/api/moduloPeaje/estaHabilitado -H "Content-Type: application/json" -d '{"tag":555666, "matricula":"RED1111"}'
+
+Pasada por Cliente -gestion
+curl -X GET -v http://localhost:8080/TallerJava2024/api/moduloGestion/consultarPasadas -H "Content-Type: application/json" -d '{"idCliente":1,"fechaInicial":"2024-06-27T00:00:00","fechaFinal":"2024-07-05T00:00:00"}'
+
+Pasada por matricula -sucive
+curl -X GET -v http://localhost:8080/TallerJava2024/api/moduloSucive/consultarDePagosMatricula -H "Content-Type: application/json" -d '{"matricula": "RED1111"}' 
+
+Caso 5:
+curl -X POST -v http://localhost:8080/TallerJava2024/api/moduloPeaje/estaHabilitado -H "Content-Type: application/json" -d '{"tag":0, "matricula":"XXX8888ZZ"}'
+
+Caso 6:
+
+Alta cliTelepeaje
+curl -X POST -v http://localhost:8080/TallerJava2024/api/moduloGestion/altaClienteTelepeaje -H "Content-Type: application/json" -d '{"nombre":"nomExtranjero","email":"nom1Extranjero@gmail.com", "nacionalidad":1}' 
+Vincular vehiculo
+curl -X POST -v http://localhost:8080/TallerJava2024/api/moduloGestion/vincularVehiculo -H "Content-Type: application/json" -d '{"idCliente":2,"tag":777888,"matricula":"YYY1111ZZ"}' 
+Cargar saldo
+curl -X POST -v http://localhost:8080/TallerJava2024/api/moduloGestion/cargarSaldo -H "Content-Type: application/json" -d '{"idCliente":2,"importe":1000}'
+Peaje
+curl -X POST -v http://localhost:8080/TallerJava2024/api/moduloPeaje/estaHabilitado -H "Content-Type: application/json" -d '{"tag":777888, "matricula":"YYY1111ZZ"}'
+Pasada por Cliente
+curl -X GET -v http://localhost:8080/TallerJava2024/api/moduloGestion/consultarPasadas -H "Content-Type: application/json" -d '{"idCliente":2,"fechaInicial":"2024-06-27T00:00:00","fechaFinal":"2024-07-05T00:00:00"}'
+Pasada por Cliente y el Vehiculo
+curl -X GET -v http://localhost:8080/TallerJava2024/api/moduloGestion/consultarPasadas -H "Content-Type: application/json" -d '{"idCliente":1,"tag":777888,"matricula":"YYY1111ZZ","fechaInicial":"2024-06-27T00:00:00","fechaFinal":"2024-07-05T00:00:00"}'
+Consulta de Saldo
+curl -X GET -v http://localhost:8080/TallerJava2024/api/moduloGestion/consultarSaldo/2
+
+Pasada por Cliente -gestion
+curl -X GET -v http://localhost:8080/TallerJava2024/api/moduloGestion/consultarPasadas -H "Content-Type: application/json" -d '{"idCliente":1,"fechaInicial":"2024-06-27T00:00:00","fechaFinal":"2024-07-05T00:00:00"}'
+
+Consulta de Saldo
+curl -X GET -v http://localhost:8080/TallerJava2024/api/moduloGestion/consultarSaldo/2
+
+Caso 7:
+
+Vincular vehiculo
+curl -X POST -v http://localhost:8080/TallerJava2024/api/moduloGestion/vincularVehiculo -H "Content-Type: application/json" -d '{"idCliente":1,"tag":555777,"matricula":"RED2222"}' 
+Mostrar vehiculos
+
+
+
+

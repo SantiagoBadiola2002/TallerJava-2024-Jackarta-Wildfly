@@ -17,20 +17,20 @@ public class PublicadorEvento {
     private Event<PeajeERRORVehiculoNoEncontrado> vehiculoNoEncontrado;
 
     @Inject
-    private Event<PeajeERRORPagoNoRealizadoExtranjero> pagoNoRealizadoExtranjero; 
+    private Event<PeajeOKPagoRealizadoExtranjero> pagoRealizadoExtranjero; 
     
     @Inject
-    private Event<PeajeERRORPagoNoRealizadoNacional> pagoNoRealizadoNacional; 
+    private Event<PeajeOKPagoRealizadoNacional> pagoRealizadoNacional; 
     
     @Inject
     private Event<PeajeINFONuevaPasada> nuevaPasada; 
     
-    public void publicarPagoNoRealizadoExtranjero(String mensaje){
-    	pagoNoRealizadoExtranjero.fire(new PeajeERRORPagoNoRealizadoExtranjero(mensaje));
+    public void publicarPagoRealizadoExtranjero(String mensaje){
+    	pagoRealizadoExtranjero.fire(new PeajeOKPagoRealizadoExtranjero(mensaje));
     }
     
-    public void publicarPagoNoRealizadoNacional(String mensaje){
-    	pagoNoRealizadoNacional.fire(new PeajeERRORPagoNoRealizadoNacional(mensaje));
+    public void publicarPagoRealizadoNacional(String mensaje){
+    	pagoRealizadoNacional.fire(new PeajeOKPagoRealizadoNacional(mensaje));
     }
     
     public void publicarVehiculoNoEncontrado(String mensaje){
