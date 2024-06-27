@@ -85,9 +85,13 @@ Para visualizar la útilidad de la Queue se utilizo JMeter para crear carga en e
 
 La configuración se encuentra en: Plan de Pruebas JMS.jmx
 
-Response sin Queue:
+Tiempo de response sin Queue:
 ![image](https://github.com/SantiagoBadiola2002/TallerJava-2024-Jackarta-Wildfly/blob/main/SinQueue.png)
 
+Tiempo de response con Queue:
+![image](https://github.com/SantiagoBadiola2002/TallerJava-2024-Jackarta-Wildfly/blob/main/conQueue.png)
+
+Como se puede ver, baja considerablemente el tiempo de respueta del servidor con Queue implementada que sin Queue. 
 
 
 
