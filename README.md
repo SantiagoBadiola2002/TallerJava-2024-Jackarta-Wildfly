@@ -28,5 +28,40 @@ Se han agregado anotaciones de persistencia a la gran mayoría de clases de cada
 Usamos la siguiente estructura snakeCase para las tablas: nombreModulo_Clase.
 
 
+# Iteración 3 Docker, Grafana, InfluxDB y Micrometer
+
+Se instaló Docker Engine para levantar el contenedor de Grafana + InfluxDB según el siguiente link:
+https://hub.docker.com/r/philhawthorne/docker-influxdb-grafana/
+
+Para iniciar el conetenedor:
+sudo docker start docker-influxdb-grafana
+
+Para entrar a Grafana:
+http://localhost:3003
+user/pass: root/root
+
+Para entrar a InfluxDB (Chronograf): 
+http://localhost:3004
+user/pass: root/root
+
+Para entrar a InfluxDB Shell (CLI) y trabajar con comandos tipo SQL:
+Entrar por SSH al contenedor
+Ejecutar comando influx
+
+Modulo de Monitoreo:
+Se creo una clase RegistradorDeMetricas que tiene los parámetros de configuración para Micrometer y la BD de Influx. Influx gestiona una BD de tipo Time Series.  
+Se crearon Observer para los distintos módulos, con el fin de recibir e incrementar los contadores de los eventos que se graficaran en Grafana.
+En Grafana se crearon varios Dashboard que gráfica los eventos en tiempo que muestra:
+-OK prepagos realizados 
+-OK post pagos realizados
+-OK pagos sucive
+-OK cantidad de vehículos nacionales 
+-OK cantidad de vehículos extranjeros
+-Error Saldo Insuficiente
+-Error Tarjeta Rechazada
+-Error
+
+
+
 
 
