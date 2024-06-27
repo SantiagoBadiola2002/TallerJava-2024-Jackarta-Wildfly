@@ -86,7 +86,7 @@ Para visualizar la útilidad de la Queue se utilizo JMeter para crear carga en e
 La configuración se encuentra en: Plan de Pruebas JMS.jmx
 
 Response sin Queue:
-![Tiempo de respuesta del servidor sin Queue implementada](url completa de la imagen)
+![image](https://drive.google.com/file/d/1Wsd_SWo9Wm6r0XLpw-d8rwEZlHyTAqW2/view?usp=drive_link)
 
 
 
