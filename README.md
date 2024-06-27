@@ -56,20 +56,22 @@ Modulo de Monitoreo:
 Se creo una clase RegistradorDeMetricas que tiene los parámetros de configuración para Micrometer y la BD de Influx. Influx gestiona una BD de tipo Time Series.  
 Se crearon Observer para los distintos módulos, con el fin de recibir e incrementar los contadores de los eventos que se graficaran en Grafana.
 En Grafana se crearon varios Dashboard que gráfica los eventos en tiempo que muestra:
-	OK prepagos realizados 
-	OK post pagos realizados
-	OK pagos sucive
-	OK cantidad de vehículos nacionales 
-	OK cantidad de vehículos extranjeros
-	OK pago con tarjeta
-	Error Saldo Insuficiente
-	Error Tarjeta Rechazada
-	Error Cliente no encontrado por TAG
+	OK prepagos realizados; 
+	OK post pagos realizados;
+	OK pagos sucive;
+	OK cantidad de vehículos nacionales; 
+	OK cantidad de vehículos extranjeros;
+	OK pago con tarjeta;
+	Error Saldo Insuficiente;
+	Error Tarjeta Rechazada;
+	Error Cliente no encontrado por TAG;
 
 La configuración del Dashboard con las gráficas es DashboardGrafana.json.
 
 # Iteración 4 
-Implementación de Queue de pagos y JMeter para análisis de tiempo de respuesta del servidor
+Implementación de Queue de pagos y JMeter para análisis de tiempo de respuesta del servidor.
+
+Se implemento una Queue de pagos ya que el caso de pasada por peaje de vehiculo nacional siempre se va a poder cobrar: sea si tiene saldo en la cuenta pre-paga; tiene tarjeta asociada en la cuenta post-paga; o por la matricula en Sucive.
 
 
 
