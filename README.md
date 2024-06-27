@@ -30,7 +30,8 @@ Se han agregado anotaciones de persistencia a la gran mayoría de clases de cada
 Usamos la siguiente estructura snakeCase para las tablas: nombreModulo_Clase.
 
 
-# Iteración 3 Docker, Grafana, InfluxDB y Micrometer
+# Iteración 3 
+Docker, Grafana, InfluxDB y Micrometer
 
 Se instaló Docker Engine para levantar el contenedor de Grafana + InfluxDB según el siguiente link:
 https://hub.docker.com/r/philhawthorne/docker-influxdb-grafana/
@@ -55,19 +56,20 @@ Modulo de Monitoreo:
 Se creo una clase RegistradorDeMetricas que tiene los parámetros de configuración para Micrometer y la BD de Influx. Influx gestiona una BD de tipo Time Series.  
 Se crearon Observer para los distintos módulos, con el fin de recibir e incrementar los contadores de los eventos que se graficaran en Grafana.
 En Grafana se crearon varios Dashboard que gráfica los eventos en tiempo que muestra:
--OK prepagos realizados 
--OK post pagos realizados
--OK pagos sucive
--OK cantidad de vehículos nacionales 
--OK cantidad de vehículos extranjeros
--OK pago con tarjeta
--Error Saldo Insuficiente
--Error Tarjeta Rechazada
--Error Cliente no encontrado por TAG
+	OK prepagos realizados 
+	OK post pagos realizados
+	OK pagos sucive
+	OK cantidad de vehículos nacionales 
+	OK cantidad de vehículos extranjeros
+	OK pago con tarjeta
+	Error Saldo Insuficiente
+	Error Tarjeta Rechazada
+	Error Cliente no encontrado por TAG
 
 La configuración del Dashboard con las gráficas es DashboardGrafana.json.
 
-# Iteración 4 Implementación de Queue de pagos y JMeter para análisis de tiempo de respuesta del servidor
+# Iteración 4 
+Implementación de Queue de pagos y JMeter para análisis de tiempo de respuesta del servidor
 
 
 
