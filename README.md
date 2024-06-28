@@ -70,6 +70,9 @@ En Grafana se crearon varios Dashboard que gráfica los eventos en tiempo que mu
 
 La configuración del Dashboard con las gráficas es DashboardGrafana.json.
 
+Dashboard:
+![image](https://github.com/SantiagoBadiola2002/TallerJava-2024-Jackarta-Wildfly/blob/main/Monitoreo.png)
+
 # Iteración 4 
 Implementación de Queue de pagos y JMeter para análisis de tiempo de respuesta del servidor.
 
