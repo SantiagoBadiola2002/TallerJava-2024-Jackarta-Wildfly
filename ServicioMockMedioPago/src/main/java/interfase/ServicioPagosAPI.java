@@ -40,8 +40,8 @@ public class ServicioPagosAPI {
 
 	// private static final Logger log = Logger.getLogger(ServicioPagosAPI.class);
 
-	private static final String[] TARJETAS_OK = { "111", "222", "333" };
-	private static final String[] TARJETAS_ERROR = { "444", "555", "666" };
+	private static final String[] TARJETAS_OK = { "22223333", "222", "333" };
+	private static final String[] TARJETAS_ERROR = { "22223334", "555", "666" };
 	private static final Random RANDOM = new Random();
 
 	private boolean isTarjetaOK(String numeroTarjeta) {

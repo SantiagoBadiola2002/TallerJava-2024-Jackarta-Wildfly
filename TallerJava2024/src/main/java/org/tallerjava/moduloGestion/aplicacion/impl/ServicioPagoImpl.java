@@ -157,11 +157,17 @@ public class ServicioPagoImpl implements ServicioPago {
 	
 	@Override
 	public boolean esClienteTelepeaje(int tag) {
-		Usuario usuario = repoUsuario.findByTag(tag);
-		if ((usuario != null) && (usuario.getClienteTelepeaje() != null)) {
-			return true;
-		} else
+		Vehiculo v = repoUsuario.findByTagVehiculo(tag);
+		if (v!=null && v.getCliente() !=null) {
+			Usuario usuario = repoUsuario.findByTag(tag);
+			if ((usuario != null) && (usuario.getClienteTelepeaje() != null)) {
+				return true;
+			} else
+				return false;
+		}else {
 			return false;
+		}
+
 	}
 
 	@Override
@@ -299,6 +305,7 @@ public class ServicioPagoImpl implements ServicioPago {
 		ClienteTelepeaje clienteTelepeaje = repoUsuario.findCliTelepeaje(idCliente);
 		if (clienteTelepeaje != null) {
 			agregado = true;
+			log.infof(RED + "numero tarjeta"+nroTarjeta);
 			Tarjeta tarjeta = new Tarjeta(nroTarjeta, fechaVtoTarjeta, nombreCompletoUsuario);
 			PostPaga postPaga = new PostPaga(LocalDateTime.now(), tarjeta, clienteTelepeaje.getCtaPrepaga().getNroCuenta());
 			clienteTelepeaje.setCtaPostPaga(postPaga);
@@ -320,7 +327,7 @@ public class ServicioPagoImpl implements ServicioPago {
 		//System.out.println("PASAda fecha:" + fechaInicial + "///"+ fechaFinal +"\n");
 		for (Vehiculo v : vehiculos) {
 			//si esta activo el vehiculo para el cliente
-			if (v.getVinculo().isActivo()) {
+			//if (v.getVinculo().isActivo()) {
 				//me traigo las pasadas del vehiculo
 				List<PasadaPeaje> listaPasadas = repoUsuario.traerPasadasVehiculo(v);
 				//chequeo las fechas
@@ -338,7 +345,7 @@ public class ServicioPagoImpl implements ServicioPago {
 					}
 				}
 				
-			}
+			//}
 			
 		}
 

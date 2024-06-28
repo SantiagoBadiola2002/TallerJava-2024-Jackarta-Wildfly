@@ -89,17 +89,22 @@ public class UsuarioRepositorioImpl implements UsuarioRepositorio {
 	
 	@Override
 	public Usuario findByTag(int tag) {
+		
 		int idCliente = findIdClienteByTag(tag);
+		if (idCliente ==0) {
+			return null;
+		}else {
+			
 		Usuario usu = findUsuarioCliTelepeaje(idCliente);
 
-		return usu;
+		return usu;}
 	}
 	
     @Override
     public Vehiculo findByTagVehiculo(int tag) {
-        String sql = "select v from Vehiculo_Gestion v where v.identificador.tag= :tag";
+        String sql = "select v from Vehiculo_Gestion v where v.identificador.tag= :tag AND v.vinculo.activo= : activo";
 
-        TypedQuery<Vehiculo> findByTag = em.createQuery(sql, Vehiculo.class).setParameter("tag", tag);
+        TypedQuery<Vehiculo> findByTag = em.createQuery(sql, Vehiculo.class).setParameter("tag", tag).setParameter("activo", true);
         try {
             return findByTag.getSingleResult();
         } catch (NoResultException e) {

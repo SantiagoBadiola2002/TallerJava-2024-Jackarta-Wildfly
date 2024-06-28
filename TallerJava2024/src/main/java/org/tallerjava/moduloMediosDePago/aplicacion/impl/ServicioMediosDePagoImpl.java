@@ -73,46 +73,47 @@ public class ServicioMediosDePagoImpl implements ServicioMediosDePago {
 	@Override
 	public String notificarPago(int idCliente, int tag, double importe, int nroTarjeta) {
 		log.infof(VIOLET +"*** Inicio de Pago con sistema Externo Cliente: "+idCliente+ " Vehiculo tag: "+ tag);
-
-		String responseBody = "PAGO RECHAZADO";
 		Cliente cli = repoPagos.findByIdCliente(idCliente);
-		//guardar pago
-		Pago pago = new Pago(LocalDateTime.now(), cli, cli.getTarjeta(), tag, importe);
-		repoPagos.salvarPago(pago);
-		evento.publicarPagoTarjetaNoRealizado(responseBody);
-		//evento.publicarPagoTarjetaRealizado(responseBody);
+		
+//		String responseBody = "PAGO RECHAZADO";
+//		Cliente cli = repoPagos.findByIdCliente(idCliente);
+//		//guardar pago
+//		Pago pago = new Pago(LocalDateTime.now(), cli, cli.getTarjeta(), tag, importe);
+//		repoPagos.salvarPago(pago);
+//		evento.publicarPagoTarjetaNoRealizado(responseBody);
+//		//evento.publicarPagoTarjetaRealizado(responseBody);
 		
 		//DESCOMENTAR LUEGO DE LEVANTAR EL SERVIDOR PAGOS
 		
-//		Client client = ClientBuilder.newClient();
-//		String responseBody = "";
-//		try {
-//            // Realizar la solicitud GET al endpoint autorizarPago con el número de tarjeta en la URL
-//            Response response = client.target("http://localhost:8080/ServicioMockMedioPago/api/servicioPagosMock")
-//                    .path("/autorizarPago/" + nroTarjeta)
-//                    .request(MediaType.TEXT_PLAIN)
-//                    .get();
-//
-//            // Verificar la respuesta
-//            if (response.getStatus() == 200) {
-//                responseBody = response.readEntity(String.class);
-//                if (responseBody.equals("PAGO APROBADO")) {
-//                	evento.publicarPagoTarjetaRealizado(responseBody);
-					// //guardar pago
-		//Pago pago = new Pago(LocalDateTime.now(), cli, cli.getTarjeta(), tag, importe);
-		//repoPagos.salvarPago(pago);
-//                }else {
-//                	evento.publicarPagoTarjetaNoRealizado(responseBody);
-//                }
-//                log.infof(BLUE + "Respuesta de la API medio pagos externos: " + responseBody);
-//            } else {
-//            	evento.publicarAlProcesarPago("La solicitud al SERVICIO Mock API falló, error: " + response.getStatus())
-//                log.infof(ORANGE +"La solicitud de la API medio pagos externos falló con código de respuesta: " + response.getStatus());
-//            }
-//        } finally {
-//            // Cerrar el cliente
-//            client.close();
-//        }
+		Client client = ClientBuilder.newClient();
+		String responseBody = "";
+		try {
+            // Realizar la solicitud GET al endpoint autorizarPago con el número de tarjeta en la URL
+            Response response = client.target("http://localhost:8080/ServicioMockMedioPago/api/servicioPagosMock")
+                    .path("/autorizarPago/" + nroTarjeta)
+                    .request(MediaType.TEXT_PLAIN)
+                    .get();
+
+            // Verificar la respuesta
+            if (response.getStatus() == 200) {
+                responseBody = response.readEntity(String.class);
+                if (responseBody.equals("PAGO APROBADO")) {
+                	evento.publicarPagoTarjetaRealizado(responseBody);
+					 //guardar pago
+		Pago pago = new Pago(LocalDateTime.now(), cli, cli.getTarjeta(), tag, importe);
+		repoPagos.salvarPago(pago);
+                }else {
+                	evento.publicarPagoTarjetaNoRealizado(responseBody);
+                }
+                log.infof(BLUE + "Respuesta de la API medio pagos externos: " + responseBody);
+            } else {
+            	evento.publicarPagoTarjetaNoRealizado("La solicitud al SERVICIO Mock API falló, error: " + response.getStatus());
+                log.infof(ORANGE +"La solicitud de la API medio pagos externos falló con código de respuesta: " + response.getStatus());
+            }
+        } finally {
+            // Cerrar el cliente
+            client.close();
+        }
     
 	return responseBody;
 
